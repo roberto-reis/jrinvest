@@ -5,33 +5,33 @@
 
     <form @submit.prevent="submit">
         <div>
-            <Label for="name" value="Nome:" />
-            <Input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
+            <VLabel for="name" value="Nome:" />
+            <VInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
         </div>
 
         <div class="mt-4">
-            <Label for="last_name" value="Sobrenome:" />
-            <Input id="last_name" type="text" class="mt-1 block w-full" v-model="form.last_name" required autofocus autocomplete="last_name" />
+            <VLabel for="last_name" value="Sobrenome:" />
+            <VInput id="last_name" type="text" class="mt-1 block w-full" v-model="form.last_name" required autofocus autocomplete="last_name" />
         </div>
 
         <div class="mt-4">
-            <Label for="phone" value="Telefone:" />
-            <Input id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required autofocus autocomplete="phone" />
+            <VLabel for="phone" value="Telefone:" />
+            <VInput id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required autofocus autocomplete="phone" />
         </div>
 
         <div class="mt-4">
-            <Label for="email" value="Email:" />
-            <Input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username" />
+            <VLabel for="email" value="Email:" />
+            <VInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username" />
         </div>
 
         <div class="mt-4">
-            <Label for="password" value="Senha:" />
-            <Input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
+            <VLabel for="password" value="Senha:" />
+            <VInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
         </div>
 
         <div class="mt-4">
-            <Label for="password_confirmation" value="Confirme a senha:" />
-            <Input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
+            <VLabel for="password_confirmation" value="Confirme a senha:" />
+            <VInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
@@ -39,18 +39,18 @@
                 Já é registrado?
             </Link>
 
-            <Button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <VButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Registrar
-            </Button>
+            </VButton>
         </div>
     </form>
 </template>
 
 <script>
-import Button from '@/Components/Button.vue'
+import VButton from '@/Components/Button.vue'
 import GuestLayout from '@/Layouts/Guest.vue'
-import Input from '@/Components/Input.vue'
-import Label from '@/Components/Label.vue'
+import VInput from '@/Components/Input.vue'
+import VLabel from '@/Components/Label.vue'
 import ValidationErrors from '@/Components/ValidationErrors.vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
 
@@ -58,9 +58,9 @@ export default {
     layout: GuestLayout,
 
     components: {
-        Button,
-        Input,
-        Label,
+        VButton,
+        VInput,
+        VLabel,
         ValidationErrors,
         Head,
         Link,

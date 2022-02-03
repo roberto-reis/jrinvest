@@ -9,13 +9,13 @@
 
     <form @submit.prevent="submit">
         <div>
-            <Label for="email" value="Email:" />
-            <Input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
+            <VLabel for="email" value="Email:" />
+            <VInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
         </div>
 
         <div class="mt-4">
-            <Label for="password" value="Senha:" />
-            <Input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+            <VLabel for="password" value="Senha:" />
+            <VInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
         </div>
 
         <div class="block mt-4">
@@ -30,19 +30,19 @@
                 Esqueceu sua senha?
             </Link>
 
-            <Button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <VButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Login
-            </Button>
+            </VButton>
         </div>
     </form>
 </template>
 
 <script>
-import Button from '@/Components/Button.vue'
+import VButton from '@/Components/Button.vue'
 import Checkbox from '@/Components/Checkbox.vue'
 import GuestLayout from '@/Layouts/Guest.vue'
-import Input from '@/Components/Input.vue'
-import Label from '@/Components/Label.vue'
+import VInput from '@/Components/Input.vue'
+import VLabel from '@/Components/Label.vue'
 import ValidationErrors from '@/Components/ValidationErrors.vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
 
@@ -50,10 +50,10 @@ export default {
     layout: GuestLayout,
 
     components: {
-        Button,
+        VButton,
         Checkbox,
-        Input,
-        Label,
+        VInput,
+        VLabel,
         ValidationErrors,
         Head,
         Link,
