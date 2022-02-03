@@ -1,7 +1,7 @@
 <template>
     <Head title="Dashboard" />
 
-    <BreezeAuthenticatedLayout>
+    <Authenticated>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard
@@ -17,16 +17,16 @@
                 </div>
             </div>
         </div>
-    </BreezeAuthenticatedLayout>
+    </Authenticated>
 </template>
 
 <script>
-import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
+import Authenticated from '@/Layouts/Authenticated.vue'
 import { Head } from '@inertiajs/inertia-vue3';
 
 export default {
     components: {
-        BreezeAuthenticatedLayout,
+        Authenticated,
         Head,
     },
 }
