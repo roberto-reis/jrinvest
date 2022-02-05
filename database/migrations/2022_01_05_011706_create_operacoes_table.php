@@ -18,8 +18,8 @@ class CreateOperacoesTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('ativo_id');
             $table->string('tipo_operacao', 20);
-            $table->double('quantidade', 15, 8);
-            $table->double('cotacao_preco', 15, 8);
+            $table->string('quantidade', 50);
+            $table->string('cotacao_preco', 50);
             $table->string('corretora', 50);
             $table->timestamps();
             $table->softDeletes();

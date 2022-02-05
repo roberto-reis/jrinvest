@@ -42,16 +42,16 @@ class Operacao extends Model
         return $this->cotacao_preco * $this->attributes['quantidade'];
     }
 
-    public function setquantidadeAttribute($value)
-    {
-        $value = str_replace([',', '.'], '', $value);
+    // public function setquantidadeAttribute($value)
+    // {
+    //     $value = str_replace([',', '.'], '', $value);
 
-        $this->attributes['quantidade'] =  $value;
-    }
+    //     $this->attributes['quantidade'] =  $value;
+    // }
 
-    public function getQuantidadeAttribute($value)
-    {
-        return number_format($value, 2,',', '.');
-    }
+    // public function getQuantidadeAttribute($value)
+    // {
+    //     return number_format($value, 8,',', '');
+    // }
 
 }
