@@ -22,11 +22,12 @@
 							Export
 						</VButton>
 					</div>
-					<form action="">
+					<form>
 						<div class="flex w-96">
-							<input type="text" id="website-admin" class="rounded-none rounded-l bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5" placeholder="Pesquisar...">
-							<span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-r border border-l-0 border-gray-300">
-								@
+							<input type="text" v-model="params.search" placeholder="O que deseja buscar?" 
+								class="rounded-none rounded-l border-2 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5">
+							<span class="inline-flex items-center px-3 text-sm bg-blue-600 text-white rounded-r border border-l-0 border-blue-600">
+								<i class="fas fa-search"></i>
 							</span>
 						</div>
 					</form>
@@ -89,7 +90,9 @@
 													{{ operacao.codigo_ativo }}
 												</td>
 												<td class="text-sm text-gray-900 font-light px-2 py-3 whitespace-nowrap">
-													{{ operacao.tipo_operacao }}
+													<span :class="operacao.tipo_operacao == 'venda' ? 'bg-green-600' :'bg-red-600'" class="text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold text-white rounded">
+														{{ operacao.tipo_operacao}}
+													</span>
 												</td>
 												<td class="text-sm text-gray-900 font-light px-2 py-3 whitespace-nowrap">
 													{{ operacao.classe_ativo}}
@@ -143,7 +146,7 @@
 import Authenticated from "@/Layouts/Authenticated.vue";
 import VButton from "@/Components/Button.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { formatMoneyBr, formatDateBr } from '@/Helpers/helpers.js';
+import { formatMoneyBr, formatDateBr, getUrlParamr } from '@/Helpers/helpers.js';
 import Pagination from '@/Components/Pagination.vue';
 export default {
 	name: 'Home',
@@ -155,11 +158,42 @@ export default {
   },
 	props: {
 		operacoes: Object,
+		ativos: Array,
+		flash: Object,
+		errors: Object,
+		filters: Object
+	},
+	data() {
+		return {
+			perPage: '',
+			page: '',
+			params: {
+				field: this.filters.field,
+				direction: this.filters.direction,
+				search: this.filters.search,
+			},
+		}
 	},
 	methods: {
 		formatMoneyBr,
 		formatDateBr,
-	}
+		getUrlParamr,
+		sort(field) {
+				this.params.field = field;
+				this.params.direction = this.params.direction === 'asc' ? 'desc' : 'asc';
+				this.perPage = this.getUrlParamr('perPage');
+				this.page = this.getUrlParamr('page');
+		},
+	},
+	watch: {
+		params: {
+			handler() {
+				this.perPage = this.getUrlParamr('perPage');
+				this.$inertia.get(route('operacoes.index'), this.params, {replace:true, preserveState: true});
+			},
+			deep: true,
+		},
+	},
 };
 </script>
 
