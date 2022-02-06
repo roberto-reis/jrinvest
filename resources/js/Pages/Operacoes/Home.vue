@@ -10,13 +10,10 @@
 
 		<section class="mt-6">
 			<div class="bg-white overflow-hidden shadow-sm rounded">
-				<div class="p-4 bg-white border-b border-gray-200 flex justify-between">
+				<div class="p-4 bg-white border-b border-gray-200 flex justify-between items-center">
 					<div>
-						<VButton class="bg-green-600 hover:bg-green-700 focus:bg-green-700">
+						<VButton @click="modalVisible = true" class="bg-green-600 hover:bg-green-700 focus:bg-green-700">
 							Novo Aporte
-						</VButton>
-						<VButton class="ml-2 bg-red-700 hover:bg-red-800 focus:bg-red-800">
-							Nova Venda
 						</VButton>
 						<VButton class="ml-2 bg-gray-500 hover:bg-gray-700 focus:bg-gray-600">
 							Export
@@ -46,37 +43,51 @@
 									<table class="min-w-full">
 										<thead class="border-b text-sm text-left font-medium text-gray-700">
 											<tr>
-												<th scope="col" @click="sort('classe_ativo')" class="px-2 py-2">
-													<span>Ativo</span>
-													<i class="fas fa-sort ml-3"></i>
+												<th scope="col" @click="sort('codigo_ativo')" class="px-2 py-2">
+													<span class="cursor-pointer flex flex-row justify-between">
+														Ativo
+														<i class="fas fa-sort ml-3"></i>
+													</span>
 												</th>
 												<th scope="col" @click="sort('tipo_operacao')" class="px-2 py-2">
-													<span>Operação</span>
-													<i class="fas fa-sort ml-3"></i>	
+													<span class="cursor-pointer flex flex-row justify-between">
+														Operação
+														<i class="fas fa-sort ml-3"></i>
+													</span>
 												</th>
 												<th scope="col" @click="sort('classe_ativo')" class="px-2 py-2">
-													<span>Classe Ativo</span>
-													<i class="fas fa-sort ml-3"></i>
+													<span class="cursor-pointer flex flex-row justify-between w-28">
+														Classe Ativo
+														<i class="fas fa-sort ml-3"></i>
+													</span>
 												</th>
 												<th scope="col" @click="sort('quantidade')" class="px-2 py-2">
-													<span>Qtd.</span>
-													<i class="fas fa-sort ml-3"></i>
+													<span class="cursor-pointer flex flex-row justify-between">
+														Qtd.
+														<i class="fas fa-sort ml-3"></i>
+														</span>
 												</th>
 												<th scope="col" @click="sort('cotacao_preco')" class="px-2 py-2">
-													<span>Cotação</span>
-													<i class="fas fa-sort ml-3"></i>
+													<span class="cursor-pointer flex flex-row justify-between">
+														Cotação
+														<i class="fas fa-sort ml-3"></i>
+													</span>
 												</th>
 												<th scope="col" @click="sort('valor_total')" class="px-2 py-2">
 													<span>Valor Total</span>
-													<i class="fas fa-sort ml-3"></i>
+													<!-- <i class="fas fa-sort ml-3"></i> -->
 												</th>
 												<th scope="col" @click="sort('corretora')" class="px-2 py-2">
-													<span>Corretora</span>
-													<i class="fas fa-sort ml-3"></i>
+													<span class="cursor-pointer flex flex-row justify-between">
+														Corretora
+														<i class="fas fa-sort ml-3"></i>
+													</span>
 												</th>
 												<th scope="col" @click="sort('created_at')" class="px-2 py-2">
-													<span>Data</span>
-													<i class="fas fa-sort ml-3"></i>
+													<span class="cursor-pointer flex flex-row justify-between">
+														Data
+														<i class="fas fa-sort ml-3"></i>
+													</span>
 												</th>
 												<th scope="col" class="px-2 py-2">
 													<span>Ações</span>
@@ -90,7 +101,7 @@
 													{{ operacao.codigo_ativo }}
 												</td>
 												<td class="text-sm text-gray-900 font-light px-2 py-3 whitespace-nowrap">
-													<span :class="operacao.tipo_operacao == 'venda' ? 'bg-green-600' :'bg-red-600'" class="text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold text-white rounded">
+													<span :class="operacao.tipo_operacao == 'compra' ? 'bg-green-600' :'bg-red-600'" class="text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold text-white rounded">
 														{{ operacao.tipo_operacao}}
 													</span>
 												</td>
@@ -122,7 +133,6 @@
 														</button>
 													</div>
 												</td>
-
 											</tr>
 											
 										</tbody>
@@ -138,6 +148,12 @@
 
 		<Pagination :data="operacoes" />
 
+		<Modal :isVisible="modalVisible" @closeModal="modalVisible = false">
+			<template #header>Novo Aporte</template>
+			<template #body>
+				TESTE MODAL
+			</template>			
+		</Modal>
 
   </Authenticated>
 </template>
@@ -145,6 +161,7 @@
 <script>
 import Authenticated from "@/Layouts/Authenticated.vue";
 import VButton from "@/Components/Button.vue";
+import Modal from "@/Components/Modal.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { formatMoneyBr, formatDateBr, getUrlParamr } from '@/Helpers/helpers.js';
 import Pagination from '@/Components/Pagination.vue';
@@ -154,6 +171,7 @@ export default {
     Authenticated,
     Head,
 		VButton,
+		Modal,
 		Pagination,
   },
 	props: {
@@ -172,6 +190,7 @@ export default {
 				direction: this.filters.direction,
 				search: this.filters.search,
 			},
+			modalVisible: false,
 		}
 	},
 	methods: {
@@ -179,6 +198,7 @@ export default {
 		formatDateBr,
 		getUrlParamr,
 		sort(field) {
+			  console.log(field);
 				this.params.field = field;
 				this.params.direction = this.params.direction === 'asc' ? 'desc' : 'asc';
 				this.perPage = this.getUrlParamr('perPage');

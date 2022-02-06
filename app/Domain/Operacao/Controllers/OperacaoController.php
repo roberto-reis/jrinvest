@@ -21,7 +21,7 @@ class OperacaoController extends Controller
     {
         request()->validate([
             'direction' => ['nullable', 'in:asc,desc'],
-            'field' => ['nullable', 'in:ativo_id,tipo_operacao,classe_ativo,cotacao_preco,quantidade,corretora,created_at'],
+            'field' => ['nullable', 'in:codigo_ativo,tipo_operacao,classe_ativo,cotacao_preco,quantidade,corretora,created_at'],
             'search' => ['nullable', 'string'],
             'perPage' => ['nullable', 'integer'],
         ]);

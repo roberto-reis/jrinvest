@@ -12,7 +12,7 @@
       </nav>
 
       <!-- Page Content -->
-      <main class="max-w-7xl mx-auto">
+      <main class="max-w-7xl mx-auto px-4 sm:px-0">
         <slot />
       </main>
     </div>

@@ -23,5 +23,6 @@
         @env ('local')
             <script src="http://localhost:8080/js/bundle.js"></script>
         @endenv
+        <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
     </body>
 </html>
