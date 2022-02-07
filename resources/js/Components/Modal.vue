@@ -22,7 +22,7 @@
             <!-- Footer -->
             <div class="py-3 px-2.5 flex justify-end items-center border-t border-grey-500">
                 <button @click="closeModal()" class="py-1.5 px-3 rounded bg-red-600 text-white">Cancel</button>
-                <button class="py-1.5 px-3 rounded bg-green-700 text-white ml-2">Salvar</button>
+                <slot name="footer" />
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@ export default {
     },
     methods: {
        closeModal() {
-           this.$emit('closeModal');
+           this.$emit('close');
        }
     }
 }

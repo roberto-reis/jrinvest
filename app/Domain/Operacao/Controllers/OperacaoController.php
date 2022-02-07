@@ -10,7 +10,9 @@ use App\Domain\Operacao\DTO\OperacaoDTO;
 use Illuminate\Support\Facades\Redirect;
 use App\Domain\Operacao\Requests\OperacaoRequest;
 use App\Domain\Operacao\Actions\CreateOperacaoAction;
+use App\Domain\Operacao\Actions\DeleteOperacaoAction;
 use App\Domain\Operacao\Actions\UpdateOperacaoAction;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Session;
 
 class OperacaoController extends Controller
@@ -89,6 +91,17 @@ class OperacaoController extends Controller
             \Log::error('error ao atualizar operação: ', $e->getMessage());
         }
         return Redirect::route('operacoes.index');
+    }
+
+    public function destroy(DeleteOperacaoAction $deleteOperacaoAction, $id)
+    {
+        try {
+            $deleteOperacaoAction($id);
+            Session::flash('success', 'Operação excluída com sucesso!');
+            return Redirect::route('operacoes.index');
+        } catch (\Exception $e) {
+            \Log::error('error ao excluir operação: ', $e->getMessage());
+        }
     }
 
 }

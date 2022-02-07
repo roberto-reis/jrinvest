@@ -32,7 +32,7 @@ Route::prefix('operacoes')->group(function(){
     Route::get('/', [OperacaoController::class, 'index'])->name('operacoes.index');
     Route::post('/store', [OperacaoController::class, 'store'])->name('operacoes.store');
     Route::put('/update', [OperacaoController::class, 'update'])->name('operacoes.update');
-    Route::delete('/{id}', [OperacaoController::class, 'destroy'])->name('operacoes.destroy');
+    Route::delete('{id}/destroy', [OperacaoController::class, 'destroy'])->name('operacoes.destroy');
 });
 
 require __DIR__.'/auth.php';
