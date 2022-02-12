@@ -1,6 +1,6 @@
 <template>
   <div v-if="isVisible">
-    <div class="fixed inset-0 z-50 flex justify-center items-start mt-16">
+    <div class="fixed inset-0 z-30 flex justify-center items-start mt-16">
         <div class="flex flex-col w-full md:w-1/4 max-w-2xl rounded-lg shadow-lg bg-white">
             <!-- Header -->
             <div class="p-2 border-b border-grey-500">
@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    <div class="opacity-30 bg-black fixed inset-0 z-40">
+    <div class="opacity-30 bg-black fixed inset-0 z-20">
     </div>
   </div>
 </template>
@@ -39,11 +39,6 @@ export default {
             type: Boolean,
             default: false
         }
-    },
-    data() {
-        return {
-            
-        };
     },
     methods: {
        closeModal() {

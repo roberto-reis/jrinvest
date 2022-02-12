@@ -12,7 +12,7 @@
 			<div class="bg-white overflow-hidden shadow-sm rounded">
 				<div class="p-4 bg-white border-b border-gray-200 flex justify-between items-center">
 					<div>
-						<VButton @click="modalVisible = true" class="bg-green-600 hover:bg-green-700 focus:bg-green-700">
+						<VButton @click="openModal()" class="bg-green-600 hover:bg-green-700 focus:bg-green-700">
 							Novo Aporte
 						</VButton>
 						<VButton class="ml-2 bg-gray-500 hover:bg-gray-700 focus:bg-gray-600">
@@ -148,12 +148,12 @@
 
 		<Pagination :data="operacoes" />
 
+		<Alert v-if="alertVisible" class="absolute bottom-1 right-0 w-96 mr-2 bg-green-200 text-green-800 z-50 shadow-md border border-green-600">
+			{{ flash.success }}
+		</Alert>
 		<Modal :isVisible="modalVisible" @close="closeModal()">
 			<template #header>{{ titleModal }}</template>
 			<template #body>
-				<Alert v-if="alertVisible">
-					{{ flash.success }}
-				</Alert>
 				<form>
 					<div class="mb-4">
 						<VLabel for="ativo" value="Ativo:" />
@@ -202,6 +202,8 @@
 			</template>	
 		</Modal>
 
+		
+
   </Authenticated>
 </template>
 
@@ -239,8 +241,8 @@ export default {
 			perPage: '',
 			page: '',
 			titleModal: 'Novo Aporte',
+			btnModal: '',
 			modalVisible: false,
-			btnModal: 'salvar',
 			alertVisible: false,
 			params: {
 				field: this.filters.field,
@@ -268,17 +270,6 @@ export default {
 				this.perPage = this.getUrlParamr('perPage');
 				this.page = this.getUrlParamr('page');
 		},
-		submitFormStore() {
-			this.form.post(route('operacoes.store'), {
-				onSuccess: () => {
-					this.form.reset();
-					this.alertVisible = true;
-				},
-			});
-			setTimeout(()=> {
-				this.alertVisible = false
-			}, 3000)
-		},
 		setOperacaoEdit(operacao) {
 			// Prepara o formulário para edição
 			this.form.id = operacao.id;
@@ -294,10 +285,25 @@ export default {
 			this.modalVisible = true;
 
 		},
+		submitFormStore() {
+			this.form.post(route('operacoes.store'), {
+				onSuccess: () => {
+					this.form.reset();
+					this.alertVisible = true;
+				},
+			});
+			setTimeout(()=> {
+				this.alertVisible = false
+			}, 3000)
+		},
 		submitFormUpdate() {
 			this.form.put(this.route('operacoes.update'), { 
 				preserveState:true,
-				onSuccess: () => this.alertVisible = true,
+				onSuccess: () => {
+					this.form.reset();
+					this.modalVisible = false;
+					this.alertVisible = true;
+				},
 			});
 			setTimeout(()=> {
 				this.alertVisible = false
@@ -308,6 +314,11 @@ export default {
 				preserveState: true,
 				onBefore: () => confirm('Tem certeza que deseja excluir esta Operação?'),
 			});
+		},
+		openModal() {
+			this.titleModal = 'Novo Aporte';
+			this.btnModal = 'salvar';
+			this.modalVisible = true;
 		},
 		closeModal() {
 			this.form.reset();
