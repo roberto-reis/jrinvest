@@ -1,5 +1,5 @@
 <template>
-	<div class="flex justify-between mt-1">
+	<div class="flex justify-between mt-2">
 		<div class="flex justify-center">
 			<div class="mb-3 w-28">
 				<select v-model="perPage" @change="filterPerPage()" class="form-select appearance-none
