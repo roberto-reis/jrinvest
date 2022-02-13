@@ -8,137 +8,138 @@
       </h2>
     </template>
 
-		<section class="mt-6">
-			<div class="bg-white overflow-hidden shadow-sm rounded">
-				<div class="p-4 bg-white border-b border-gray-200 flex justify-between items-center">
-					<div>
-						<VButton @click="openModal()" class="bg-green-600 hover:bg-green-700 focus:bg-green-700">
-							Novo Aporte
-						</VButton>
-						<VButton class="ml-2 bg-gray-500 hover:bg-gray-700 focus:bg-gray-600">
-							Export
-						</VButton>
-					</div>
-					<form>
-						<div class="flex w-96">
-							<input type="text" v-model="params.search" placeholder="O que deseja buscar?" 
-								class="rounded-none rounded-l border-2 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2">
-							<span class="inline-flex items-center px-3 text-sm bg-blue-600 text-white rounded-r border border-l-0 border-blue-600">
-								<i class="fas fa-search"></i>
-							</span>
-						</div>
-					</form>
+	<section class="mt-6">
+		<div class="bg-white overflow-hidden shadow-sm rounded">
+			<div class="p-4 bg-white border-b border-gray-200 flex justify-between items-center">
+				<div>
+					<VButton @click="openModal()" class="bg-green-600 hover:bg-green-700 focus:bg-green-700">
+						Novo Aporte
+					</VButton>
+					<VButton class="ml-2 bg-gray-500 hover:bg-gray-700 focus:bg-gray-600">
+						Export
+					</VButton>
 				</div>
+				<form>
+					<div class="flex w-96">
+						<input type="text" v-model="params.search" placeholder="O que deseja buscar?" 
+							class="rounded-none rounded-l border-2 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2">
+						<span class="inline-flex items-center px-3 text-sm bg-blue-600 text-white rounded-r border border-l-0 border-blue-600">
+							<i class="fas fa-search"></i>
+						</span>
+					</div>
+				</form>
 			</div>
-		</section>
+		</div>
+	</section>
 
-		<section class="mt-6">
-			<div class="flex flex-col">
-				<div class="overflow-x-auto shadow-md sm:rounded">
-					<div class="inline-block min-w-full align-middle">
-						<div class="overflow-hidden ">
-							<table class="min-w-full divide-y divide-gray-200 table-fixed">
-								<thead class="bg-gray-200 uppercase">
-									<tr>
-										<th scope="col" @click="sort('codigo_ativo')" class="cursor-pointer py-2 px-4 text-xs font-medium tracking-wider text-left text-gray-700">
-											<span class="flex flex-row justify-between">
-												Ativo
+	<!-- Section Table -->
+	<section class="mt-6">
+		<div class="flex flex-col">
+			<div class="overflow-x-auto shadow-md sm:rounded">
+				<div class="inline-block min-w-full align-middle">
+					<div class="overflow-hidden ">
+						<table class="min-w-full divide-y divide-gray-200 table-fixed">
+							<thead class="bg-gray-200 uppercase">
+								<tr>
+									<th scope="col" @click="sort('codigo_ativo')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+										<span class="flex flex-row justify-between">
+											Ativo
+										<i class="fas fa-sort ml-3"></i>
+										</span>
+									</th>
+									<th scope="col" @click="sort('tipo_operacao')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+										<span class="flex flex-row justify-between">
+											Operação
 											<i class="fas fa-sort ml-3"></i>
-											</span>
-										</th>
-										<th scope="col" @click="sort('tipo_operacao')" class="cursor-pointer py-3 px-4 text-xs font-medium tracking-wider text-left text-gray-700">
-											<span class="flex flex-row justify-between">
-												Operação
-												<i class="fas fa-sort ml-3"></i>
-											</span>
-										</th>
-										<th scope="col" @click="sort('classe_ativo')" class="cursor-pointer py-3 px-4 text-xs font-medium tracking-wider text-left text-gray-700">
-											<span class="flex flex-row justify-between">
-												Classe Ativo
-												<i class="fas fa-sort ml-3"></i>
-											</span>
-										</th>
-										<th scope="col" @click="sort('quantidade')" class="cursor-pointer py-3 px-4 text-xs font-medium tracking-wider text-left text-gray-700">
-											<span class="flex flex-row justify-between">
-												Qtd.
-												<i class="fas fa-sort ml-3"></i>
-											</span>
-										</th>
-										<th scope="col" @click="sort('cotacao_preco')" class="cursor-pointer py-3 px-4 text-xs font-medium tracking-wider text-left text-gray-700">
-											<span class="flex flex-row justify-between">
-												Cotação
-												<i class="fas fa-sort ml-3"></i>
-											</span>
-										</th>
-										<th scope="col" class="text-xs font-medium tracking-wider py-3 px-6 text-left text-gray-700">
-											<span>
-												Valor Total
-												<!-- <i class="fas fa-sort ml-3"></i> -->
-											</span>
-										</th>
-										<th scope="col" @click="sort('corretora')" class="cursor-pointer py-3 px-4 text-xs font-medium tracking-wider text-left text-gray-700">
-											<span class="flex flex-row justify-between">
-												Corretora
-												<i class="fas fa-sort ml-3"></i>
-											</span>
-										</th>
-										<th scope="col" @click="sort('created_at')" class="cursor-pointer py-3 px-4 text-xs font-medium tracking-wider text-left text-gray-700">
-											<span class="flex flex-row justify-between">
-												Data
-												<i class="fas fa-sort ml-3"></i>
-											</span>
-										</th>
-										<th scope="col" class="py-3 px-4 text-xs font-medium tracking-wider text-left text-gray-700">
-											Ações
-										</th>
-									</tr>
-								</thead>
-								<tbody class="bg-white divide-y divide-gray-200">
-									<tr v-for="operacao in operacoes.data" :key="operacao.id" class="hover:bg-gray-100">
-										<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-											{{ operacao.codigo_ativo }}
-										</td>
-										<td class="py-2 px-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-											<span :class="operacao.tipo_operacao == 'compra' ? 'bg-green-500' :'bg-red-500'" class="text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold text-white rounded">
-												{{ operacao.tipo_operacao}}
-											</span>
-										</td>
-										<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-											{{ operacao.classe_ativo}}
-										</td>
-										<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-											{{ operacao.quantidade }}
-										</td>
-										<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-											{{ formatMoneyBr(operacao.cotacao_preco) }}
-										</td>
-										<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-											{{ formatMoneyBr(operacao.valor_total) }}
-										</td>
-										<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-											{{ operacao.corretora }}
-										</td>
-										<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-											{{ formatDateBr(operacao.created_at) }}
-										</td>
-										<td class="py-1.5 px-4 text-sm font-medium whitespace-nowrap">
-											<div class="btn-group" role="group">
-												<button data-modal-toggle="novoAporte" data-bs-toggle="modal" data-bs-target="#novoAporte" @click="setOperacaoEdit(operacao)" class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
-													<i class="fas fa-edit"></i>
-												</button>
-												<button @click="deleteOperacao(operacao)" class="inline-block px-2.5 py-2 text-white bg-red-600 hover:bg-red-700 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
-													<i class="fas fa-trash"></i>
-												</button>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+										</span>
+									</th>
+									<th scope="col" @click="sort('classe_ativo')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+										<span class="flex flex-row justify-between">
+											Classe Ativo
+											<i class="fas fa-sort ml-3"></i>
+										</span>
+									</th>
+									<th scope="col" @click="sort('quantidade')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+										<span class="flex flex-row justify-between">
+											Qtd.
+											<i class="fas fa-sort ml-3"></i>
+										</span>
+									</th>
+									<th scope="col" @click="sort('cotacao_preco')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+										<span class="flex flex-row justify-between">
+											Cotação
+											<i class="fas fa-sort ml-3"></i>
+										</span>
+									</th>
+									<th scope="col" class="text-xs font-medium tracking-wider p-3 text-left text-gray-700">
+										<span>
+											Valor Total
+											<!-- <i class="fas fa-sort ml-3"></i> -->
+										</span>
+									</th>
+									<th scope="col" @click="sort('corretora')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+										<span class="flex flex-row justify-between">
+											Corretora
+											<i class="fas fa-sort ml-3"></i>
+										</span>
+									</th>
+									<th scope="col" @click="sort('created_at')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+										<span class="flex flex-row justify-between">
+											Data
+											<i class="fas fa-sort ml-3"></i>
+										</span>
+									</th>
+									<th scope="col" class="p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+										Ações
+									</th>
+								</tr>
+							</thead>
+							<tbody class="bg-white divide-y divide-gray-200">
+								<tr v-for="operacao in operacoes.data" :key="operacao.id" class="hover:bg-gray-100">
+									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+										{{ operacao.codigo_ativo }}
+									</td>
+									<td class="py-2 px-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+										<span :class="operacao.tipo_operacao == 'compra' ? 'bg-green-500' :'bg-red-500'" class="text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold text-white rounded">
+											{{ operacao.tipo_operacao}}
+										</span>
+									</td>
+									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+										{{ operacao.classe_ativo}}
+									</td>
+									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+										{{ operacao.quantidade }}
+									</td>
+									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+										{{ formatMoneyBr(operacao.cotacao_preco) }}
+									</td>
+									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+										{{ formatMoneyBr(operacao.valor_total) }}
+									</td>
+									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+										{{ operacao.corretora }}
+									</td>
+									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+										{{ formatDateBr(operacao.created_at) }}
+									</td>
+									<td class="py-1.5 px-4 text-sm font-medium whitespace-nowrap">
+										<div class="btn-group" role="group">
+											<button @click="setOperacaoEdit(operacao)" class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
+												<i class="fas fa-edit"></i>
+											</button>
+											<button @click="deleteOperacao(operacao)" class="inline-block px-2.5 py-2 text-white bg-red-600 hover:bg-red-700 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
+												<i class="fas fa-trash"></i>
+											</button>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
-		</section>
+		</div>
+	</section>
 
 		<Pagination :data="operacoes" />
 

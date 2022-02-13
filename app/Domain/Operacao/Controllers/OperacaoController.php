@@ -12,7 +12,6 @@ use App\Domain\Operacao\Requests\OperacaoRequest;
 use App\Domain\Operacao\Actions\CreateOperacaoAction;
 use App\Domain\Operacao\Actions\DeleteOperacaoAction;
 use App\Domain\Operacao\Actions\UpdateOperacaoAction;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Session;
 
 class OperacaoController extends Controller

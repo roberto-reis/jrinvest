@@ -19,9 +19,9 @@
 						<VNavLink :href="route('operacoes.index')" :active="route().current('operacoes.index')">
 							Operações
 						</VNavLink>
-						<!-- <VNavLink :href="route('ativos.index')" :active="route().current('ativos.index')">
+						<VNavLink :href="route('ativos.index')" :active="route().current('ativos.index')">
 							Ativos
-						</VNavLink> -->
+						</VNavLink>
 					</div>
 				</div>
 
@@ -67,6 +67,13 @@
 					<VResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
 							Dashboard
 					</VResponsiveNavLink>
+					<VResponsiveNavLink :href="route('operacoes.index')" :active="route().current('operacoes.index')">
+							Operações
+					</VResponsiveNavLink>
+					<VResponsiveNavLink :href="route('ativos.index')" :active="route().current('ativos.index')">
+							Ativos
+					</VResponsiveNavLink>
+					
 			</div>
 
 			<!-- Responsive Settings Options -->
