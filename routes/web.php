@@ -29,19 +29,20 @@ use App\Domain\Dashboard\Controllers\DashboardController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::prefix('operacoes')->group(function(){
+Route::middleware(['auth', 'verified'])->prefix('operacoes')->group(function(){
     Route::get('/', [OperacaoController::class, 'index'])->name('operacoes.index');
     Route::post('/store', [OperacaoController::class, 'store'])->name('operacoes.store');
     Route::put('/update', [OperacaoController::class, 'update'])->name('operacoes.update');
     Route::delete('{id}/destroy', [OperacaoController::class, 'destroy'])->name('operacoes.destroy');
 });
 
-Route::prefix('ativos')->group(function(){
+Route::middleware(['auth', 'verified'])->prefix('ativos')->group(function(){
     Route::get('/', [AtivoController::class, 'index'])->name('ativos.index');
     Route::get('/create', [AtivoController::class, 'create'])->name('ativos.create');
     Route::post('/store', [AtivoController::class, 'store'])->name('ativos.store');
-    // Route::put('/update', [AtivoController::class, 'update'])->name('ativos.update');
-    // Route::delete('{id}/destroy', [AtivoController::class, 'destroy'])->name('ativos.destroy');
+    Route::get('/{id}/edit', [AtivoController::class, 'edit'])->name('ativos.edit');
+    Route::put('/update', [AtivoController::class, 'update'])->name('ativos.update');
+    Route::delete('{id}/destroy', [AtivoController::class, 'destroy'])->name('ativos.destroy');
 });
 
 require __DIR__.'/auth.php';

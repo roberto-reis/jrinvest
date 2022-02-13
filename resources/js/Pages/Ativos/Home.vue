@@ -95,10 +95,10 @@
 									</td>									
 									<td class="py-1.5 px-4 text-sm font-medium whitespace-nowrap">
 										<div class="btn-group" role="group">
-											<button class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
+											<Link :href="route('ativos.edit', ativo.id)" class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
 												<i class="fas fa-edit"></i>
-											</button>
-											<button class="inline-block px-2.5 py-2 text-white bg-red-600 hover:bg-red-700 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
+											</Link>
+											<button @click="deleteOperacao(ativo.id)" class="inline-block px-2.5 py-2 text-white bg-red-600 hover:bg-red-700 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
 												<i class="fas fa-trash"></i>
 											</button>
 										</div>
@@ -114,6 +114,13 @@
 
 	<Pagination :data="ativos" />
 
+	<Alert v-if="flash.success && isVisibleAlert" class="absolute bottom-1 right-0 w-96 mr-2 bg-green-200 text-green-800 z-50 shadow-md border border-green-600">
+		{{ flash.success }}
+		<button type="button" @click="isVisibleAlert = false" class="-mx-1.5 -my-1.5 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 py-1 px-2 hover:bg-green-100 inline-flex justify-center">
+			X
+		</button>
+	</Alert>
+
 
   </Authenticated>
 </template>
@@ -124,13 +131,15 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import { formatDateBr, getUrlParamr } from '@/Helpers/helpers.js';
 import Pagination from '@/Components/Pagination.vue';
 import VButton from "@/Components/Button.vue";
+import Alert from "@/Components/Alert.vue";
 export default {
-    name: 'Home',
+  name: 'Home',
 	components: {
-        Authenticated,
+    Authenticated,
 		Head,
 		Link,
 		Pagination,
+		Alert,
 		VButton
     },
 	props: {
@@ -143,6 +152,7 @@ export default {
 		return {
 			perPage: '',
 			page: '',
+			isVisibleAlert: false,
 			params: {
 				field: this.filters.field,
 				direction: this.filters.direction,
@@ -158,6 +168,12 @@ export default {
 			this.params.direction = this.params.direction === 'asc' ? 'desc' : 'asc';
 			this.perPage = this.getUrlParamr('perPage');
 			this.page = this.getUrlParamr('page');
+		},
+		deleteOperacao(id) {
+			this.$inertia.delete(this.route('ativos.destroy', {id: id}), {
+				preserveState: true,
+				onBefore: () => confirm('Tem certeza que deseja excluir esta Operação?'),
+			});
 		},
 	},
 	watch: {

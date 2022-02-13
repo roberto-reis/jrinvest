@@ -15,10 +15,10 @@ class CreateAtivosTable extends Migration
     {
         Schema::create('ativos', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo', 20);
+            $table->string('codigo', 20)->unique();
             $table->foreignId('classe_ativo_id');
-            $table->string('descricao', 50);
-            $table->string('setor', 50);
+            $table->string('descricao', 50)->index();
+            $table->string('setor', 50)->index();
             $table->timestamps();
             $table->softDeletes();
 

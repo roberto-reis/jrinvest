@@ -4,9 +4,17 @@ namespace App\Domain\Ativo\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Ativo;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\ClasseAtivo;
+use Illuminate\Http\Request;
+use App\Domain\Ativo\DTO\AtivoDTO;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+use App\Domain\Ativo\Requests\AtivoRequest;
+use App\Domain\Ativo\Actions\CreateAtivoAction;
+use App\Domain\Ativo\Actions\DeleteAtivoAction;
+use App\Domain\Ativo\Actions\UpdateAtivoAction;
 
 class AtivoController extends Controller
 {
@@ -62,8 +70,59 @@ class AtivoController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AtivoRequest $AtivoRequest, CreateAtivoAction $createAtivoAction)
     {
-        dd($request->all());
+        $ativoDTO = AtivoDTO::fromRequest($AtivoRequest);
+
+        try {
+            $createAtivoAction($ativoDTO);
+            Session::flash('success', 'Ativo cadastrada com sucesso!');            
+        } catch (\Exception $e) {
+            Log::error('error ao savar ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('ativos.index');
+
+    }
+
+    public function edit($id)
+    {
+        $ativo = Ativo::find($id);
+        $classesAtivos = ClasseAtivo::get();
+
+        if (!$ativo) {
+            return Redirect::route('ativos.index');
+        }
+
+        return Inertia::render('Ativos/Edit', [
+            'ativo' => $ativo,
+            'classesAtivos' => $classesAtivos,
+        ]);
+    }
+
+    public function update(AtivoRequest $AtivoRequest, UpdateAtivoAction $updateAtivoAction)
+    {
+        $ativoDTO = AtivoDTO::fromRequest($AtivoRequest);
+
+        try {
+            $updateAtivoAction($ativoDTO, $AtivoRequest->id);
+            Session::flash('success', 'Ativo atualizada com sucesso!');            
+        } catch (\Exception $e) {
+            Log::error('error ao atualizar ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('ativos.index');
+    }
+
+    public function destroy(DeleteAtivoAction $deleteAtivoAction, $id)
+    {
+        try {
+            $deleteAtivoAction($id);
+            Session::flash('success', 'Ativo excluída com sucesso!');            
+        } catch (\Exception $e) {
+            Log::error('error ao excluir ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('ativos.index');
     }
 }

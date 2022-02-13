@@ -70,7 +70,7 @@ class OperacaoController extends Controller
             $actionCreateOperacao($operacaoDTO);
             Session::flash('success', 'Operação cadastrada com sucesso!');            
         } catch (\Exception $e) {
-            \Log::error('error ao savar operação: ', $e->getMessage());
+            \Log::error('error ao savar operação: ', [$e->getMessage()]);
         }
 
         return Redirect::route('operacoes.index');
@@ -87,7 +87,7 @@ class OperacaoController extends Controller
             Session::flash('success', 'Operação atualizada com sucesso!');
 
         } catch (\Exception $e) {
-            \Log::error('error ao atualizar operação: ', $e->getMessage());
+            \Log::error('error ao atualizar operação: ', [$e->getMessage()]);
         }
         return Redirect::route('operacoes.index');
     }
@@ -99,7 +99,7 @@ class OperacaoController extends Controller
             Session::flash('success', 'Operação excluída com sucesso!');
             return Redirect::route('operacoes.index');
         } catch (\Exception $e) {
-            \Log::error('error ao excluir operação: ', $e->getMessage());
+            \Log::error('error ao excluir operação: ', [$e->getMessage()]);
         }
     }
 
