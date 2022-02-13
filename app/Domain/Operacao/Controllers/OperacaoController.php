@@ -12,7 +12,6 @@ use App\Domain\Operacao\Requests\OperacaoRequest;
 use App\Domain\Operacao\Actions\CreateOperacaoAction;
 use App\Domain\Operacao\Actions\DeleteOperacaoAction;
 use App\Domain\Operacao\Actions\UpdateOperacaoAction;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Session;
 
 class OperacaoController extends Controller
@@ -71,7 +70,7 @@ class OperacaoController extends Controller
             $actionCreateOperacao($operacaoDTO);
             Session::flash('success', 'Operação cadastrada com sucesso!');            
         } catch (\Exception $e) {
-            \Log::error('error ao savar operação: ', $e->getMessage());
+            \Log::error('error ao savar operação: ', [$e->getMessage()]);
         }
 
         return Redirect::route('operacoes.index');
@@ -88,7 +87,7 @@ class OperacaoController extends Controller
             Session::flash('success', 'Operação atualizada com sucesso!');
 
         } catch (\Exception $e) {
-            \Log::error('error ao atualizar operação: ', $e->getMessage());
+            \Log::error('error ao atualizar operação: ', [$e->getMessage()]);
         }
         return Redirect::route('operacoes.index');
     }
@@ -100,7 +99,7 @@ class OperacaoController extends Controller
             Session::flash('success', 'Operação excluída com sucesso!');
             return Redirect::route('operacoes.index');
         } catch (\Exception $e) {
-            \Log::error('error ao excluir operação: ', $e->getMessage());
+            \Log::error('error ao excluir operação: ', [$e->getMessage()]);
         }
     }
 
