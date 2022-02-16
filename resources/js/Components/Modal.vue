@@ -9,7 +9,7 @@
                         <slot name="header" />
                     </h3>
                     <button class="p-1 leading-none" @click="closeModal()">
-                        <div class="text-xl font-semibold h-6 w-6 ">
+                        <div class="text-xl font-semibold h-6 w-6 hover:bg-red-200 hover:text-red-600 rounded">
                             <span>X</span>
                         </div>
                     </button>

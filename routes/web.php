@@ -50,7 +50,7 @@ Route::middleware(['auth', 'verified'])->prefix('classe_ativo')->group(function(
     Route::get('/', [ClasseAtivoController::class, 'index'])->name('classe_ativo.index');
     Route::post('/store', [ClasseAtivoController::class, 'store'])->name('classe_ativo.store');
     Route::put('/update', [ClasseAtivoController::class, 'update'])->name('classe_ativo.update');
-    // Route::delete('{id}/destroy', [ClasseAtivoController::class, 'destroy'])->name('classe_ativo.destroy');
+    Route::delete('{id}/destroy', [ClasseAtivoController::class, 'destroy'])->name('classe_ativo.destroy');
 });
 
 require __DIR__.'/auth.php';

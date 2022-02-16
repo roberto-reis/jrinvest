@@ -15,9 +15,6 @@
 						<Link :href="route('ativos.create')" class="px-3 py-2 text-white bg-green-600 hover:bg-green-700 focus:bg-green-700 leading-normal rounded font-semibold text-sm uppercase">
 							Novo Ativo
 						</Link>
-						<VButton class="ml-2 bg-green-600 hover:bg-green-700 focus:bg-green-700">
-							Nova Classe de Ativo
-						</VButton>
 					</div>
 					<form>
 						<div class="flex w-96">

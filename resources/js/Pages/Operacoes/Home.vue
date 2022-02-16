@@ -100,7 +100,7 @@
 										{{ operacao.codigo_ativo }}
 									</td>
 									<td class="py-2 px-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-										<span :class="operacao.tipo_operacao == 'compra' ? 'bg-green-500' :'bg-red-500'" class="text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold text-white rounded">
+										<span :class="operacao.tipo_operacao == 'compra' ? 'bg-green-100 text-green-800' :'bg-red-100 text-red-800'" class="text-xs font-semibold mr-2 px-2 py-0.5 rounded">
 											{{ operacao.tipo_operacao}}
 										</span>
 									</td>

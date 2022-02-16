@@ -2,7 +2,6 @@
 
 namespace App\Domain\ClasseAtivo\Controllers;
 
-use App\Domain\Ativo\Actions\UpdateAtivoAction;
 use Inertia\Inertia;
 use App\Models\ClasseAtivo;
 use Illuminate\Http\Request;
@@ -13,6 +12,8 @@ use Illuminate\Support\Facades\Redirect;
 use App\Domain\ClasseAtivo\DTO\ClasseAtivoDTO;
 use App\Domain\ClasseAtivo\Requests\ClasseAtivoRequest;
 use App\Domain\ClasseAtivo\Actions\CreateClasseAtivoAction;
+use App\Domain\ClasseAtivo\Actions\DeleteClasseAtivoAction;
+use App\Domain\ClasseAtivo\Actions\UpdateClasseAtivoAction;
 
 class ClasseAtivoController extends Controller
 {
@@ -69,15 +70,28 @@ class ClasseAtivoController extends Controller
         return Redirect::route('classe_ativo.index');        
     }
 
-    public function update(ClasseAtivoRequest $classeAtivoRequest, UpdateAtivoAction $updateAtivoAction)
+    public function update(ClasseAtivoRequest $classeAtivoRequest, UpdateClasseAtivoAction $updateclasseAtivoAction)
     {
         $classeAtivo = ClasseAtivoDTO::fromRequest($classeAtivoRequest);
 
         try {
-            $updateAtivoAction($classeAtivo, $classeAtivoRequest->id);
+            $updateclasseAtivoAction($classeAtivo, $classeAtivoRequest->id);
             Session::flash('success', 'Classe de Ativo atualizada com sucesso!');
         } catch (\Exception $e) {
             Log::error('error ao atualizar Classe de Ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('classe_ativo.index');
+    }
+
+    public function destroy(DeleteClasseAtivoAction $deleteClasseAtivoAction, $id)
+    {
+        try {
+            $deleteClasseAtivoAction($id);
+            Session::flash('success', 'Classe de Ativo excluída com sucesso!');
+        } catch (\Exception $e) {
+            Session::flash('error', $e->getMessage());
+            Log::error('error ao excluir Classe de Ativo: ', [$e->getMessage()]);
         }
 
         return Redirect::route('classe_ativo.index');

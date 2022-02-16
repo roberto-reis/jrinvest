@@ -15,25 +15,25 @@
 						<form class="flex" @submit.prevent="submitFormCreate()">
                             <div class="mr-2">
                                 <div class="relative z-0 w-full group">
-                                    <input v-model="form.nome" type="text" class="block rounded pt-4 pb-1 px-2 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                                    <input v-model="formCreate.nome" type="text" class="block rounded pt-4 pb-1 px-2 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                     <label for="floating_email" class="absolute text-sm text-gray-500 duration-300 transform scale-75 top-4 left-2 -z-10 origin-[0] peer-focus:left-1 peer-placeholder-shown:scale-100 -translate-y-4 peer-focus:-translate-y-4 peer-placeholder-shown:translate-y-0 peer-focus:scale-75">
                                         Classe de Ativo
                                     </label>
                                 </div>
-                                <span v-if="form.errors.nome" class="text-red-600">{{ form.errors.nome }}</span>
+                                <span v-if="formCreate.errors.nome" class="text-red-600">{{ formCreate.errors.nome }}</span>
                             </div>
                             <div class="mr-2 w-64">
                                 <div class="relative z-0 w-full group">
-                                    <input v-model="form.descricao" type="text" class="block rounded pt-4 pb-1 px-2 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                                    <input v-model="formCreate.descricao" type="text" class="block rounded pt-4 pb-1 px-2 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                                     <label for="floating_email" class="absolute text-sm text-gray-500 duration-300 transform scale-75 top-4 left-2 -z-10 origin-[0] peer-focus:left-1 peer-placeholder-shown:scale-100 -translate-y-4 peer-focus:-translate-y-4 peer-placeholder-shown:translate-y-0 peer-focus:scale-75">
                                         Descrição
                                     </label>
                                 </div>
-                                <span v-if="form.errors.descricao" class="text-red-600">{{ form.errors.descricao }}</span>
+                                <span v-if="formCreate.errors.descricao" class="text-red-600">{{ formCreate.errors.descricao }}</span>
                             </div>
                             <div>
                                 <VButton class="border-2 border-blue-500 bg-blue-500 hover:bg-blue-700 text-whited">
-                                    Salvar
+                                    Cadastrar
                                 </VButton>
                             </div>
                         </form>
@@ -96,9 +96,9 @@
 									</td>									
 									<td class="py-1.5 px-4 text-sm font-medium whitespace-nowrap">
 										<div class="btn-group" role="group">
-											<Link class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
+											<button @click="setClasseAtivoEdit(classe)" class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
 												<i class="fas fa-edit"></i>
-											</Link>
+											</button>
 											<button @click="deleteOperacao(classe.id)" class="inline-block px-2.5 py-2 text-white bg-red-600 hover:bg-red-700 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
 												<i class="fas fa-trash"></i>
 											</button>
@@ -113,12 +113,39 @@
 		</div>
 	</section>
 
-    <Alert v-if="isVisibleAlert" class="absolute bottom-1 right-0 w-96 mr-2 bg-green-200 text-green-800 z-50 shadow-md border border-green-600">
+	<Pagination :data="classesAtivos" />
+
+    <Alert v-if="isVisibleAlert" class="absolute top-16 right-0 w-96 mr-4 bg-green-200 text-green-800 z-50 shadow-md border border-green-600">
 		{{ flash.success }}
 		<button type="button" @click="isVisibleAlert = false" class="-mx-1.5 -my-1.5 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 py-1 px-2 hover:bg-green-100 inline-flex justify-center">
 			X
 		</button>
 	</Alert>
+
+	<ToastError />
+
+	<Modal :isVisible="modalVisible" @close="closeModal()">
+		<template #header>Editar Classe de Ativo</template>
+		<template #body>
+			<form class="flex flex-col">
+				<div class="mb-4">
+					<VLabel for="nome" value="Classe de Ativo:" />
+					<VInput id="nome" v-model="formUpdate.nome" type="text" class="mt-1 block w-full" required />
+					<span v-if="formUpdate.errors.nome" class="text-red-600">{{ formUpdate.errors.nome }}</span>
+				</div>
+				<div class="mb-4">
+					<VLabel for="descricao" value="Descrição:" />
+					<VInput id="descricao" v-model="formUpdate.descricao" type="text" class="mt-1 block w-full" required />
+					<span v-if="formUpdate.errors.descricao" class="text-red-600">{{ formUpdate.errors.descricao }}</span>
+				</div>	
+			</form>
+		</template>	
+		<template #footer>
+			<VButton @click="submitFormUpdate()" class="py-2 px-3 rounded bg-blue-500 hover:bg-blue-700 text-white ml-2">
+				Atualizar
+			</VButton>
+		</template>	
+	</Modal>
 
 
   </Authenticated>
@@ -128,10 +155,13 @@
 import Authenticated from '@/Layouts/Authenticated.vue';
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import { formatDateBr, getUrlParamr } from '@/Helpers/helpers.js';
+import Pagination from '@/Components/Pagination.vue';
+import Modal from "@/Components/Modal.vue";
 import VButton from "@/Components/Button.vue";
 import VLabel from "@/Components/Label.vue";
 import VInput from "@/Components/Input.vue";
 import Alert from "@/Components/Alert.vue";
+import ToastError from "@/Components/ToastError.vue";
 export default {
     name: 'Home',
 	components: {
@@ -141,7 +171,10 @@ export default {
         VButton,
         VLabel,
         VInput,
-        Alert
+        Alert,
+		Modal,
+		Pagination,
+		ToastError
     },
 	props: {
         classesAtivos: Object,
@@ -153,13 +186,20 @@ export default {
 		return {
 			perPage: '',
 			page: '',
+			btnForm: 'salvar',
 			isVisibleAlert: false,
+			modalVisible: false,
 			params: {
 				field: this.filters.field,
 				direction: this.filters.direction,
 				search: this.filters.search,
 			},
-            form: this.$inertia.form({
+            formCreate: this.$inertia.form({
+                nome: "",
+                descricao: "",
+            }),
+			formUpdate: this.$inertia.form({
+				id: '',
                 nome: "",
                 descricao: "",
             }),
@@ -174,10 +214,18 @@ export default {
 			this.perPage = this.getUrlParamr('perPage');
 			this.page = this.getUrlParamr('page');
 		},
+		setClasseAtivoEdit(classAtivo) {
+			// Prepara o formulário para edição
+			this.formUpdate.id = classAtivo.id;
+			this.formUpdate.nome = classAtivo.nome;
+			this.formUpdate.descricao = classAtivo.descricao;
+			// Abre o modal
+			this.modalVisible = true;
+		},
         submitFormCreate() {
-            this.form.post(route('classe_ativo.store'), {
+            this.formCreate.post(route('classe_ativo.store'), {
                 onSuccess: () => {
-					this.form.reset();
+					this.formCreate.reset();
 					this.isVisibleAlert = true;
 				},
             });
@@ -186,7 +234,15 @@ export default {
 			}, 3000)
         },
         submitFormUpdate() {
-            this.form.put(route('classe_ativo.update'));
+            this.formUpdate.put(route('classe_ativo.update'), {
+				onSuccess: () => { 
+					this.isVisibleAlert = true;
+					this.modalVisible = false;
+				}
+			});
+			setTimeout(()=> {
+				this.isVisibleAlert = false
+			}, 3000)
         },
 		deleteOperacao(id) {
 			this.$inertia.delete(this.route('classe_ativo.destroy', {id: id}), {
@@ -194,6 +250,16 @@ export default {
 				onBefore: () => confirm('Tem certeza que deseja excluir esta Operação?'),
 			});
 		},
+		closeModal() {
+			this.formUpdate.reset();
+			this.formUpdate.clearErrors();
+			this.modalVisible = false;
+		},
+	},
+	computed: {
+		msgError() {
+			return this.flash.error;
+		}
 	},
 	watch: {
 		params: {
@@ -203,6 +269,7 @@ export default {
 			},
 			deep: true,
 		},
+
 	},
 
 }

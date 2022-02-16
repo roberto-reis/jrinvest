@@ -16,7 +16,7 @@ class UpdateClasseAtivoAction
         }
 
         $classeAtivo->nome = $classeAtivoDTO->nome;
-        $classeAtivo->decricao = $classeAtivoDTO->decricao;
+        $classeAtivo->descricao = $classeAtivoDTO->descricao;
         $classeAtivo->save();
         
         return $classeAtivo;
