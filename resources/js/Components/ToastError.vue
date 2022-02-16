@@ -29,9 +29,9 @@ export default {
             handler() {
                 this.isVisibleToast = Object.keys(this.errors ?? '').length > 0;
 
-                // if (this.timeout) {
-                //     clearTimeout(this.timeout);
-                // }
+                if (this.timeout) {
+                    clearTimeout(this.timeout);
+                }
 
                 this.timeout = setTimeout(() => {
                     this.isVisibleToast = false;
