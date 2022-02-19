@@ -120,6 +120,7 @@ class AtivoController extends Controller
             $deleteAtivoAction($id);
             Session::flash('success', 'Ativo excluída com sucesso!');            
         } catch (\Exception $e) {
+            Session::flash('error', $e->getMessage());
             Log::error('error ao excluir ativo: ', [$e->getMessage()]);
         }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Domain\Ativo\Controllers\AtivoController;
+use App\Domain\ClasseAtivo\Controllers\ClasseAtivoController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -43,6 +44,13 @@ Route::middleware(['auth', 'verified'])->prefix('ativos')->group(function(){
     Route::get('/{id}/edit', [AtivoController::class, 'edit'])->name('ativos.edit');
     Route::put('/update', [AtivoController::class, 'update'])->name('ativos.update');
     Route::delete('{id}/destroy', [AtivoController::class, 'destroy'])->name('ativos.destroy');
+});
+
+Route::middleware(['auth', 'verified'])->prefix('classe_ativo')->group(function(){
+    Route::get('/', [ClasseAtivoController::class, 'index'])->name('classe_ativo.index');
+    Route::post('/store', [ClasseAtivoController::class, 'store'])->name('classe_ativo.store');
+    Route::put('/update', [ClasseAtivoController::class, 'update'])->name('classe_ativo.update');
+    Route::delete('{id}/destroy', [ClasseAtivoController::class, 'destroy'])->name('classe_ativo.destroy');
 });
 
 require __DIR__.'/auth.php';
