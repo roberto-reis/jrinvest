@@ -143,9 +143,6 @@
 
 		<Pagination :data="operacoes" />
 
-		<Alert v-if="alertVisible" class="absolute bottom-1 right-0 w-96 mr-2 bg-green-200 text-green-800 z-50 shadow-md border border-green-600">
-			{{ flash.success }}
-		</Alert>
 		<Modal :isVisible="modalVisible" @close="closeModal()">
 			<template #header>{{ titleModal }}</template>
 			<template #body>
@@ -197,7 +194,7 @@
 			</template>	
 		</Modal>
 
-		
+		<ToastSuccess />
 
   </Authenticated>
 </template>
@@ -208,7 +205,7 @@ import VButton from "@/Components/Button.vue";
 import Modal from "@/Components/Modal.vue";
 import VLabel from "@/Components/Label.vue";
 import VInput from "@/Components/Input.vue";
-import Alert from "@/Components/Alert.vue";
+import ToastSuccess from "@/Components/ToastSuccess.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { formatMoneyBr, formatDateBr, getUrlParamr } from '@/Helpers/helpers.js';
 import Pagination from '@/Components/Pagination.vue';
@@ -222,7 +219,7 @@ export default {
 		Pagination,
 		VLabel,
 		VInput,
-		Alert,
+		ToastSuccess
 	},
 	props: {
 		operacoes: Object,
@@ -238,7 +235,6 @@ export default {
 			titleModal: 'Novo Aporte',
 			btnModal: '',
 			modalVisible: false,
-			alertVisible: false,
 			params: {
 				field: this.filters.field,
 				direction: this.filters.direction,
@@ -284,12 +280,8 @@ export default {
 			this.form.post(route('operacoes.store'), {
 				onSuccess: () => {
 					this.form.reset();
-					this.alertVisible = true;
 				},
 			});
-			setTimeout(()=> {
-				this.alertVisible = false
-			}, 3000)
 		},
 		submitFormUpdate() {
 			this.form.put(this.route('operacoes.update'), { 
@@ -297,12 +289,8 @@ export default {
 				onSuccess: () => {
 					this.form.reset();
 					this.modalVisible = false;
-					this.alertVisible = true;
 				},
 			});
-			setTimeout(()=> {
-				this.alertVisible = false
-			}, 3000);
 		},
 		deleteOperacao(operacao) {
 			this.$inertia.delete(this.route('operacoes.destroy', {id: operacao.id}), {

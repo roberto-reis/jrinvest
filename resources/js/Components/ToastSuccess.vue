@@ -1,7 +1,7 @@
 <template>
     <transition name="slide-fade">
-        <div v-if="isVisibleToast" class="absolute top-16 right-0 w-96 mr-4 bg-red-200 text-red-800 z-50 shadow-md rounded-lg py-3 px-4 mb-3 text-base inline-flex justify-between items-center">
-            {{ errors }}
+        <div v-if="isVisibleToast" class="absolute top-16 right-0 w-96 mr-4 bg-green-200 text-green-800 z-50 shadow-md rounded-lg py-3 px-4 mb-3 text-base inline-flex justify-between items-center">
+            {{ success }}
             <button type="button" @click="isVisibleToast = false" class="-mr-2 px-1.5 py-1 leading-none text-xl font-semibold hover:bg-red-300 hover:text-red-600 rounded">
                 X
             </button>
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    name: 'ToastError',
+    name: 'ToastSuccess',
     data() {
         return {
             isVisibleToast: false,
@@ -19,21 +19,21 @@ export default {
         };
     },
     computed: {
-        errors() {
-            return this.$page.props.flash.error;
+        success() {
+            return this.$page.props.flash.success;
         },
     },
     created() {
-        this.isVisibleToast = Object.keys(this.errors ?? '').length > 0;
+        this.isVisibleToast = Object.keys(this.success ?? '').length > 0;
         setTimeout(() => {
             this.isVisibleToast = false;
         }, 3000);
     },
     watch: {
-        errors: {
+        success: {
             deep: true,
             handler() {
-                this.isVisibleToast = Object.keys(this.errors ?? '').length > 0;
+                this.isVisibleToast = Object.keys(this.success ?? '').length > 0;
                 if (this.timeout) {
                     clearTimeout(this.timeout);
                 }

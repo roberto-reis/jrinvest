@@ -115,14 +115,8 @@
 
 	<Pagination :data="classesAtivos" />
 
-    <Alert v-if="isVisibleAlert" class="absolute top-16 right-0 w-96 mr-4 bg-green-200 text-green-800 z-50 shadow-md border border-green-600">
-		{{ flash.success }}
-		<button type="button" @click="isVisibleAlert = false" class="-mx-1.5 -my-1.5 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 py-1 px-2 hover:bg-green-100 inline-flex justify-center">
-			X
-		</button>
-	</Alert>
-
 	<ToastError />
+	<ToastSuccess />
 
 	<Modal :isVisible="modalVisible" @close="closeModal()">
 		<template #header>Editar Classe de Ativo</template>
@@ -160,8 +154,8 @@ import Modal from "@/Components/Modal.vue";
 import VButton from "@/Components/Button.vue";
 import VLabel from "@/Components/Label.vue";
 import VInput from "@/Components/Input.vue";
-import Alert from "@/Components/Alert.vue";
 import ToastError from "@/Components/ToastError.vue";
+import ToastSuccess from "@/Components/ToastSuccess.vue";
 export default {
     name: 'Home',
 	components: {
@@ -171,10 +165,10 @@ export default {
         VButton,
         VLabel,
         VInput,
-        Alert,
 		Modal,
 		Pagination,
-		ToastError
+		ToastError,
+		ToastSuccess
     },
 	props: {
         classesAtivos: Object,
@@ -187,7 +181,6 @@ export default {
 			perPage: '',
 			page: '',
 			btnForm: 'salvar',
-			isVisibleAlert: false,
 			modalVisible: false,
 			params: {
 				field: this.filters.field,
@@ -226,23 +219,15 @@ export default {
             this.formCreate.post(route('classe_ativo.store'), {
                 onSuccess: () => {
 					this.formCreate.reset();
-					this.isVisibleAlert = true;
 				},
             });
-            setTimeout(()=> {
-				this.isVisibleAlert = false
-			}, 3000)
         },
         submitFormUpdate() {
             this.formUpdate.put(route('classe_ativo.update'), {
 				onSuccess: () => { 
-					this.isVisibleAlert = true;
 					this.modalVisible = false;
 				}
 			});
-			setTimeout(()=> {
-				this.isVisibleAlert = false
-			}, 3000)
         },
 		deleteOperacao(id) {
 			this.$inertia.delete(this.route('classe_ativo.destroy', {id: id}), {

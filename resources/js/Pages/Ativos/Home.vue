@@ -111,13 +111,9 @@
 
 	<Pagination :data="ativos" />
 
-	<Alert v-if="flash.success && isVisibleAlert" class="absolute bottom-1 right-0 w-96 mr-2 bg-green-200 text-green-800 z-50 shadow-md border border-green-600">
-		{{ flash.success }}
-		<button type="button" @click="isVisibleAlert = false" class="-mx-1.5 -my-1.5 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 py-1 px-2 hover:bg-green-100 inline-flex justify-center">
-			X
-		</button>
-	</Alert>
-
+	<!-- Notificações -->
+	<ToastError :menssagem="flash.error" />
+	<ToastSuccess :menssagem="flash.success" />
 
   </Authenticated>
 </template>
@@ -129,6 +125,9 @@ import { formatDateBr, getUrlParamr } from '@/Helpers/helpers.js';
 import Pagination from '@/Components/Pagination.vue';
 import VButton from "@/Components/Button.vue";
 import Alert from "@/Components/Alert.vue";
+import ToastError from "@/Components/ToastError.vue";
+import ToastSuccess from "@/Components/ToastSuccess.vue";
+
 export default {
   name: 'Home',
 	components: {
@@ -137,7 +136,9 @@ export default {
 		Link,
 		Pagination,
 		Alert,
-		VButton
+		VButton,
+		ToastError,
+		ToastSuccess
     },
 	props: {
 		ativos: Object,
@@ -149,7 +150,7 @@ export default {
 		return {
 			perPage: '',
 			page: '',
-			isVisibleAlert: false,
+			isVisibleAlert: Object.keys(this.flash.success ?? '').length > 0,
 			params: {
 				field: this.filters.field,
 				direction: this.filters.direction,
