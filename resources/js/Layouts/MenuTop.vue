@@ -7,31 +7,34 @@
 					<!-- Logo -->
 					<div class="shrink-0 flex items-center">
 						<Link :href="route('dashboard')">
-								<VApplicationLogo class="block h-9 w-auto" />
+								<ApplicationLogo class="block h-9 w-auto" />
 						</Link>
 					</div>
 
 					<!-- Navigation Links -->
 					<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-						<VNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+						<NavLink :href="route('dashboard')" :active="route().current('dashboard')">
 							Dashboard
-						</VNavLink>
-						<VNavLink :href="route('operacoes.index')" :active="route().current('operacoes.index')">
+						</NavLink>
+						<NavLink :href="route('operacoes.index')" :active="route().current('operacoes.index')">
 							Operações
-						</VNavLink>
-						<VNavLink :href="route('ativos.index')" :active="route().current('ativos.index')">
+						</NavLink>
+						<NavLink :href="route('ativos.index')" :active="route().current('ativos.index')">
 							Ativos
-						</VNavLink>
-						<VNavLink :href="route('classe_ativo.index')" :active="route().current('classe_ativo.index')">
+						</NavLink>
+						<NavLink :href="route('classe_ativo.index')" :active="route().current('classe_ativo.index')">
 							Classe de Ativo
-						</VNavLink>
+						</NavLink>
+						<NavLink :href="route('rebalanceamento.index')" :active="route().current('rebalanceamento.index')">
+							Rebalanceamento
+						</NavLink>
 					</div>
 				</div>
 
 				<div class="hidden sm:flex sm:items-center sm:ml-6">
 					<!-- Settings Dropdown -->
 					<div class="ml-3 relative">
-						<VDropdown align="right" width="48">
+						<Dropdown align="right" width="48">
 							<template #trigger>
 								<span class="inline-flex rounded-md">
 									<button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -43,11 +46,11 @@
 								</span>
 							</template>
 							<template #content>
-									<VDropdownLink :href="route('logout')" method="post" as="button">
+									<DropdownLink :href="route('logout')" method="post" as="button">
 										Sair
-									</VDropdownLink>
+									</DropdownLink>
 							</template>
-						</VDropdown>
+						</Dropdown>
 					</div>
 				</div>
 
@@ -66,18 +69,21 @@
 		<!-- Responsive Navigation Menu -->
 		<div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
 			<div class="pt-2 pb-3 space-y-1">
-					<VResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+					<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
 						Dashboard
-					</VResponsiveNavLink>
-					<VResponsiveNavLink :href="route('operacoes.index')" :active="route().current('operacoes.index')">
+					</ResponsiveNavLink>
+					<ResponsiveNavLink :href="route('operacoes.index')" :active="route().current('operacoes.index')">
 						Operações
-					</VResponsiveNavLink>
-					<VResponsiveNavLink :href="route('ativos.index')" :active="route().current('ativos.index')">
+					</ResponsiveNavLink>
+					<ResponsiveNavLink :href="route('ativos.index')" :active="route().current('ativos.index')">
 						Ativos
-					</VResponsiveNavLink>
-					<VResponsiveNavLink :href="route('classe_ativo.index')" :active="route().current('classe_ativo.index')">
+					</ResponsiveNavLink>
+					<ResponsiveNavLink :href="route('classe_ativo.index')" :active="route().current('classe_ativo.index')">
 						Classe de Ativo
-					</VResponsiveNavLink>
+					</ResponsiveNavLink>
+					<ResponsiveNavLink :href="route('rebalanceamento.index')" :active="route().current('rebalanceamento.index')">
+						Rebalanceamento
+					</ResponsiveNavLink>
 					
 			</div>
 
@@ -89,9 +95,9 @@
 					</div>
 
 					<div class="mt-3 space-y-1">
-						<VResponsiveNavLink :href="route('logout')" method="post" as="button">
-							Log Out
-						</VResponsiveNavLink>
+						<ResponsiveNavLink :href="route('logout')" method="post" as="button">
+							Sair
+						</ResponsiveNavLink>
 					</div>
 			</div>
 		</div>
@@ -99,20 +105,20 @@
 </template>
 
 <script>
-import VApplicationLogo from '@/Components/ApplicationLogo.vue'
-import VDropdown from '@/Components/Dropdown.vue'
-import VDropdownLink from '@/Components/DropdownLink.vue'
-import VNavLink from '@/Components/NavLink.vue'
-import VResponsiveNavLink from '@/Components/ResponsiveNavLink.vue'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import Dropdown from '@/Components/Dropdown.vue'
+import DropdownLink from '@/Components/DropdownLink.vue'
+import NavLink from '@/Components/NavLink.vue'
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue'
 import { Link } from '@inertiajs/inertia-vue3';
 export default {
 	name: 'MenuTop',
 	components: {
-		VApplicationLogo,
-		VDropdown,
-		VDropdownLink,
-		VNavLink,
-		VResponsiveNavLink,
+		ApplicationLogo,
+		Dropdown,
+		DropdownLink,
+		NavLink,
+		ResponsiveNavLink,
 		Link
 	},
 	data() {

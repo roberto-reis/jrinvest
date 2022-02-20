@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Domain\Operacao\Controllers\OperacaoController;
 use App\Domain\Dashboard\Controllers\DashboardController;
+use App\Domain\Rebalanceamento\Controllers\RebalanceamentoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,13 @@ Route::middleware(['auth', 'verified'])->prefix('classe_ativo')->group(function(
     Route::post('/store', [ClasseAtivoController::class, 'store'])->name('classe_ativo.store');
     Route::put('/update', [ClasseAtivoController::class, 'update'])->name('classe_ativo.update');
     Route::delete('{id}/destroy', [ClasseAtivoController::class, 'destroy'])->name('classe_ativo.destroy');
+});
+
+Route::middleware(['auth', 'verified'])->prefix('rebalanceamento')->group(function(){
+    Route::get('/', [RebalanceamentoController::class, 'index'])->name('rebalanceamento.index');
+    // Route::post('/store', [RebalanceamentoController::class, 'store'])->name('classe_ativo.store');
+    // Route::put('/update', [RebalanceamentoController::class, 'update'])->name('classe_ativo.update');
+    // Route::delete('{id}/destroy', [RebalanceamentoController::class, 'destroy'])->name('classe_ativo.destroy');
 });
 
 require __DIR__.'/auth.php';

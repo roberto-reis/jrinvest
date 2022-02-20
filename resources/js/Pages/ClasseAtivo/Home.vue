@@ -58,43 +58,43 @@
 				<div class="inline-block min-w-full align-middle">
 					<div class="overflow-hidden ">
 						<table class="min-w-full divide-y divide-gray-200 table-fixed">
-							<thead class="bg-gray-200 uppercase">
+							<thead class="bg-gray-200 uppercase text-xs text-gray-600 font-semibold text-left">
 								<tr>
-									<th scope="col" @click="sort('nome')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" @click="sort('nome')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Classe de Ativo
 										<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('descricao')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" @click="sort('descricao')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Descrição
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('created_at')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" @click="sort('created_at')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Data
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" class="p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" class="p-3 tracking-wider">
 										Ações
 									</th>
 								</tr>
 							</thead>
-							<tbody class="bg-white divide-y divide-gray-200">
+							<tbody class="bg-white divide-y divide-gray-200 text-sm font-medium text-gray-500">
 								<tr v-for="classe in classesAtivos.data" :key="classe.id" class="hover:bg-gray-100">
-									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+									<td class="py-2 px-4 whitespace-nowrap">
 										{{ classe.nome }}
 									</td>
-									<td class="py-2 px-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+									<td class="py-2 px-4 whitespace-nowrap">
 										{{ classe.descricao }}
 									</td>	
-									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+									<td class="py-2 px-4 whitespace-nowrap">
 										{{ formatDateBr(classe.created_at) }}
 									</td>									
-									<td class="py-1.5 px-4 text-sm font-medium whitespace-nowrap">
+									<td class="py-1.5 px-4 whitespace-nowrap">
 										<div class="btn-group" role="group">
 											<button @click="setClasseAtivoEdit(classe)" class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
 												<i class="fas fa-edit"></i>

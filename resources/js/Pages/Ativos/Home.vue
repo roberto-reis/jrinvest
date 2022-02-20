@@ -36,39 +36,39 @@
 				<div class="inline-block min-w-full align-middle">
 					<div class="overflow-hidden ">
 						<table class="min-w-full divide-y divide-gray-200 table-fixed">
-							<thead class="bg-gray-200 uppercase">
+							<thead class="bg-gray-200 uppercase text-gray-600 text-xs font-semibold text-left">
 								<tr>
-									<th scope="col" @click="sort('codigo')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" @click="sort('codigo')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Ativo
 										<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('classe_ativo')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" @click="sort('classe_ativo')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Classe Ativo
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('descricao')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" @click="sort('descricao')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Descrição
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('setor')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" @click="sort('setor')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Setor/Segmento
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('created_at')" class="cursor-pointer p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" @click="sort('created_at')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Data
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" class="p-3 text-xs font-medium tracking-wider text-left text-gray-700">
+									<th scope="col" class="p-3 tracking-wider">
 										Ações
 									</th>
 								</tr>
@@ -90,7 +90,7 @@
 									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
 										{{ formatDateBr(ativo.created_at) }}
 									</td>									
-									<td class="py-1.5 px-4 text-sm font-medium whitespace-nowrap">
+									<td class="py-2 px-4 text-sm font-medium whitespace-nowrap">
 										<div class="btn-group" role="group">
 											<Link :href="route('ativos.edit', ativo.id)" class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
 												<i class="fas fa-edit"></i>
