@@ -15,9 +15,9 @@ class CreateCotacoesTable extends Migration
     {
         Schema::create('cotacoes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ativo_id');
+            $table->foreignId('ativo_id')->index();
             $table->char('moeda_ref', 2);
-            $table->double('preco', 15, 8);
+            $table->double('preco', 15, 8)->index();
             $table->timestamps();
             $table->softDeletes();
 

@@ -15,11 +15,11 @@ class CreateOperacoesTable extends Migration
     {
         Schema::create('operacoes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('ativo_id');
+            $table->foreignId('user_id')->index();
+            $table->foreignId('ativo_id')->index();
             $table->string('tipo_operacao', 20);
             $table->string('quantidade', 50);
-            $table->string('cotacao_preco', 50);
+            $table->string('cotacao_preco', 50)->index();
             $table->string('corretora', 50);
             $table->timestamps();
             $table->softDeletes();

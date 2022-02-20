@@ -58,7 +58,7 @@
                                 <div class="flex flex-col">
                                     <div class="overflow-x-auto shadow-md sm:rounded-lg">
                                         <div class="overflow-hidden inline-block min-w-full align-middle">
-                                            <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+                                            <table class="min-w-full divide-y divide-gray-400 table-fixed">
                                                 <thead class="bg-gray-300 text-gray-600 text-xs font-semibold">
                                                     <tr>
                                                         <th scope="col" class="p-3 tracking-wider text-left uppercase">
@@ -128,7 +128,7 @@
                                 <div class="flex flex-col">
                                     <div class="overflow-x-auto shadow-md sm:rounded-lg">
                                         <div class="overflow-hidden inline-block min-w-full align-middle">
-                                            <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+                                            <table class="min-w-full divide-y divide-gray-400 table-fixed">
                                                 <thead class="bg-gray-300 text-gray-600 text-xs font-semibold">
                                                     <tr>
                                                         <th scope="col" class="p-3 tracking-wider text-left uppercase">
@@ -184,6 +184,10 @@ import { Head } from "@inertiajs/inertia-vue3";
 
 export default {
   name: 'Rebalanceamento',
+  props: {
+    ativoRebalanceamentos: Object,
+    classeRebalanceamentos: Object,
+  },
   components: {
     Authenticated,
     Head,

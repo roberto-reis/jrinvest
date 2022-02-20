@@ -15,7 +15,7 @@ class CreateClassesAtivosTable extends Migration
     {
         Schema::create('classes_ativos', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 20);
+            $table->string('nome', 20)->unique()->index();
             $table->string('descricao', 50);
             $table->timestamps();
             $table->softDeletes();

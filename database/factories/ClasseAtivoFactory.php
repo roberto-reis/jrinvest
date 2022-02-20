@@ -14,7 +14,7 @@ class ClasseAtivoFactory extends Factory
     public function definition()
     {
         return [
-            'nome' => $this->faker->word(),
+            'nome' => $this->faker->unique()->word(),
             'descricao' => $this->faker->text(30),
         ];
     }
