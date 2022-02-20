@@ -12,31 +12,30 @@
         <div class="bg-white overflow-hidden shadow-md rounded">
             <div class="p-3 bg-white border-b border-gray-200 flex">
                 <div class="w-full max-w-4xl">
-                    <div class="mb-4 border-b border-gray-200">
-                        <ul class="flex flex-wrap" id="myTab" data-tabs-toggle="#rebalanceamento" role="tablist">
-                            <li class="mr-2" role="presentation">
-                                <button type="button" id="btn_classe_ativo" data-tabs-target="#tab_classe_ativo" aria-controls="profile" aria-selected="true" role="tab" 
-                                    class="active inline-block py-3 px-4 text-sm font-medium text-center text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-100 hover:border-blue-600 hover:text-blue-600">
-                                    Classe de Ativo
-                                </button>
-                            </li>
-                            <li class="mr-2" role="presentation">
-                                <button type="button" id="btn_ativo" data-tabs-target="#tab_ativo" aria-controls="dashboard" aria-selected="false" role="tab" 
-                                    class="inline-block py-3 px-4 text-sm font-medium text-center text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-blue-400">
-                                    Ativo
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div id="rebalanceamento">
+
+                    <ul class="nav nav-tabs flex flex-col md:flex-row flex-wrap list-none border-b border-gray-200 pl-0 mb-4" id="tabs-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a href="#tab_classe_ativo" class="nav-link active block font-semibold text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 hover:border-transparent hover:bg-gray-100 focus:border-transparent"
+                                id="tabs-classe-ativo" data-bs-toggle="pill" data-bs-target="#tab_classe_ativo" role="tab" aria-controls="tab_classe_ativo" aria-selected="true">
+                                Classe de Ativo
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="#tab_ativo" class="nav-link block font-semibold text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 hover:border-transparent hover:bg-gray-100 focus:border-transparent" 
+                                id="tabs-ativo" data-bs-toggle="pill" data-bs-target="#tab_ativo" role="tab" aria-controls="tab_ativo" aria-selected="false">
+                                Ativo
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="tabs-tabContent">
                         <!-- TAB REBALANCEAMENTO POR CLASSE DE ATIVO -->
-                        <div id="tab_classe_ativo" role="tabpanel" aria-labelledby="tab-classe-ativo">
-                            <div class="mb-1 text-gray-700 text-lg font-semibold">
-                                <h2>
+                        <div class="tab-pane fade show active" id="tab_classe_ativo" role="tabpanel" aria-labelledby="tabs-classe-ativo">
+                            <div class="mb-1">
+                                <h2 class="text-gray-700 text-lg font-semibold">
                                     Selecione uma classe de um ativo e porcentagem(%) Meta/Objetivo
                                 </h2>
                             </div>
+
                             <div class="p-3 bg-gray-100 rounded-lg">
                                 <form>
                                     <div class="flex flex-col sm:flex-row">
@@ -96,10 +95,12 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <!-- TAB REBALANCEAMENTO POR ATIVO -->
-                        <div id="tab_ativo" class="hidden" role="tabpanel" aria-labelledby="tab-ativo">
+                        <div class="tab-pane fade" id="tab_ativo" role="tabpanel" aria-labelledby="tabs-ativo">
+
                             <div class="mb-1 text-gray-700 text-lg font-semibold">
                                 <h2>
                                     Selecione um ativo e porcentagem(%) Meta/Objetivo
@@ -164,10 +165,11 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                </div>
-                
+
+                </div>                
             </div>
         </div>
     </section>
