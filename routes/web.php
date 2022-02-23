@@ -4,7 +4,6 @@ use App\Domain\Ativo\Controllers\AtivoController;
 use App\Domain\ClasseAtivo\Controllers\ClasseAtivoController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
 use App\Domain\Operacao\Controllers\OperacaoController;
 use App\Domain\Dashboard\Controllers\DashboardController;
 use App\Domain\Rebalanceamento\Controllers\RebalanceamentoController;
@@ -56,7 +55,8 @@ Route::middleware(['auth', 'verified'])->prefix('classe_ativo')->group(function(
 
 Route::middleware(['auth', 'verified'])->prefix('rebalanceamento')->group(function(){
     Route::get('/', [RebalanceamentoController::class, 'index'])->name('rebalanceamento.index');
-    // Route::post('/store', [RebalanceamentoController::class, 'store'])->name('classe_ativo.store');
+    Route::post('classe/store', [RebalanceamentoController::class, 'porcentagemClasseStore'])->name('rebalanceamento.porcentagemClasseStore');
+    Route::post('ativo/store', [RebalanceamentoController::class, 'AtivoStore'])->name('rebalanceamento.ativoStore');
     // Route::put('/update', [RebalanceamentoController::class, 'update'])->name('classe_ativo.update');
     // Route::delete('{id}/destroy', [RebalanceamentoController::class, 'destroy'])->name('classe_ativo.destroy');
 });

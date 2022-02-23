@@ -44,4 +44,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function operacoes()
+    {
+        return $this->hasMany(Operacao::class, 'user_id', 'id');
+    }
+
+    public function rebalanceamentoClasses()
+    {
+        return $this->hasMany(RebalanceamentoClasse::class, 'user_id', 'id');
+    }
+
+    public function rebalanceamentoAtivos()
+    {
+        return $this->hasMany(RebalanceamentoAtivo::class, 'user_id', 'id');
+    }
 }

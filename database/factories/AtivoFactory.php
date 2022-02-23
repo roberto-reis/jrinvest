@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\ClasseAtivo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AtivoFactory extends Factory
@@ -15,10 +14,10 @@ class AtivoFactory extends Factory
     public function definition()
     {
         return [
-            'codigo'=>$this->faker->unique()->currencyCode(),
+            'codigo' => $this->faker->userName(),
             // 'classe_ativo_id'=> ClasseAtivo::factory()->create()->id,
-            'descricao'=>$this->faker->text(50),
-            'setor'=>$this->faker->text(30)
+            'descricao' => $this->faker->text(50),
+            'setor' => $this->faker->text(30)
         ];
     }
 }
