@@ -4,7 +4,7 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 import '@fortawesome/fontawesome-free/js/all.js';
-import 'flowbite';
+import 'tw-elements';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 

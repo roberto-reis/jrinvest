@@ -20,4 +20,5 @@ class ClasseAtivo extends Model
     {
         return $this->hasMany(Ativo::class, 'classe_ativo_id', 'id');
     }
+
 }
