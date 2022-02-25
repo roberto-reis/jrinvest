@@ -14,12 +14,13 @@ class CreateRebalanceamentoClassesTable extends Migration
     public function up()
     {
         Schema::create('rebalanceamento_classes', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id');
             $table->foreignId('classe_ativo_id');
             $table->decimal('porcentagem', 10, 2);
             $table->timestamps();
             $table->softDeletes();
-            $table->primary(['user_id', 'classe_ativo_id']);
+            $table->unique(['user_id', 'classe_ativo_id']);
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('classe_ativo_id')->references('id')->on('classes_ativos');

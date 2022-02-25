@@ -12,8 +12,7 @@ class RebalanceamentoClasse extends Model
     // use HasCompositePrimaryKeyTrait;
 
     protected $table = 'rebalanceamento_classes';
-    protected $primaryKey = ['user_id', 'classe_ativo_id'];
-    public $incrementing = false;
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'user_id',

@@ -13,7 +13,9 @@ use App\Models\RebalanceamentoClasse;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Domain\Rebalanceamento\DTO\RebalanceamentoClasseDTO;
-use App\Domain\Rebalanceamento\Actions\CreateRebalanceamentoClasse;
+use App\Domain\Rebalanceamento\Actions\CreateRebalanceamentoClasseAction;
+use App\Domain\Rebalanceamento\Actions\DeleteRebalanceamentoClasseAction;
+use App\Domain\Rebalanceamento\Actions\UpdateRebalanceamentoClasseAction;
 use App\Domain\Rebalanceamento\Requests\RebalanceamentoClasseRequest;
 
 class RebalanceamentoController extends Controller
@@ -21,11 +23,15 @@ class RebalanceamentoController extends Controller
     public function index()
     {
 
-        $ativos = Ativo::get();
-        $classeAtivos = ClasseAtivo::get();
+        $ativos = Ativo::orderBy('codigo', 'ASC')->get();
+        $classeAtivos = ClasseAtivo::orderBy('nome', 'ASC')->get();
 
-        $classeRebalanceamentos = RebalanceamentoClasse::with('classeAtivo')->where('user_id', auth()->user()->id)->get();
-        $ativoRebalanceamentos = RebalanceamentoAtivo::with('ativo')->where('user_id', auth()->user()->id)->get();
+        $classeRebalanceamentos = RebalanceamentoClasse::with('classeAtivo')->where('user_id', auth()->user()->id)
+            ->orderBy('id', 'DESC')
+            ->get();
+        $ativoRebalanceamentos = RebalanceamentoAtivo::with('ativo')->where('user_id', auth()->user()->id)
+            ->orderBy('id', 'DESC')
+            ->get();
 
         return Inertia::render('Rebalanceamento/Home', [
             'classeRebalanceamentos' => $classeRebalanceamentos,
@@ -35,7 +41,7 @@ class RebalanceamentoController extends Controller
         ]);
     }
 
-    public function porcentagemClasseStore(RebalanceamentoClasseRequest $request, CreateRebalanceamentoClasse $createRebalanceamentoClasse)
+    public function porcentagemClasseStore(RebalanceamentoClasseRequest $request, CreateRebalanceamentoClasseAction $createRebalanceamentoClasse)
     {
         $rebalanceamentoClasseDTO = RebalanceamentoClasseDTO::fromRequest($request);
         try {
@@ -46,5 +52,32 @@ class RebalanceamentoController extends Controller
         }
 
         return Redirect::route('rebalanceamento.index');   
+    }
+
+    public function porcentagemClasseUpdate(RebalanceamentoClasseRequest $request, UpdateRebalanceamentoClasseAction $updateRebalanceamentoClasse)
+    {   
+        $rebalanceamentoClasseDTO = RebalanceamentoClasseDTO::fromRequest($request);
+
+        try {
+            $updateRebalanceamentoClasse($rebalanceamentoClasseDTO, $request->id);            
+            Session::flash('success', 'Rebalanceamento atualizados com sucesso!');            
+        } catch (\Exception $e) {            
+            Log::error('Error ao atualizar rebalanceamento por classe de ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('rebalanceamento.index');   
+    }
+
+    public function porcentagemClasseDestroy(DeleteRebalanceamentoClasseAction $deleteRebalanceamento, $id)
+    {
+        try {
+            $deleteRebalanceamento($id);
+            Session::flash('success', 'Rebalanceamento excluída com sucesso!');            
+        } catch (\Exception $e) {
+            Session::flash('error', $e->getMessage());
+            Log::error('error ao excluir rebalanceamento de classe de ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('rebalanceamento.index');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Domain\Rebalanceamento\Actions;
 use App\Domain\Rebalanceamento\DTO\RebalanceamentoClasseDTO;
 use App\Models\RebalanceamentoClasse;
 
-class CreateRebalanceamentoClasse
+class CreateRebalanceamentoClasseAction
 {
     public function __invoke(RebalanceamentoClasseDTO $rebalanceamentoClasseDTO): RebalanceamentoClasse
     {

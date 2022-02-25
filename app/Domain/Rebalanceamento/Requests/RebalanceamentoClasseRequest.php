@@ -24,7 +24,8 @@ class RebalanceamentoClasseRequest extends FormRequest
     public function rules()
     {
         return [
-            'classe_ativo_id' => ['required', Rule::unique('rebalanceamento_classes')->where('user_id', auth()->user()->id)],
+            'classe_ativo_id' => ['required', 
+                Rule::unique('rebalanceamento_classes')->where('user_id', auth()->user()->id)->ignore($this->id)],
             'porcentagem' => ['required'],
         ];
     }
