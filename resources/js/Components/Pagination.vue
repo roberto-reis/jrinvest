@@ -1,7 +1,7 @@
 <template>
-	<div class="flex justify-between mt-2">
-		<div class="flex justify-center">
-			<div class="mb-3 w-28">
+	<div class="flex justify-between mt-2 mb-3">
+		<div class="flex justify-center items-center">
+			<div class="w-28">
 				<select v-model="perPage" @change="filterPerPage()" class="form-select appearance-none
 					block w-full px-3 py-1.5 m-0
 					text-base font-normal text-gray-700
@@ -16,18 +16,19 @@
 						<option value="100">100</option>
 				</select>
 			</div>
+			<span class="ml-2 text-gray-700">Total: {{ data.total }}</span>
 		</div>
 
 		<nav aria-label="Page navigation">
 			<ul class="flex list-style-none">
 				<li class="page-item" :class=" data.prev_page_url ?? 'hidden' "><a
-						class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+						class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
 						href="#" @click="loadPage(data.current_page - 1)" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
 					</a></li>
 
-				<li class="page-item" v-for="link in clearLinks" :key="link.label">
-					<a :class="{'bg-blue-600 text-white' : link.active}" class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded hover:text-white hover:bg-blue-600 focus:shadow-none"
+				<li class="page-item mr-1" v-for="link in clearLinks" :key="link.label">
+					<a :class="{'bg-blue-600 text-white' : link.active}" class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded hover:text-white hover:bg-blue-600 focus:shadow-none"
 						href="#" @click="loadPage(link.label)">
 						{{ link.label }}
 					</a>
@@ -35,10 +36,11 @@
 
 
 				<li class="page-item" :class=" data.next_page_url ?? 'hidden' "><a
-						class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+						class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
 						href="#" @click="loadPage(data.current_page + 1)" aria-label="Next">
 						<span aria-hidden="true">&raquo;</span>
-					</a></li>
+					</a>
+				</li>
 			</ul>
 		</nav>
 
