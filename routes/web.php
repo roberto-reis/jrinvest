@@ -58,6 +58,8 @@ Route::middleware(['auth', 'verified'])->prefix('rebalanceamento')->group(functi
     Route::post('rebalanceamento-classe/store', [RebalanceamentoController::class, 'porcentagemClasseStore'])->name('rebalanceamento.porcentagemClasseStore');
     Route::put('rebalanceamento-classe/update', [RebalanceamentoController::class, 'porcentagemClasseUpdate'])->name('rebalanceamento.porcentagemClasseUpdate');
     Route::delete('rebalanceamento-classe/{id}/destroy', [RebalanceamentoController::class, 'porcentagemClasseDestroy'])->name('rebalanceamento.porcentagemClasseDestroy');
+
+    Route::post('rebalanceamento-ativo/store', [RebalanceamentoController::class, 'porcentagemAtivoStore'])->name('rebalanceamento.porcentagemAtivoStore');
 });
 
 require __DIR__.'/auth.php';

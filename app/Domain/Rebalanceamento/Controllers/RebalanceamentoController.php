@@ -5,18 +5,20 @@ namespace App\Domain\Rebalanceamento\Controllers;
 use Inertia\Inertia;
 use App\Models\Ativo;
 use App\Models\ClasseAtivo;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\RebalanceamentoAtivo;
 use App\Models\RebalanceamentoClasse;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Domain\Rebalanceamento\DTO\RebalanceamentoAtivoDTO;
 use App\Domain\Rebalanceamento\DTO\RebalanceamentoClasseDTO;
+use App\Domain\Rebalanceamento\Requests\RebalanceamentoAtivoRequest;
+use App\Domain\Rebalanceamento\Requests\RebalanceamentoClasseRequest;
+use App\Domain\Rebalanceamento\Actions\CreateRebalanceamentoAtivoAction;
 use App\Domain\Rebalanceamento\Actions\CreateRebalanceamentoClasseAction;
 use App\Domain\Rebalanceamento\Actions\DeleteRebalanceamentoClasseAction;
 use App\Domain\Rebalanceamento\Actions\UpdateRebalanceamentoClasseAction;
-use App\Domain\Rebalanceamento\Requests\RebalanceamentoClasseRequest;
 
 class RebalanceamentoController extends Controller
 {
@@ -48,10 +50,23 @@ class RebalanceamentoController extends Controller
             $createRebalanceamentoClasse($rebalanceamentoClasseDTO);            
             Session::flash('success', 'Rebalanceamento cadastrada com sucesso!');            
         } catch (\Exception $e) {            
-            Log::error('Rebalanceamento por classe de ativo: ', [$e->getMessage()]);
+            Log::error('Error ao cadatrar rebalanceamento por classe de ativo: ', [$e->getMessage()]);
         }
 
         return Redirect::route('rebalanceamento.index');   
+    }
+
+    public function porcentagemAtivoStore(RebalanceamentoAtivoRequest $request, CreateRebalanceamentoAtivoAction $createRebalanceamentoAtivo)
+    {
+        $rebalanceamentoAtivoDTO = RebalanceamentoAtivoDTO::fromRequest($request);
+        try {
+            $createRebalanceamentoAtivo($rebalanceamentoAtivoDTO);            
+            Session::flash('success', 'Rebalanceamento cadastrada com sucesso!');            
+        } catch (\Exception $e) {            
+            Log::error('Error ao cadatrar rebalanceamento por ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('rebalanceamento.index');
     }
 
     public function porcentagemClasseUpdate(RebalanceamentoClasseRequest $request, UpdateRebalanceamentoClasseAction $updateRebalanceamentoClasse)

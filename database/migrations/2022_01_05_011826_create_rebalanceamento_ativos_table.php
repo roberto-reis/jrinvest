@@ -20,6 +20,7 @@ class CreateRebalanceamentoAtivosTable extends Migration
             $table->decimal('porcentagem', 10, 2);
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(['user_id', 'ativo_id']);
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('ativo_id')->references('id')->on('ativos');
