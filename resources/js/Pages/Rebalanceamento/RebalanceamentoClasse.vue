@@ -150,7 +150,7 @@ export default {
         classeRebalanceamentoUpdate() {
             this.classeRebalanceamentoFormUpdate.put(route('rebalanceamento.porcentagemClasseUpdate'), {
                 onSuccess: () => {
-                    this.classeRebalanceamentoForm.reset();
+                    this.classeRebalanceamentoFormUpdate.reset();
                     this.modalVisible = false;
                 }
             });

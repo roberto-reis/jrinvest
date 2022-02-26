@@ -16,7 +16,9 @@ use App\Domain\Rebalanceamento\DTO\RebalanceamentoClasseDTO;
 use App\Domain\Rebalanceamento\Requests\RebalanceamentoAtivoRequest;
 use App\Domain\Rebalanceamento\Requests\RebalanceamentoClasseRequest;
 use App\Domain\Rebalanceamento\Actions\CreateRebalanceamentoAtivoAction;
+use App\Domain\Rebalanceamento\Actions\UpdateRebalanceamentoAtivoAction;
 use App\Domain\Rebalanceamento\Actions\CreateRebalanceamentoClasseAction;
+use App\Domain\Rebalanceamento\Actions\DeleteRebalanceamentoAtivoAction;
 use App\Domain\Rebalanceamento\Actions\DeleteRebalanceamentoClasseAction;
 use App\Domain\Rebalanceamento\Actions\UpdateRebalanceamentoClasseAction;
 
@@ -83,6 +85,20 @@ class RebalanceamentoController extends Controller
         return Redirect::route('rebalanceamento.index');   
     }
 
+    public function porcentagemAtivoUpdate(RebalanceamentoAtivoRequest $request, UpdateRebalanceamentoAtivoAction $updateRebalanceamentoAtivo)
+    {   
+        $rebalanceamentoAtivoDTO = RebalanceamentoAtivoDTO::fromRequest($request);
+
+        try {
+            $updateRebalanceamentoAtivo($rebalanceamentoAtivoDTO, $request->id);            
+            Session::flash('success', 'Rebalanceamento atualizados com sucesso!');            
+        } catch (\Exception $e) {            
+            Log::error('Error ao atualizar rebalanceamento por ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('rebalanceamento.index');   
+    }
+
     public function porcentagemClasseDestroy(DeleteRebalanceamentoClasseAction $deleteRebalanceamento, $id)
     {
         try {
@@ -91,6 +107,19 @@ class RebalanceamentoController extends Controller
         } catch (\Exception $e) {
             Session::flash('error', $e->getMessage());
             Log::error('error ao excluir rebalanceamento de classe de ativo: ', [$e->getMessage()]);
+        }
+
+        return Redirect::route('rebalanceamento.index');
+    }
+
+    public function porcentagemAtivoDestroy(DeleteRebalanceamentoAtivoAction $deleteRebalanceamento, $id)
+    {
+        try {
+            $deleteRebalanceamento($id);
+            Session::flash('success', 'Rebalanceamento excluída com sucesso!');            
+        } catch (\Exception $e) {
+            Session::flash('error', $e->getMessage());
+            Log::error('error ao excluir rebalanceamento de ativo: ', [$e->getMessage()]);
         }
 
         return Redirect::route('rebalanceamento.index');
