@@ -14,7 +14,7 @@ class CreateClassesAtivosTable extends Migration
     public function up()
     {
         Schema::create('classes_ativos', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('nome', 20)->unique()->index();
             $table->string('descricao', 50);
             $table->timestamps();

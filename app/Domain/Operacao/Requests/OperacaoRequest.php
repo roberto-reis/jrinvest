@@ -24,7 +24,7 @@ class OperacaoRequest extends FormRequest
     public function rules()
     {
         return [
-            'ativo' => ['required'],
+            'ativo' => ['required', 'string'],
             'tipo_operacao' => ['required', 'string'],
             'data_operacao' => ['required', 'date'],
             'cotacao' => ['required', 'numeric'],
