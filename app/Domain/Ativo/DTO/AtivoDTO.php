@@ -10,9 +10,9 @@ class AtivoDTO
     public string $codigo;
     public string $descricao;
     public string $setor;
-    public int $classe_ativo;
+    public string $classe_ativo;
 
-    public function __construct(string $codigo, string $descricao, string $setor, int $classe_ativo)
+    public function __construct(string $codigo, string $descricao, string $setor, string $classe_ativo)
     {
         $this->codigo = $codigo;
         $this->descricao = $descricao;

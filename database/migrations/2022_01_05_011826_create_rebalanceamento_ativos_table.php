@@ -14,9 +14,9 @@ class CreateRebalanceamentoAtivosTable extends Migration
     public function up()
     {
         Schema::create('rebalanceamento_ativos', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('ativo_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id');
+            $table->foreignUuid('ativo_id');
             $table->decimal('porcentagem', 10, 2);
             $table->timestamps();
             $table->softDeletes();

@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\Paginator;
+use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Operacao extends Model
 {
+    use UuidTrait;
     use HasFactory;
 
     protected $table = 'operacoes';
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    protected $icrementing = false;
 
     protected $fillable = [
         'user_id',

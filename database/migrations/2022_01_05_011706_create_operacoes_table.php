@@ -14,9 +14,9 @@ class CreateOperacoesTable extends Migration
     public function up()
     {
         Schema::create('operacoes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->index();
-            $table->foreignId('ativo_id')->index();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->index();
+            $table->foreignUuid('ativo_id')->index();
             $table->string('tipo_operacao', 20);
             $table->string('quantidade', 50);
             $table->string('cotacao_preco', 50)->index();

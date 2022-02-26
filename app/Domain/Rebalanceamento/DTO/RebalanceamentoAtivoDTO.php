@@ -6,10 +6,10 @@ use App\Domain\Rebalanceamento\Requests\RebalanceamentoAtivoRequest;
 
 class RebalanceamentoAtivoDTO
 {
-    public int $ativo_id;
+    public string $ativo_id;
     public float $porcentagem;
 
-    public function __construct(int $ativo_id, float $porcentagem)
+    public function __construct(string $ativo_id, float $porcentagem)
     {
         $this->ativo_id = $ativo_id;
         $this->porcentagem = $porcentagem;

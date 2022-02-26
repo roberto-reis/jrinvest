@@ -27,7 +27,7 @@ class AtivoRequest extends FormRequest
             'codigo' => ['required', 'string', Rule::unique('ativos')->ignore($this->id)],
             'descricao' => ['required', 'string'],
             'setor' => ['required', 'string'],
-            'classe_ativo' => ['required', 'numeric']
+            'classe_ativo' => ['required', 'string']
         ];
     }
 
