@@ -41,7 +41,7 @@
 					<form>
 						<div class="flex w-96">
 							<input v-model="params.search" placeholder="O que deseja buscar?" 
-								class="rounded-none rounded-l border-2 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2">
+								class="rounded-none rounded-l border-2 border-gray-300 text-gray-900 focus:outline-none focus:ring-0 focus:border-blue-600 block flex-1 min-w-0 w-full text-sm p-2">
 							<span class="inline-flex items-center px-3 text-sm bg-blue-600 text-white rounded-r border border-l-0 border-blue-600">
 								<i class="fas fa-search"></i>
 							</span>

@@ -5,14 +5,15 @@ namespace App\Domain\Operacao\Controllers;
 use Inertia\Inertia;
 use App\Models\Ativo;
 use App\Models\Operacao;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use App\Domain\Operacao\DTO\OperacaoDTO;
 use Illuminate\Support\Facades\Redirect;
 use App\Domain\Operacao\Requests\OperacaoRequest;
 use App\Domain\Operacao\Actions\CreateOperacaoAction;
 use App\Domain\Operacao\Actions\DeleteOperacaoAction;
 use App\Domain\Operacao\Actions\UpdateOperacaoAction;
-use Illuminate\Support\Facades\Session;
 
 class OperacaoController extends Controller
 {
@@ -34,9 +35,8 @@ class OperacaoController extends Controller
 
         $operacoes = Operacao::select('operacoes.*', 'ativos.codigo as codigo_ativo', 'classes_ativos.nome as classe_ativo')
                     ->join('ativos', 'operacoes.ativo_id', '=', 'ativos.id')
-                    ->join('classes_ativos', 'ativos.classe_ativo_id', '=', 'classes_ativos.id');
-
-        $ativos = Ativo::orderBy('codigo', 'asc')->get();
+                    ->join('classes_ativos', 'ativos.classe_ativo_id', '=', 'classes_ativos.id')
+                    ->where('user_id', auth()->user()->id);
 
         if ($search) {
             $operacoes->where('tipo_operacao', 'like', "%{$search}%")
@@ -49,6 +49,8 @@ class OperacaoController extends Controller
         if ($field && $direction) {
             $operacoes->orderBy($field, $direction);
         }
+
+        $ativos = Ativo::orderBy('codigo', 'asc')->get();
 
         return Inertia::render('Operacoes/Home', [
             'operacoes' => $operacoes->paginate($this->perPage),
@@ -65,12 +67,11 @@ class OperacaoController extends Controller
     public function store(OperacaoRequest $requestOperacao, CreateOperacaoAction $actionCreateOperacao)
     {
         $operacaoDTO = OperacaoDTO::fromRequest($requestOperacao);
-
         try {
             $actionCreateOperacao($operacaoDTO);
             Session::flash('success', 'Operação cadastrada com sucesso!');            
         } catch (\Exception $e) {
-            \Log::error('error ao savar operação: ', [$e->getMessage()]);
+            Log::error('error ao savar operação: ', [$e->getMessage()]);
         }
 
         return Redirect::route('operacoes.index');
@@ -87,7 +88,7 @@ class OperacaoController extends Controller
             Session::flash('success', 'Operação atualizada com sucesso!');
 
         } catch (\Exception $e) {
-            \Log::error('error ao atualizar operação: ', [$e->getMessage()]);
+            Log::error('error ao atualizar operação: ', [$e->getMessage()]);
         }
         return Redirect::route('operacoes.index');
     }
@@ -99,7 +100,7 @@ class OperacaoController extends Controller
             Session::flash('success', 'Operação excluída com sucesso!');
             return Redirect::route('operacoes.index');
         } catch (\Exception $e) {
-            \Log::error('error ao excluir operação: ', [$e->getMessage()]);
+            Log::error('error ao excluir operação: ', [$e->getMessage()]);
         }
     }
 

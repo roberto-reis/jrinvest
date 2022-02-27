@@ -35,7 +35,7 @@
             <div class="flex flex-col">
                 <div class="overflow-x-auto shadow-md sm:rounded-lg">
                     <div class="overflow-hidden inline-block min-w-full align-middle">
-                        <table class="min-w-full divide-y divide-gray-400 table-fixed">
+                        <table class="min-w-full table-fixed">
                             <thead class="bg-gray-300 text-gray-600 text-xs font-semibold">
                                 <tr>
                                     <th scope="col" class="p-3 tracking-wider text-left uppercase">
@@ -52,7 +52,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200 text-sm font-medium text-gray-900">
+                            <tbody class="bg-white text-sm font-medium text-gray-900">
                                 <tr v-for="ativoRebalanceamento in ativoRebalanceamentos" :key="ativoRebalanceamento.id" class="hover:bg-gray-100">
                                     <td class="py-2 px-4 whitespace-nowrap">{{ ativoRebalanceamento.ativo.codigo }}</td>
                                     <td class="py-2 px-4 whitespace-nowrap">{{ ativoRebalanceamento.ativo.descricao }}</td>
