@@ -2,7 +2,6 @@
 
 use App\Domain\Ativo\Controllers\AtivoController;
 use App\Domain\ClasseAtivo\Controllers\ClasseAtivoController;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Domain\Operacao\Controllers\OperacaoController;
 use App\Domain\Dashboard\Controllers\DashboardController;
@@ -18,15 +17,6 @@ use App\Domain\Rebalanceamento\Controllers\RebalanceamentoController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
