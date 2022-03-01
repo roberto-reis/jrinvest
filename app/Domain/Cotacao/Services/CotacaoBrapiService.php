@@ -5,27 +5,26 @@ namespace App\Domain\Cotacao\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class CotacaoService
+class CotacaoBrapiService
 {
     private string $BASE_URL;
-    private string $API_KEY;
 
     public function __construct()
     {
-        $this->BASE_URL = env('URL_COTACAO_ALPHAVANTAGE');
-        $this->API_KEY = env('KEY_API_ALPHAVANTAGE');
+        $this->BASE_URL = env('URL_COTACAO_BRAPI');
     }
 
 
     /**
-     * Ativo ações ou FII para cotacao 
-     * ex ativo: 'BTLG11', 'B3SA3'
-     * @param string $ativo
+     * Pegar Cotação de ações e FII 
+     * ex ativo separado por virgula: 'BTLG11,B3SA3'
+     * @param string $codigoAtivos
+     * @return array
      */
-    public function getCotacoes(string $ativo)
+    public function getCotacoes(string $codigoAtivos): array
     {
         try {
-            $response = Http::get($this->BASE_URL . '?function=GLOBAL_QUOTE&symbol='. $ativo . '.SA&apikey='. $this->API_KEY);
+            $response = Http::get($this->BASE_URL . 'quote/'. $codigoAtivos);
 
             if ($response->successful()) {
                 return $response->json();
@@ -39,14 +38,15 @@ class CotacaoService
 
     /**
      * Pegar cotacao para criptomoedas
-     * ex codigo do ativo: 'BTC', 'ETH'
+     * ex codigo do ativo separado por virgula: 'BTC,ETH,ADA'
      * @param string $ativo
      * @param string $moedaRef
+     * @return array
      */
-    public function getCotacoesCripto(string $codigoAtivo, string $moedaRef = 'BRL')
+    public function getCotacoesCripto(string $codigoAtivos, string $moedaRef = 'BRL')
     {
         try {
-            $response = Http::get($this->BASE_URL . '?function=CURRENCY_EXCHANGE_RATE&from_currency='. $codigoAtivo . '&to_currency='. $moedaRef . '&apikey='. $this->API_KEY);
+            $response = Http::get($this->BASE_URL . 'v2/crypto?coin=' . $codigoAtivos . '&currency=' . $moedaRef);
 
             if ($response->successful()) {
                 return $response->json();

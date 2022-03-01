@@ -16,12 +16,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $cotacao = new CotacaoService();
-
-        $ativos = Ativo::get();
         
-        
-
 
         return Inertia::render('Dashboard/Home');
     }
@@ -30,4 +25,5 @@ class DashboardController extends Controller
     {
         $operacoes = Operacao::get();
     }
+
 }

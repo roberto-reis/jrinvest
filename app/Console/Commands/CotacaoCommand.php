@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Ativo;
-use App\Jobs\CotacaoJob;
 use Illuminate\Console\Command;
+use App\Domain\Cotacao\Jobs\CotacaoJob;
 
 class CotacaoCommand extends Command
 {
@@ -39,10 +38,6 @@ class CotacaoCommand extends Command
      */
     public function handle()
     {
-        $ativos = Ativo::get();
-
-        foreach ($ativos as $ativo) {
-            CotacaoJob::dispatch($ativo);
-        }
+        CotacaoJob::dispatch();
     }
 }

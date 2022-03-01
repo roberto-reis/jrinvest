@@ -20,7 +20,7 @@ class CreateCotacoesTable extends Migration
             $table->double('preco', 15, 8)->index();
             $table->timestamps();
 
-            $table->foreign('ativo_id')->references('id')->on('ativos');
+            $table->foreign('ativo_id')->references('id')->on('ativos')->onDelete('cascade');
         });
     }
 
