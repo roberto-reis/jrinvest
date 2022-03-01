@@ -20,7 +20,6 @@ class CreateAtivosTable extends Migration
             $table->string('descricao', 50)->index();
             $table->string('setor', 50)->index();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('classe_ativo_id')->references('id')->on('classes_ativos');
         });

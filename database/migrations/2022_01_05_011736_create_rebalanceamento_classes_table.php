@@ -19,7 +19,6 @@ class CreateRebalanceamentoClassesTable extends Migration
             $table->foreignUuid('classe_ativo_id');
             $table->decimal('porcentagem', 10, 2);
             $table->timestamps();
-            $table->softDeletes();
             $table->unique(['user_id', 'classe_ativo_id']);
 
             $table->foreign('user_id')->references('id')->on('users');

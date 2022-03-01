@@ -22,7 +22,6 @@ class CreateOperacoesTable extends Migration
             $table->string('cotacao_preco', 50)->index();
             $table->string('corretora', 50);
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('ativo_id')->references('id')->on('ativos');

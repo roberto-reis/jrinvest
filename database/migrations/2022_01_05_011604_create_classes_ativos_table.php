@@ -18,7 +18,6 @@ class CreateClassesAtivosTable extends Migration
             $table->string('nome', 20)->unique()->index();
             $table->string('descricao', 50);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
