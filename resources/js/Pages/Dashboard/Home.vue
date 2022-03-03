@@ -92,16 +92,16 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody class="text-sm font-medium text-gray-700 text-left">
+                  <tbody v-for="ativo in minhaCarteira" :key="ativo.ativo_id" class="text-sm font-medium text-gray-700 text-left">
                     <tr class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        BTC
+                        {{ ativo.codigo_ativo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        0,02445566
+                        {{ ativo.quantidade_saldo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        R$ 5.000,00
+                        {{ ativo.valor_total }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         15,00
@@ -297,6 +297,9 @@ export default {
   components: {
     Authenticated,
     Head,
+  },
+  props: {
+    minhaCarteira: Object,
   },
 };
 </script>
