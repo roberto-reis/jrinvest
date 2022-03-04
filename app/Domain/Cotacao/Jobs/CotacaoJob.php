@@ -39,7 +39,7 @@ class CotacaoJob implements ShouldQueue
         
         try {
 
-            $ativos = Ativo::with('classeAtivo')->get();    
+            $ativos = Ativo::with('classeAtivo')->get();
 
             // Cotação de ações e FII
             $ativoAcoesFii = $ativos->filter(function ($ativo) {
@@ -55,7 +55,7 @@ class CotacaoJob implements ShouldQueue
                     'preco' => $cotacao['regularMarketPrice'] ?? 0,
                 ]);
             }
-            Log::info('Cotação de ações e FII: ' . count($cotacaoAcoesFii['results']));
+            Log::info('Total cotações de ações e FII: ' . count($cotacaoAcoesFii['results']));
 
             // Cotação de criptomoedas
             $ativoCripto = $ativos->filter(function ($ativo) {

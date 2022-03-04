@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRebalanceamentoAtivosTable extends Migration
+class CreateCarteirasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateRebalanceamentoAtivosTable extends Migration
      */
     public function up()
     {
-        Schema::create('rebalanceamento_ativos', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('carteiras', function (Blueprint $table) {
+            $table->uuid('id')->primary()->index();
             $table->foreignUuid('user_id')->index();
             $table->foreignUuid('ativo_id')->index();
-            $table->decimal('porcentagem', 10, 2);
+            $table->string('quantidade_saldo');
+            $table->string('preco_medio');
             $table->timestamps();
-            $table->unique(['user_id', 'ativo_id']);
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('ativo_id')->references('id')->on('ativos');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('ativo_id')->references('id')->on('ativos')->cascadeOnDelete();
         });
     }
 
@@ -33,6 +33,6 @@ class CreateRebalanceamentoAtivosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rebalanceamento_ativos');
+        Schema::dropIfExists('carteiras');
     }
 }
