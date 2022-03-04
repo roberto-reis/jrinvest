@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCarteiraTable extends Migration
+class CreateCarteirasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCarteiraTable extends Migration
      */
     public function up()
     {
-        Schema::create('carteira', function (Blueprint $table) {
+        Schema::create('carteiras', function (Blueprint $table) {
             $table->uuid('id')->primary()->index();
             $table->foreignUuid('user_id')->index();
             $table->foreignUuid('ativo_id')->index();
             $table->string('quantidade_saldo');
-            $table->string('cotacao_preco');
+            $table->string('preco_medio');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
@@ -33,6 +33,6 @@ class CreateCarteiraTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carteira');
+        Schema::dropIfExists('carteiras');
     }
 }
