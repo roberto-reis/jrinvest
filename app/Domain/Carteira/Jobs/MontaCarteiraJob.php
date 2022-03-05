@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Domain\Carteira;
+namespace App\Domain\Carteira\Jobs;
 
 use App\Models\Carteira;
 use App\Models\Operacao;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Support\Facades\Log;
 
 class MontaCarteiraJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    private $usuarioLogado;
 
     /**
      * Create a new job instance.
@@ -23,7 +26,7 @@ class MontaCarteiraJob implements ShouldQueue
      */
     public function __construct()
     {
-        //
+        $this->usuarioLogado = Auth::user();
     }
 
     /**
@@ -33,12 +36,14 @@ class MontaCarteiraJob implements ShouldQueue
      */
     public function handle()
     {
+
         try {            
 
             $operacoesAtivos = Operacao::select('operacoes.*', 'ativos.codigo as codigo_ativo')
                 ->join('ativos', 'operacoes.ativo_id', '=', 'ativos.id')
-                ->where('user_id', auth()->user()->id)
+                ->where('user_id', $this->usuarioLogado->id)
                 ->get();
+
 
             foreach ($operacoesAtivos->groupBy('codigo_ativo') as $operacoes) {
 
@@ -61,7 +66,7 @@ class MontaCarteiraJob implements ShouldQueue
 
 
         } catch (\Exception $e) {
-            \Log::error('Error ao montar carteira: ', [$e->getMessage()]);
+            Log::error('Error ao montar carteira: ', [$e->getMessage()]);
         }
     }
 }
