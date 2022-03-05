@@ -17,7 +17,7 @@ class UpdateAtivoAction
 
         $ativo->codigo = $ativoDTO->codigo;
         $ativo->classe_ativo_id = $ativoDTO->classe_ativo;
-        $ativo->descricao = $ativoDTO->descricao;
+        $ativo->nome = $ativoDTO->nome;
         $ativo->setor = $ativoDTO->setor;
         $ativo->save();
         

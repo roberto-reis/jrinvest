@@ -44,15 +44,15 @@
 										<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('classe_ativo')" class="cursor-pointer p-3 tracking-wider">
+									<th scope="col" @click="sort('descricao')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
-											Classe Ativo
+											Nome
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('descricao')" class="cursor-pointer p-3 tracking-wider">
+									<th scope="col" @click="sort('classe_ativo')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
-											Descrição
+											Classe Ativo
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
@@ -78,11 +78,11 @@
 									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
 										{{ ativo.codigo }}
 									</td>
+									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+										{{ ativo.nome }}
+									</td>
 									<td class="py-2 px-4 text-sm font-medium text-gray-500 whitespace-nowrap">
 										{{ ativo.classe_ativo }}
-									</td>
-									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-										{{ ativo.descricao }}
 									</td>
 									<td class="py-2 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
 										{{ ativo.setor }}

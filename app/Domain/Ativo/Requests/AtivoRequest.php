@@ -25,7 +25,7 @@ class AtivoRequest extends FormRequest
     {
         return [
             'codigo' => ['required', 'string', Rule::unique('ativos')->ignore($this->id)],
-            'descricao' => ['required', 'string'],
+            'nome' => ['required', 'string'],
             'setor' => ['required', 'string'],
             'classe_ativo' => ['required', 'string']
         ];
@@ -36,7 +36,7 @@ class AtivoRequest extends FormRequest
         return [
             'codigo.required' => 'O campo "Codigo" é obrigatório',
             'codigo.unique' => 'Este ativo já está cadastrado',
-            'descricao.required' => 'O campo "Descricao" é obrigatório',
+            'nome.required' => 'O campo "Nome" é obrigatório',
             'setor.required' => 'O campo "Setor" é obrigatório',
             'classe_ativo.required' => 'O campo "Cotação" é obrigatório',
         ];

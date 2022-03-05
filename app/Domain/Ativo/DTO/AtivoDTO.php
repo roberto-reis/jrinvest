@@ -8,14 +8,14 @@ use App\Domain\Ativo\Requests\AtivoRequest;
 class AtivoDTO
 {
     public string $codigo;
-    public string $descricao;
+    public string $nome;
     public string $setor;
     public string $classe_ativo;
 
-    public function __construct(string $codigo, string $descricao, string $setor, string $classe_ativo)
+    public function __construct(string $codigo, string $nome, string $setor, string $classe_ativo)
     {
         $this->codigo = $codigo;
-        $this->descricao = $descricao;
+        $this->nome = $nome;
         $this->setor = $setor;
         $this->classe_ativo = $classe_ativo;
     }
@@ -24,7 +24,7 @@ class AtivoDTO
     {
         return new self(
             $request->codigo,
-            $request->descricao,
+            $request->nome,
             $request->setor,
             $request->classe_ativo
         );

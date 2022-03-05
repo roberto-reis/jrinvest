@@ -25,7 +25,7 @@ class AtivoController extends Controller
     {
         $request->validate([
             'direction' => ['nullable', 'in:asc,desc'],
-            'field' => ['nullable', 'in:codigo,classe_ativo,descricao,setor,created_at'],
+            'field' => ['nullable', 'in:codigo,classe_ativo,nome,setor,created_at'],
             'search' => ['nullable', 'string'],
             'perPage' => ['nullable', 'integer'],
         ]);
@@ -40,7 +40,7 @@ class AtivoController extends Controller
                     
         if ($search) {
             $ativos->where('codigo', 'like', "%{$search}%")
-            ->orWhere('ativos.descricao', 'like', "%{$search}%")
+            ->orWhere('ativos.nome', 'like', "%{$search}%")
             ->orWhere('classes_ativos.nome', 'like', "%{$search}%")
             ->orWhere('setor', 'like', "%{$search}%")
             ->orWhere('ativos.created_at', 'like', "%{$search}%");
