@@ -36,16 +36,16 @@
               }}</span>
             </div>
             <div class="mb-4">
-              <VLabel for="descricao" value="Descrição:" />
+              <VLabel for="nome" value="Nome do Ativo:" />
               <VInput
-                v-model="form.descricao"
-                id="descricao"
+                v-model="form.nome"
+                id="nome"
                 type="text"
                 class="mt-1 block w-full"
                 required
               />
-              <span v-if="form.errors.descricao" class="text-red-600">{{
-                form.errors.descricao
+              <span v-if="form.errors.nome" class="text-red-600">{{
+                form.errors.nome
               }}</span>
             </div>
             <div class="mb-4">
@@ -152,7 +152,7 @@ export default {
       form: this.$inertia.form({
         id: this.ativo.id,
         codigo: this.ativo.codigo,
-        descricao: this.ativo.descricao,
+        nome: this.ativo.nome,
         setor: this.ativo.setor,
         classe_ativo: this.ativo.classe_ativo_id,
       }),

@@ -19,7 +19,7 @@ class Ativo extends Model
     protected $fillable = [
         'codigo',
         'classe_ativo_id',
-        'derscricao',
+        'nome',
         'setor',
     ];
 

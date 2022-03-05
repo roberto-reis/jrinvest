@@ -17,7 +17,7 @@ class CreateAtivosTable extends Migration
             $table->uuid('id')->primary();
             $table->string('codigo', 20)->unique()->index();
             $table->foreignUuid('classe_ativo_id');
-            $table->string('descricao', 50)->index();
+            $table->string('nome', 50)->index();
             $table->string('setor', 50)->index();
             $table->timestamps();
 

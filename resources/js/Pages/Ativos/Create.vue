@@ -38,17 +38,17 @@
               }}</span>
             </div>
             <div class="mb-4">
-              <VLabel for="descricao" value="Descrição:" />
+              <VLabel for="nome" value="Nome do Ativo:" />
               <VInput
-                v-model="form.descricao"
-                id="descricao"
+                v-model="form.nome"
+                id="nome"
                 type="text"
                 class="mt-1 block w-full"
                 required
                 placeholder="Ex: Bitcoin ou MAXI RENDA FDO INV IMOB "
               />
-              <span v-if="form.errors.descricao" class="text-red-600">{{
-                form.errors.descricao
+              <span v-if="form.errors.nome" class="text-red-600">{{
+                form.errors.nome
               }}</span>
             </div>
             <div class="mb-4">
@@ -155,7 +155,7 @@ export default {
     return {
       form: this.$inertia.form({
         codigo: "",
-        descricao: "",
+        nome: "",
         setor: "",
         classe_ativo: "",
       }),
