@@ -41,12 +41,17 @@ class CotacaoJob implements ShouldQueue
 
             $ativos = Ativo::with('classeAtivo')->get();
 
+            if (is_null($ativos)) {
+                throw new \Exception('Não há ativos cadastrados');
+            }
+
             // Cotação de ações e FII
             $ativoAcoesFii = $ativos->filter(function ($ativo) {
                 return $ativo->nome_classe_ativo != 'Cripto';
             });
-            $ativoAcoesFiiPlucked = $ativoAcoesFii->pluck('codigo')->toArray();
-            $cotacaoAcoesFii = $this->serviceCotacao->getCotacoes(implode(',', $ativoAcoesFiiPlucked));
+
+            $ativoAcoesFiiImploded = $ativoAcoesFii->implode('codigo',',');
+            $cotacaoAcoesFii = $this->serviceCotacao->getCotacoes($ativoAcoesFiiImploded);
 
             foreach ($cotacaoAcoesFii['results'] as $cotacao) {
                 Cotacao::create([
@@ -62,8 +67,8 @@ class CotacaoJob implements ShouldQueue
                 return $ativo->nome_classe_ativo == 'Cripto';
             });
 
-            $ativoCriptoPlucked = $ativoCripto->pluck('codigo')->toArray();
-            $cotacaoCripto = $this->serviceCotacao->getCotacoesCripto(implode(',', $ativoCriptoPlucked));         
+            $ativoCriptoImploded = $ativoCripto->implode('codigo',',');
+            $cotacaoCripto = $this->serviceCotacao->getCotacoesCripto($ativoCriptoImploded);         
 
             foreach ($cotacaoCripto['coins'] as $cotacao) {
                 Cotacao::create([
