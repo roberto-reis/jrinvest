@@ -121,7 +121,7 @@
 <script>
 import Authenticated from '@/Layouts/Authenticated.vue';
 import { Head, Link } from "@inertiajs/inertia-vue3";
-import { formatDateBr, getUrlParamr } from '@/Helpers/helpers.js';
+import { formatDateBr, getUrlParamr } from '@/Helpers/index.js';
 import Pagination from '@/Components/Pagination.vue';
 import VButton from "@/Components/Button.vue";
 import Alert from "@/Components/Alert.vue";

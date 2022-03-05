@@ -207,7 +207,7 @@ import VLabel from "@/Components/Label.vue";
 import VInput from "@/Components/Input.vue";
 import ToastSuccess from "@/Components/ToastSuccess.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { formatMoneyBr, formatDateBr, getUrlParamr } from '@/Helpers/helpers.js';
+import { formatMoneyBr, formatDateBr, getUrlParamr } from '@/Helpers/index.js';
 import Pagination from '@/Components/Pagination.vue';
 export default {
 	name: 'Home',

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { setUrlParamr } from '@/Helpers/helpers.js';
+import { setUrlParamr } from '@/Helpers/index.js';
 export default {
   name: 'Pagination',
 	props: {
