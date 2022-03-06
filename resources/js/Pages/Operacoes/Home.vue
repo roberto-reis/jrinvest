@@ -108,7 +108,7 @@
 										{{ operacao.classe_ativo}}
 									</td>
 									<td class="py-2 px-4 whitespace-nowrap">
-										{{ operacao.quantidade }}
+										{{ numberFormatterBr(operacao.quantidade, 8) }}
 									</td>
 									<td class="py-2 px-4 whitespace-nowrap">
 										{{ formatMoneyBr(operacao.cotacao_preco) }}
@@ -176,14 +176,22 @@
             			<VInput id="data_operacao" v-model="form.data_operacao" type="date" class="mt-1 block w-full" required placeholder="Ex.: 00/00/0000" />
 						<span v-if="form.errors.data_operacao" class="text-red-600">{{ form.errors.data_operacao }}</span>
 					</div>
+					
 					<div class="mb-4">
+
 						<VLabel for="cotacao" value="Cotação:" />
-            			<VInput id="cotacao" v-model="form.cotacao" type="text" class="mt-1 block w-full" required placeholder="Ex.: 25,00" />
-						<span v-if="form.errors.cotacao" class="text-red-600">{{ form.errors.cotacao }}</span>
+						<div class="flex mt-1 shadow-sm">
+							<span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-l-md border border-r-0 border-gray-300">
+								R$
+							</span>
+							<input type="text" v-model="form.cotacao" id="cotacao" class="block w-full rounded-r-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+								required placeholder="Ex: 1,00, 1000,00 ou 1.000,00">
+						</div>
+						<span v-if="form.errors.cotacao" class="text-red-600">{{ form.errors.cotacao }}</span>						
 					</div>
 					<div class="mb-4">
 						<VLabel for="quantidade" value="Quantidade:" />
-            			<VInput id="quantidade" v-model="form.quantidade" type="text" class="mt-1 block w-full" required placeholder="Ex.: 0,00110011" />
+            			<VInput id="quantidade" v-model="form.quantidade" type="text" class="mt-1 block w-full" required placeholder="Ex: 0,00560060 ou 1,50 ou 1000,00" />
 						<span v-if="form.errors.quantidade" class="text-red-600">{{ form.errors.quantidade }}</span>
 					</div>			
 				</form>
@@ -207,7 +215,7 @@ import VLabel from "@/Components/Label.vue";
 import VInput from "@/Components/Input.vue";
 import ToastSuccess from "@/Components/ToastSuccess.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { formatMoneyBr, formatDateBr, getUrlParamr } from '@/Helpers/index.js';
+import { formatMoneyBr, formatDateBr, numberFormatterBr, getUrlParamr } from '@/Helpers/index.js';
 import Pagination from '@/Components/Pagination.vue';
 export default {
 	name: 'Home',
@@ -254,6 +262,7 @@ export default {
 	methods: {
 		formatMoneyBr,
 		formatDateBr,
+		numberFormatterBr,
 		getUrlParamr,
 		sort(field) {
 				this.params.field = field;
@@ -268,8 +277,8 @@ export default {
 			this.form.tipo_operacao = operacao.tipo_operacao;
 			this.form.corretora = operacao.corretora;
 			this.form.data_operacao = operacao.created_at.split('T')[0];
-			this.form.cotacao = operacao.cotacao_preco;
-			this.form.quantidade = operacao.quantidade;
+			this.form.cotacao = this.numberFormatterBr(operacao.cotacao_preco, 4);
+			this.form.quantidade = this.numberFormatterBr(operacao.quantidade, 8);
 			// Abre o modal
 			this.titleModal = 'Editar Operação';
 			this.btnModal = 'update';

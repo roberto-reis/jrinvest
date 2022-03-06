@@ -1,9 +1,19 @@
 
-export const formatMoneyBr = (value) => {
+export const formatMoneyBr = (value, maxFractionDigits = 2) => {
 	return new Intl.NumberFormat('pt-BR', {
 			style: 'currency',
 			currency: 'BRL',
-			maximumFractionDigits: 3
+			minimumFractionDigits: 2,
+			maximumFractionDigits: maxFractionDigits,
+	}).format(value);
+}
+
+export const numberFormatterBr = (value, maxFractionDigits = 2) => {
+	return new Intl.NumberFormat('pt-BR', {
+			style: 'decimal',
+			currency: 'BRL',
+			minimumFractionDigits: 2,
+			maximumFractionDigits: maxFractionDigits,
 	}).format(value);
 }
 
