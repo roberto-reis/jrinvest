@@ -22,4 +22,9 @@ class Cotacao extends Model
         'preco',
     ];
 
+    public function getMoedaRefAttribute($value)
+    {
+        return strtoupper($value);
+    }
+
 }
