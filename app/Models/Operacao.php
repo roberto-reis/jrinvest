@@ -46,19 +46,12 @@ class Operacao extends Model
 
     public function setCotacaoPrecoAttribute($value)
     {
-        $this->attributes['cotacao_preco'] =  $this->numberFormatterToSave($value);
+        $this->attributes['cotacao_preco'] =  numberFormatterToSave($value);
     }
 
     public function setQuantidadeAttribute($value)
     {     
-        $this->attributes['quantidade'] =  $this->numberFormatterToSave($value);
-    }
-
-    private function numberFormatterToSave($value)
-    {
-        $findCaractere = ['.', ','];
-        $replaceCaractere = ['', '.'];
-        return str_replace($findCaractere, $replaceCaractere, $value);
+        $this->attributes['quantidade'] =  numberFormatterToSave($value);
     }
 
 }
