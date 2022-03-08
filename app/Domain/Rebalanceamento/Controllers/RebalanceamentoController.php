@@ -45,7 +45,7 @@ class RebalanceamentoController extends Controller
         ]);
     }
 
-    public function porcentagemClasseStore(RebalanceamentoClasseRequest $request, CreateRebalanceamentoClasseAction $createRebalanceamentoClasse)
+    public function percentualClasseStore(RebalanceamentoClasseRequest $request, CreateRebalanceamentoClasseAction $createRebalanceamentoClasse)
     {
         $rebalanceamentoClasseDTO = RebalanceamentoClasseDTO::fromRequest($request);
         try {
@@ -58,7 +58,7 @@ class RebalanceamentoController extends Controller
         return Redirect::route('rebalanceamento.index');   
     }
 
-    public function porcentagemAtivoStore(RebalanceamentoAtivoRequest $request, CreateRebalanceamentoAtivoAction $createRebalanceamentoAtivo)
+    public function percentualAtivoStore(RebalanceamentoAtivoRequest $request, CreateRebalanceamentoAtivoAction $createRebalanceamentoAtivo)
     {
         $rebalanceamentoAtivoDTO = RebalanceamentoAtivoDTO::fromRequest($request);
         try {
@@ -71,7 +71,7 @@ class RebalanceamentoController extends Controller
         return Redirect::route('rebalanceamento.index');
     }
 
-    public function porcentagemClasseUpdate(RebalanceamentoClasseRequest $request, UpdateRebalanceamentoClasseAction $updateRebalanceamentoClasse)
+    public function percentualClasseUpdate(RebalanceamentoClasseRequest $request, UpdateRebalanceamentoClasseAction $updateRebalanceamentoClasse)
     {   
         $rebalanceamentoClasseDTO = RebalanceamentoClasseDTO::fromRequest($request);
 
@@ -85,7 +85,7 @@ class RebalanceamentoController extends Controller
         return Redirect::route('rebalanceamento.index');   
     }
 
-    public function porcentagemAtivoUpdate(RebalanceamentoAtivoRequest $request, UpdateRebalanceamentoAtivoAction $updateRebalanceamentoAtivo)
+    public function percentualAtivoUpdate(RebalanceamentoAtivoRequest $request, UpdateRebalanceamentoAtivoAction $updateRebalanceamentoAtivo)
     {   
         $rebalanceamentoAtivoDTO = RebalanceamentoAtivoDTO::fromRequest($request);
 
@@ -99,7 +99,7 @@ class RebalanceamentoController extends Controller
         return Redirect::route('rebalanceamento.index');   
     }
 
-    public function porcentagemClasseDestroy(DeleteRebalanceamentoClasseAction $deleteRebalanceamento, $id)
+    public function percentualClasseDestroy(DeleteRebalanceamentoClasseAction $deleteRebalanceamento, $id)
     {
         try {
             $deleteRebalanceamento($id);
@@ -112,7 +112,7 @@ class RebalanceamentoController extends Controller
         return Redirect::route('rebalanceamento.index');
     }
 
-    public function porcentagemAtivoDestroy(DeleteRebalanceamentoAtivoAction $deleteRebalanceamento, $id)
+    public function percentualAtivoDestroy(DeleteRebalanceamentoAtivoAction $deleteRebalanceamento, $id)
     {
         try {
             $deleteRebalanceamento($id);

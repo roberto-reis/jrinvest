@@ -2,7 +2,7 @@
     <div class="tab-pane fade" :id="id" role="tabpanel" aria-labelledby="tabs-ativo">
         <div class="mb-1 text-gray-700 text-lg font-semibold">
             <h2>
-                Selecione um ativo e porcentagem(%) Meta/Objetivo
+                Selecione um ativo e percentual(%) Meta/Objetivo
             </h2>
         </div>
         <div class="p-3 bg-gray-100 rounded-lg">
@@ -22,7 +22,7 @@
                     </div>
                     <div class="w-full mr-3 mb-3">
                         <label for="meta_objetivo" class="block mb-1 text-sm font-medium text-gray-900">% Meta/Objetivo:</label>
-                        <input type="text" v-model="ativoRebalanceamentoForm.porcentagem" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
+                        <input type="text" v-model="ativoRebalanceamentoForm.percentual" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
                     </div>
                     <div class="flex items-end mb-3">
                         <button type="submit" class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded text-sm sm:w-auto px-5 py-2.5 text-center">
@@ -42,7 +42,7 @@
                                         Ativo
                                     </th>
                                     <th scope="col" class="p-3 tracking-wider text-left uppercase">
-                                        Descrição
+                                        Nome
                                     </th>
                                     <th scope="col" class="p-3 tracking-wider text-left uppercase">
                                         % Meta/Objetivo
@@ -55,8 +55,8 @@
                             <tbody class="bg-white text-sm font-medium text-gray-900">
                                 <tr v-for="ativoRebalanceamento in ativoRebalanceamentos" :key="ativoRebalanceamento.id" class="hover:bg-gray-100">
                                     <td class="py-2 px-4 whitespace-nowrap">{{ ativoRebalanceamento.ativo.codigo }}</td>
-                                    <td class="py-2 px-4 whitespace-nowrap">{{ ativoRebalanceamento.ativo.descricao }}</td>
-                                    <td class="py-2 px-4 whitespace-nowrap">{{ ativoRebalanceamento.porcentagem }} %</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">{{ ativoRebalanceamento.ativo.nome }}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">{{ ativoRebalanceamento.percentual }} %</td>
                                     <td class="py-2 px-4 text-sm font-medium whitespace-nowrap">
                                         <button @click="editRebalaceamentoAtivo(ativoRebalanceamento)" class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
                                             <i class="fas fa-edit"></i>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="w-full mr-3 mb-3">
                     <label for="meta_objetivo" class="block mb-1 text-sm font-medium text-gray-900">% Meta/Objetivo:</label>
-                    <input type="text" v-model="ativoRebalanceamentoFormUpdate.porcentagem" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
+                    <input type="text" v-model="ativoRebalanceamentoFormUpdate.percentual" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
                 </div>
             </form>
         </template>	
@@ -126,18 +126,18 @@ export default {
             modalVisible: false,
             ativoRebalanceamentoForm: this.$inertia.form({
                 ativo_id: '',
-                porcentagem: '',
+                percentual: '',
             }),
             ativoRebalanceamentoFormUpdate: this.$inertia.form({
                 id: '',
                 ativo_id: '',
-                porcentagem: '',
+                percentual: '',
             }),
         }
     },
     methods: {
         classeRebalanceamentoStore() {
-            this.ativoRebalanceamentoForm.post(route('rebalanceamento.porcentagemAtivoStore'), {
+            this.ativoRebalanceamentoForm.post(route('rebalanceamento.percentualAtivoStore'), {
                 onSuccess: () => {
 					this.ativoRebalanceamentoForm.reset();
 				},
@@ -146,11 +146,11 @@ export default {
         editRebalaceamentoAtivo(data) {
             this.ativoRebalanceamentoFormUpdate.id = data.id;
             this.ativoRebalanceamentoFormUpdate.ativo_id = data.ativo_id;
-            this.ativoRebalanceamentoFormUpdate.porcentagem = data.porcentagem;
+            this.ativoRebalanceamentoFormUpdate.percentual = data.percentual;
             this.modalVisible = true;            
         },
         ativoRebalanceamentoUpdate() {
-            this.ativoRebalanceamentoFormUpdate.put(route('rebalanceamento.porcentagemAtivoUpdate'), {
+            this.ativoRebalanceamentoFormUpdate.put(route('rebalanceamento.percentualAtivoUpdate'), {
                 onSuccess: () => {
                     this.ativoRebalanceamentoFormUpdate.reset();
                     this.modalVisible = false;
@@ -158,7 +158,7 @@ export default {
             });
         },
         deleteRebalaceamentoAtivo(id) {
-            this.$inertia.delete(this.route('rebalanceamento.porcentagemAtivoDestroy', {id: id}), {
+            this.$inertia.delete(this.route('rebalanceamento.percentualAtivoDestroy', {id: id}), {
 				preserveState: true,
 				onBefore: () => confirm('Tem certeza que deseja excluir este rebalanceamento?'),
 			});

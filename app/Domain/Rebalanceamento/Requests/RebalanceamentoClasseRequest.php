@@ -26,7 +26,7 @@ class RebalanceamentoClasseRequest extends FormRequest
         return [
             'classe_ativo_id' => ['required', 
                 Rule::unique('rebalanceamento_classes')->where('user_id', auth()->user()->id)->ignore($this->id)],
-            'porcentagem' => ['required'],
+            'percentual' => ['required'],
         ];
     }
 
@@ -35,7 +35,7 @@ class RebalanceamentoClasseRequest extends FormRequest
         return [
             'classe_ativo_id.required' => 'O campo "Classe de ativo" é obrigatório',
             'classe_ativo_id.unique' => 'Já foi definido uma porcentagem para esta classe',
-            'porcentagem.required' => 'O campo "Porcentagem" é obrigatório',
+            'percentual.required' => 'O campo "Porcentagem" é obrigatório',
         ];
     }
 }

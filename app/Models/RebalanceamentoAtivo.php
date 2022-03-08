@@ -19,7 +19,7 @@ class RebalanceamentoAtivo extends Model
     protected $fillable = [
         'user_id',
         'ativo_id',
-        'porcentagem',
+        'percentual',
     ];
 
     public function user()

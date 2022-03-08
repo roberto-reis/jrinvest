@@ -55,7 +55,7 @@ class CotacaoJob implements ShouldQueue
             $ativoAcoesFiiImploded = $ativoAcoesFii->implode('codigo',',');
             $cotacaoAcoesFii = $this->serviceCotacao->getCotacoes($ativoAcoesFiiImploded);
 
-            if (!isEmpty($cotacaoAcoesFii)) {
+            if (!empty($cotacaoAcoesFii)) {
                 foreach ($cotacaoAcoesFii['results'] as $cotacao) {
                     Cotacao::create([
                         'ativo_id' => $ativoAcoesFii->where('codigo', $cotacao['symbol'])->first()->id,
@@ -74,7 +74,7 @@ class CotacaoJob implements ShouldQueue
             $ativoCriptoImploded = $ativoCripto->implode('codigo',',');
             $cotacaoCripto = $this->serviceCotacao->getCotacoesCripto($ativoCriptoImploded);
             
-            if (isEmpty($cotacaoCripto)) {
+            if (!empty($cotacaoCripto)) {
                 foreach ($cotacaoCripto['coins'] as $cotacao) {
                     Cotacao::create([
                         'ativo_id' => $ativoCripto->where('codigo', $cotacao['coin'])->first()->id,
@@ -83,7 +83,7 @@ class CotacaoJob implements ShouldQueue
                     ]);
                 }
             }
-            Log::info('Total cotações de criptomoedas:', [$cotacaoCripto ? count($cotacaoCripto['coins']) : 0]);      
+            Log::info('Total cotações de criptomoedas:', [$cotacaoCripto ? count($cotacaoCripto['coins']) : 0]);
             
         } catch (\Exception $e) {
             Log::error('Erro ao consultar cotação: ', [$e->getMessage()]);

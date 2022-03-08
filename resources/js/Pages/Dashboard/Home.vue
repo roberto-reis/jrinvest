@@ -92,19 +92,19 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody v-for="ativo in minhaCarteira" :key="ativo.ativo_id" class="text-sm font-medium text-gray-700 text-left">
+                  <tbody v-for="item in minhaCarteira.ativos" :key="item.id" class="text-sm font-medium text-gray-700 text-left">
                     <tr class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ ativo.codigo_ativo }}
+                        {{ item.ativo.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ ativo.quantidade_saldo }}
+                        {{ numberFormatterBr(item.quantidade_saldo, 8) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ ativo.valor_total }}
+                        {{ formatMoneyBr(item.valor_total_ativo) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        15,00
+                        {{ numberFormatterBr(item.percentual_peso) }}%
                       </td>
                     </tr>
                   </tbody>
@@ -115,7 +115,7 @@
 
           </div>
 
-          <!-- Card Posição Ideal-->
+          <!-- Card Posição Ideal Por Ativo-->
           <div class="block rounded-lg shadow-lg bg-white text-center border border-gray-300 basis-1/3">
             <div class="py-2 px-3 border-b rounded-t-lg border-gray-300 bg-gray-200">
               <h5 class="text-gray-700 text-base font-semibold">Posição Ideal</h5>
@@ -139,19 +139,19 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody class="text-sm font-medium text-gray-900">
-                    <tr class="bg-white border-b">
+                  <tbody class="text-sm font-medium text-gray-900 text-left">
+                    <tr v-for="item in posicaoIdealAtivo" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        BTC
+                        {{ item.ativo.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        0,02445566
+                        {{ numberFormatterBr(item.quantidade, 8) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        R$ 5.000,00
+                        {{ formatMoneyBr(item.valor_total) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        15,00
+                        {{ numberFormatterBr(item.porcentagem) }}%
                       </td>
                     </tr>
                   </tbody>
@@ -291,6 +291,7 @@
 <script>
 import Authenticated from "@/Layouts/Authenticated.vue";
 import { Head } from "@inertiajs/inertia-vue3";
+import { formatMoneyBr, numberFormatterBr } from '@/Helpers/index.js';
 
 export default {
   name: 'Dashboard',
@@ -300,6 +301,11 @@ export default {
   },
   props: {
     minhaCarteira: Object,
+    posicaoIdealAtivo: Object,
+  },
+  methods: {
+    formatMoneyBr,
+    numberFormatterBr,
   },
 };
 </script>

@@ -12,7 +12,7 @@ class CreateRebalanceamentoClasseAction
         $rebalanceamentoClasse = new RebalanceamentoClasse();
         $rebalanceamentoClasse->user_id = auth()->user()->id;
         $rebalanceamentoClasse->classe_ativo_id = $rebalanceamentoClasseDTO->classe_ativo_id;
-        $rebalanceamentoClasse->porcentagem = $rebalanceamentoClasseDTO->porcentagem;
+        $rebalanceamentoClasse->percentual = $rebalanceamentoClasseDTO->percentual;
         $rebalanceamentoClasse->save();
 
         return $rebalanceamentoClasse;

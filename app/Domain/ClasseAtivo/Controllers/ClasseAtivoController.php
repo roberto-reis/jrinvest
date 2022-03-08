@@ -21,17 +21,10 @@ class ClasseAtivoController extends Controller
 
     public function index(Request $request)
     {
-        $request->validate([
-            'direction' => ['nullable', 'in:asc,desc'],
-            'field' => ['nullable', 'in:nome,descricao,created_at'],
-            'search' => ['nullable', 'string'],
-            'perPage' => ['nullable', 'integer'],
-        ]);
-
         $search = $request->get('search');
-        $this->perPage = $request->get('perPage') ?? $this->perPage;
-        $field = $request->get('field') ?? 'created_at';
-        $direction = $request->get('direction') ?? 'desc';
+        $this->perPage = $request->get('perPage', $this->perPage);
+        $field = $request->get('field', 'created_at');
+        $direction = $request->get('direction', 'desc');
 
         $classesAtivos = ClasseAtivo::query();
                     

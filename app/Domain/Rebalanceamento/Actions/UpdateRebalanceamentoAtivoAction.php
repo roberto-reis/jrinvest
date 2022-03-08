@@ -16,7 +16,7 @@ class UpdateRebalanceamentoAtivoAction
         }
         
         $rebalanceamentoAtivo->ativo_id = $rebalanceamentoAtivoDTO->ativo_id;
-        $rebalanceamentoAtivo->porcentagem = $rebalanceamentoAtivoDTO->porcentagem;
+        $rebalanceamentoAtivo->percentual = $rebalanceamentoAtivoDTO->percentual;
         $rebalanceamentoAtivo->save();
 
         return $rebalanceamentoAtivo;

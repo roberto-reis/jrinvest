@@ -16,7 +16,7 @@ class UpdateRebalanceamentoClasseAction
         }
         
         $rebalanceamentoClasse->classe_ativo_id = $rebalanceamentoClasseDTO->classe_ativo_id;
-        $rebalanceamentoClasse->porcentagem = $rebalanceamentoClasseDTO->porcentagem;
+        $rebalanceamentoClasse->percentual = $rebalanceamentoClasseDTO->percentual;
         $rebalanceamentoClasse->save();
 
         return $rebalanceamentoClasse;

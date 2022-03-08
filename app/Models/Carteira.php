@@ -24,12 +24,12 @@ class Carteira extends Model
     ];
 
     protected $appends = [
-        'valor_total',
+        'custo_total_ativo',
     ];
 
-    public function getValorTotalAttribute()
+    public function getCustoTotalAtivoAttribute()
     {
-        return $this->cotacao_preco * $this->attributes['quantidade_saldo'];
+        return $this->quantidade_saldo * $this->preco_medio;
     }
 
     public function user()

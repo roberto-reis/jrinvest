@@ -17,7 +17,7 @@ class CreateCotacoesTable extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('ativo_id')->index();
             $table->char('moeda_ref', 3);
-            $table->double('preco', 15, 8)->index();
+            $table->string('preco', 50)->index();
             $table->timestamps();
 
             $table->foreign('ativo_id')->references('id')->on('ativos')->onDelete('cascade');
