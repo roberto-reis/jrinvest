@@ -13,8 +13,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\Domain\Cotacao\Services\CotacaoBrapiService;
 
-use function PHPUnit\Framework\isEmpty;
-
 class CotacaoJob implements ShouldQueue
 {
     private $serviceCotacao;
@@ -49,7 +47,7 @@ class CotacaoJob implements ShouldQueue
 
             // Cotação de ações e FII
             $ativoAcoesFii = $ativos->filter(function ($ativo) {
-                return $ativo->nome_classe_ativo != 'Cripto';
+                return $ativo->nome_classe_ativo !== 'Cripto' && $ativo->nome_classe_ativo !== 'Stablecoin';
             });
 
             $ativoAcoesFiiImploded = $ativoAcoesFii->implode('codigo',',');
@@ -60,15 +58,15 @@ class CotacaoJob implements ShouldQueue
                     Cotacao::create([
                         'ativo_id' => $ativoAcoesFii->where('codigo', $cotacao['symbol'])->first()->id,
                         'moeda_ref' => $cotacao['currency'],
-                        'preco' => $cotacao['regularMarketPrice'] ?? 0,
+                        'preco' => $cotacao['regularMarketPrice'] ?? '0.0',
                     ]);
                 }
             }
-            Log::info('Total cotações de ações e FII:', [ $cotacaoAcoesFii ? count($cotacaoAcoesFii['results']) : 0 ]);
+            Log::info('Total cotações de ações e FII:', [ $cotacaoAcoesFii ? count($cotacaoAcoesFii['results']) : 0]);
 
             // Cotação de criptomoedas
             $ativoCripto = $ativos->filter(function ($ativo) {
-                return $ativo->nome_classe_ativo == 'Cripto';
+                return $ativo->nome_classe_ativo == 'Cripto' || $ativo->nome_classe_ativo == 'Stablecoin';
             });
 
             $ativoCriptoImploded = $ativoCripto->implode('codigo',',');
@@ -79,7 +77,7 @@ class CotacaoJob implements ShouldQueue
                     Cotacao::create([
                         'ativo_id' => $ativoCripto->where('codigo', $cotacao['coin'])->first()->id,
                         'moeda_ref' => $cotacao['currency'],
-                        'preco' => $cotacao['regularMarketPrice'] ?? 0,
+                        'preco' => $cotacao['regularMarketPrice'] ?? '0.0',
                     ]);
                 }
             }

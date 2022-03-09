@@ -14,42 +14,17 @@ class DashboardController extends Controller
 
     public function index()
     {
-
-        $carteiraComPercentualIdeal = $this->getCarteiraComPercentualIdeal();
-        // dd($valorTotalCarteira);
-
-        // dd($carteiraComPercentualIdeal['ativos']->toArray());
-
-
-        $carteiraComPercentualAjuste = $carteiraComPercentualIdeal['ativos']->map(function ($ativo) {
-            $valor = $ativo->peso_ideal['valor'] - $ativo->valor_total_ativo;
-            $quantidade_ativo = $valor / $ativo->cotacao_atual;
-            $percentual = $ativo->peso_ideal['percentual'] - $ativo->percentual_atual;
-
-            $ativo->peso_ajuste = [
-                'quantidade_ativo' => $quantidade_ativo,
-                'valor' => $valor,
-                'percentual' => $percentual,
-            ];
-
-            return $ativo;
-        });
-
-        dd($carteiraComPercentualAjuste->toArray());
-
-
-
-
+        $carteiraComPercentualAjuste = $this->getCarteiraComPercentualAjuste();
+        
 
         return Inertia::render('Dashboard/Home', [
-            'minhaCarteira' => $carteiraComPercentualIdeal,
-            'posicaoIdealAtivo' => $carteiraPercentualIdeal = collect(),
+            'minhaCarteira' => $carteiraComPercentualAjuste,
         ]);
     }
 
     private function getCarteiraComPercentualAtual()
     {
-        $cotacoes = Cotacao::get();
+        $cotacoes = Cotacao::orderBy('created_at', 'desc')->get();
         $minhaCarteira = Carteira::with('ativo')->where('user_id', auth()->user()->id)->get();
 
         // Atualiza o custo total do ativo com a cotação atual
@@ -93,7 +68,7 @@ class DashboardController extends Controller
                 $percentual = $rebalanceamentoAtivoIdeal->percentual;
 
                 $ativo->peso_ideal = [
-                    'quantiade_ativo' => $quantidade_ativo,
+                    'quantidade_ativo' => $quantidade_ativo,
                     'valor' => $valor,
                     'percentual' => $percentual,
                 ];
@@ -104,6 +79,33 @@ class DashboardController extends Controller
         $minhaCarteiraAtualizada = collect([
             "ativos" => $carteiraPercentualIdeal,
             "valor_total_carteira" => $valorTotalCarteira,
+        ]);
+
+        return $minhaCarteiraAtualizada;
+    }
+
+    private function getCarteiraComPercentualAjuste()
+    {
+        $carteiraComPercentualIdeal = $this->getCarteiraComPercentualIdeal();
+
+        // Calcula o percentual de ajuste de cada ativo
+        $carteiraComPercentualAjuste = $carteiraComPercentualIdeal['ativos']->map(function ($ativo) {
+            $valor = $ativo->peso_ideal['valor'] - $ativo->valor_total_ativo;
+            $quantidade_ativo = $valor / $ativo->cotacao_atual;
+            $percentual = $ativo->peso_ideal['percentual'] - $ativo->percentual_atual;
+
+            $ativo->peso_ajuste = [
+                'quantidade_ativo' => $quantidade_ativo,
+                'valor' => $valor,
+                'percentual' => $percentual,
+            ];
+
+            return $ativo;
+        });
+
+        $minhaCarteiraAtualizada = collect([
+            "ativos" => $carteiraComPercentualAjuste,
+            "valor_total_carteira" => $carteiraComPercentualIdeal['valor_total_carteira'],
         ]);
 
         return $minhaCarteiraAtualizada;

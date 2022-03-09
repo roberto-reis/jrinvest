@@ -98,13 +98,13 @@
                         {{ item.ativo.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ numberFormatterBr(item.quantidade_saldo, 8) }}
+                        {{ numberFormatterBr(item.quantidade_saldo, 4) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ formatMoneyBr(item.valor_total_ativo) }}
                       </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ numberFormatterBr(item.percentual_peso) }}%
+                      <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
+                        {{ numberFormatterBr(item.percentual_atual) }}%
                       </td>
                     </tr>
                   </tbody>
@@ -140,18 +140,18 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr v-for="item in posicaoIdealAtivo" :key="item.id" class="bg-white border-b">
+                    <tr v-for="item in minhaCarteira.ativos" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ item.ativo.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ numberFormatterBr(item.quantidade, 8) }}
+                        {{ numberFormatterBr(item.peso_ideal.quantidade_ativo, 4) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ formatMoneyBr(item.valor_total) }}
+                        {{ formatMoneyBr(item.peso_ideal.valor) }}
                       </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ numberFormatterBr(item.porcentagem) }}%
+                      <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
+                        {{ numberFormatterBr(item.peso_ideal.percentual) }}%
                       </td>
                     </tr>
                   </tbody>
@@ -188,41 +188,23 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr class="bg-white border-b">
+                    <tr v-for="item in minhaCarteira.ativos" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        BTC
+                        {{ item.ativo.codigo }}
+                      </td>
+                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.peso_ajuste.quantidade_ativo > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ numberFormatterBr(item.peso_ajuste.quantidade_ativo, 4) }}
+                      </td>
+                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.peso_ajuste.valor > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ formatMoneyBr(item.peso_ajuste.valor) }}
+                      </td>
+                      <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold" :class="item.peso_ajuste.percentual > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ numberFormatterBr(item.peso_ajuste.percentual) }}%
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        0,02445566
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        R$ 5.000,00
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        15,00
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        <span class="text-xs inline-block py-1 px-2 leading-none text-center font-bold bg-green-500 text-white rounded">
-                          comprar
-                        </span>
-                      </td>
-                    </tr>
-                    <tr class="bg-white border-b">
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        GGRC11
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        45,00000000
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        R$ 5.000,00
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        15,00
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        <span class="text-xs inline-block py-1 px-2 leading-none text-center font-bold bg-red-500 text-white rounded">
-                          vender
+                        <span class="text-xs inline-block py-1 px-2 leading-none text-center font-bold text-white rounded"
+                          :class="item.peso_ajuste.valor > 0 ? 'bg-green-400' : 'bg-red-400'">
+                          {{ item.peso_ajuste.valor > 0 ? 'comprar' : 'vender' }}
                         </span>
                       </td>
                     </tr>
