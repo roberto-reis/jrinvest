@@ -5,10 +5,10 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Domain\Ativo\Models\Ativo;
-use App\Models\RebalanceamentoAtivo;
 use App\Models\RebalanceamentoClasse;
 use App\Domain\Operacao\Models\Operacao;
 use App\Domain\ClasseAtivo\Models\ClasseAtivo;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 
 class DatabaseSeeder extends Seeder
 {
