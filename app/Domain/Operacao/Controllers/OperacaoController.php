@@ -3,12 +3,12 @@
 namespace App\Domain\Operacao\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Ativo;
-use App\Models\Operacao;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Domain\Operacao\DTO\OperacaoDTO;
+use App\Domain\Operacao\Models\Operacao;
 use Illuminate\Support\Facades\Redirect;
 use App\Domain\Operacao\Requests\OperacaoRequest;
 use App\Domain\Operacao\Actions\CreateOperacaoAction;

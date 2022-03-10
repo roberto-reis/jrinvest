@@ -3,22 +3,22 @@
 namespace App\Domain\Rebalanceamento\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Ativo;
-use App\Models\ClasseAtivo;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\RebalanceamentoAtivo;
-use App\Models\RebalanceamentoClasse;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 use App\Domain\Rebalanceamento\DTO\RebalanceamentoAtivoDTO;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 use App\Domain\Rebalanceamento\DTO\RebalanceamentoClasseDTO;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoClasse;
 use App\Domain\Rebalanceamento\Requests\RebalanceamentoAtivoRequest;
 use App\Domain\Rebalanceamento\Requests\RebalanceamentoClasseRequest;
 use App\Domain\Rebalanceamento\Actions\CreateRebalanceamentoAtivoAction;
+use App\Domain\Rebalanceamento\Actions\DeleteRebalanceamentoAtivoAction;
 use App\Domain\Rebalanceamento\Actions\UpdateRebalanceamentoAtivoAction;
 use App\Domain\Rebalanceamento\Actions\CreateRebalanceamentoClasseAction;
-use App\Domain\Rebalanceamento\Actions\DeleteRebalanceamentoAtivoAction;
 use App\Domain\Rebalanceamento\Actions\DeleteRebalanceamentoClasseAction;
 use App\Domain\Rebalanceamento\Actions\UpdateRebalanceamentoClasseAction;
 

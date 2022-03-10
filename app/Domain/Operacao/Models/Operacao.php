@@ -2,6 +2,7 @@
 
 namespace App\Domain\Operacao\Models;
 
+use App\Domain\User\Models\User;
 use App\Models\Traits\UuidTrait;
 use App\Domain\Ativo\Models\Ativo;
 use Database\Factories\OperacaoFactory;

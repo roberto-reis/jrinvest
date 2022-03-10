@@ -2,8 +2,8 @@
 
 namespace App\Domain\ClasseAtivo\Actions;
 
-use App\Models\ClasseAtivo;
 use App\Domain\ClasseAtivo\DTO\ClasseAtivoDTO;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 
 class UpdateClasseAtivoAction
 {

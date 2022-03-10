@@ -2,8 +2,10 @@
 
 namespace App\Domain\Rebalanceamento\Models;
 
+use App\Domain\User\Models\User;
 use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 use Database\Factories\RebalanceamentoClasseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

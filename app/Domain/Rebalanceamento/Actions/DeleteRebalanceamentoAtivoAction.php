@@ -2,7 +2,7 @@
 
 namespace App\Domain\Rebalanceamento\Actions;
 
-use App\Models\RebalanceamentoAtivo;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 
 class DeleteRebalanceamentoAtivoAction
 {

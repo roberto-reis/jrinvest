@@ -5,7 +5,10 @@ namespace App\Domain\Ativo\Models;
 use App\Models\Traits\UuidTrait;
 use Database\Factories\AtivoFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Operacao\Models\Operacao;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 
 class Ativo extends Model
 {

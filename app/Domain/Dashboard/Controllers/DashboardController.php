@@ -3,11 +3,11 @@
 namespace App\Domain\Dashboard\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Cotacao;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Carteira;
-use App\Models\RebalanceamentoAtivo;
+use App\Domain\Cotacao\Models\Cotacao;
+use App\Domain\Carteira\Models\Carteira;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 
 class DashboardController extends Controller
 {

@@ -2,12 +2,12 @@
 
 namespace App\Domain\Carteira\Jobs;
 
-use App\Models\Carteira;
-use App\Models\Operacao;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\SerializesModels;
+use App\Domain\Carteira\Models\Carteira;
+use App\Domain\Operacao\Models\Operacao;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

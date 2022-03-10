@@ -3,15 +3,15 @@
 namespace App\Domain\Ativo\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Ativo;
-use App\Models\ClasseAtivo;
 use Illuminate\Http\Request;
 use App\Domain\Ativo\DTO\AtivoDTO;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Domain\Ativo\Requests\AtivoRequest;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 use App\Domain\Ativo\Actions\CreateAtivoAction;
 use App\Domain\Ativo\Actions\DeleteAtivoAction;
 use App\Domain\Ativo\Actions\UpdateAtivoAction;

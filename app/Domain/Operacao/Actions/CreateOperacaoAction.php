@@ -2,9 +2,9 @@
 
 namespace App\Domain\Operacao\Actions;
 
-use App\Domain\Operacao\DTO\OperacaoDTO;
-use App\Models\Operacao;
 use Illuminate\Support\Facades\Auth;
+use App\Domain\Operacao\DTO\OperacaoDTO;
+use App\Domain\Operacao\Models\Operacao;
 
 class CreateOperacaoAction
 {

@@ -3,13 +3,13 @@
 namespace App\Domain\ClasseAtivo\Controllers;
 
 use Inertia\Inertia;
-use App\Models\ClasseAtivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Domain\ClasseAtivo\DTO\ClasseAtivoDTO;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 use App\Domain\ClasseAtivo\Requests\ClasseAtivoRequest;
 use App\Domain\ClasseAtivo\Actions\CreateClasseAtivoAction;
 use App\Domain\ClasseAtivo\Actions\DeleteClasseAtivoAction;

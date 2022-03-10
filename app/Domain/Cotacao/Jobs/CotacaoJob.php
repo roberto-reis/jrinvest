@@ -2,10 +2,10 @@
 
 namespace App\Domain\Cotacao\Jobs;
 
-use App\Models\Ativo;
-use App\Models\Cotacao;
 use Illuminate\Bus\Queueable;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Support\Facades\Log;
+use App\Domain\Cotacao\Models\Cotacao;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

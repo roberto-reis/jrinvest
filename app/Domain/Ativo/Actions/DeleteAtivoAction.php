@@ -2,8 +2,9 @@
 
 namespace App\Domain\Ativo\Actions;
 
-use App\Models\Ativo;
-use App\Models\Operacao;
+use App\Domain\Ativo\Models\Ativo;
+use App\Domain\Operacao\Models\Operacao;
+
 
 class DeleteAtivoAction
 {

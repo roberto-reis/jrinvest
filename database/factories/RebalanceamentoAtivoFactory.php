@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Domain\User\Models\User;
 use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;

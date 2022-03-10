@@ -3,7 +3,7 @@
 namespace App\Domain\Rebalanceamento\Actions;
 
 use App\Domain\Rebalanceamento\DTO\RebalanceamentoAtivoDTO;
-use App\Models\RebalanceamentoAtivo;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 
 class CreateRebalanceamentoAtivoAction
 {
