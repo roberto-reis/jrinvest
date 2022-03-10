@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Rebalanceamento\Models;
 
 use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\RebalanceamentoClasseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RebalanceamentoClasse extends Model
@@ -30,6 +31,11 @@ class RebalanceamentoClasse extends Model
     public function classeAtivo()
     {
         return $this->belongsTo(ClasseAtivo::class, 'classe_ativo_id');
+    }
+
+    protected static function newFactory()
+    {
+        return new RebalanceamentoClasseFactory();
     }
 
 }
