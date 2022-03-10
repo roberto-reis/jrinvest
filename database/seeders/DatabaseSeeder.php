@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Ativo;
-use App\Models\Operacao;
-use App\Models\ClasseAtivo;
+use Illuminate\Database\Seeder;
+use App\Domain\Ativo\Models\Ativo;
 use App\Models\RebalanceamentoAtivo;
 use App\Models\RebalanceamentoClasse;
-use Illuminate\Database\Seeder;
+use App\Domain\Operacao\Models\Operacao;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 
 class DatabaseSeeder extends Seeder
 {

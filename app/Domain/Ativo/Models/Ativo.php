@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Ativo\Models;
 
 use App\Models\Traits\UuidTrait;
+use Database\Factories\AtivoFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -45,6 +46,11 @@ class Ativo extends Model
     public function getNomeClasseAtivoAttribute()
     {
         return $this->classeAtivo()->first()->nome;
+    }
+
+    protected static function newFactory()
+    {
+        return new AtivoFactory();
     }
 
 }

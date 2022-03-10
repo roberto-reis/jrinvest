@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Ativo;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CotacaoFactory extends Factory

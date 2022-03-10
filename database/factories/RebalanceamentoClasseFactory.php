@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\ClasseAtivo;
 use App\Models\User;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RebalanceamentoClasseFactory extends Factory
@@ -18,7 +18,7 @@ class RebalanceamentoClasseFactory extends Factory
         return [
             // 'user_id' => User::factory()->create()->id,
             // 'classe_ativo_id' => ClasseAtivo::factory()->create()->id,
-            'porcentagem' => $this->faker->randomFloat(2, 0, 50),
+            'percentual' => $this->faker->randomFloat(2, 0, 50),
         ];
     }
 }

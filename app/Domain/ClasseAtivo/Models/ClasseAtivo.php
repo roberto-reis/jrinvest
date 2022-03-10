@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\ClasseAtivo\Models;
 
 use App\Models\Traits\UuidTrait;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\ClasseAtivoFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ClasseAtivo extends Model
@@ -24,6 +26,11 @@ class ClasseAtivo extends Model
     public function ativos()
     {
         return $this->hasMany(Ativo::class, 'classe_ativo_id', 'id');
+    }
+
+    protected static function newFactory()
+    {
+        return new ClasseAtivoFactory();
     }
 
 }

@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Operacao\Models;
 
 use App\Models\Traits\UuidTrait;
+use App\Domain\Ativo\Models\Ativo;
+use Database\Factories\OperacaoFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -52,6 +54,11 @@ class Operacao extends Model
     public function setQuantidadeAttribute($value)
     {     
         $this->attributes['quantidade'] =  numberFormatterToSave($value);
+    }
+
+    protected static function newFactory()
+    {
+        return new OperacaoFactory();
     }
 
 }

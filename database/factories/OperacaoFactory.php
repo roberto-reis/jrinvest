@@ -3,11 +3,14 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use App\Models\Ativo;
+use App\Domain\Ativo\Models\Ativo;
+use App\Domain\Operacao\Models\Operacao;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OperacaoFactory extends Factory
 {
+    protected $model = Operacao::class;
+
     /**
      * Define the model's default state.
      *
