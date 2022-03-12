@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->hasMany(RebalanceamentoAtivo::class, 'user_id', 'id');
     }
 
+    public function carteiras()
+    {
+        return $this->hasMany(Carteira::class, 'carteira_id', 'id');
+    }
+
     protected static function newFactory()
     {
         return new UserFactory();

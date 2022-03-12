@@ -46,6 +46,11 @@ class Ativo extends Model
         return $this->hasMany(RebalanceamentoAtivo::class, 'ativo_id', 'id');
     }
 
+    public function carteira()
+    {
+        return $this->belongsTo(Carteira::class, 'carteira_id', 'id');
+    }
+
     public function getNomeClasseAtivoAttribute()
     {
         return $this->classeAtivo()->first()->nome;

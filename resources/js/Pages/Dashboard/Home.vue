@@ -71,7 +71,7 @@
           <!-- Card Minha Carteira-->
           <div class="mr-2 block rounded-lg shadow-lg bg-white text-center border border-gray-300 basis-1/3">
             <div class="py-2 px-3 border-b rounded-t-lg border-gray-300 bg-gray-200">
-              <h5 class="text-gray-700 text-base font-semibold">Minha Carteira</h5>
+              <h5 class="text-gray-700 text-base font-semibold">Minha Carteira ({{ formatMoneyBr(minhaCarteira.valor_total_carteira) }})</h5>
             </div>            
             <div class="p-2">
               <div class="overflow-x-auto">
@@ -101,7 +101,7 @@
                         {{ numberFormatterBr(item.quantidade_saldo, 4) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ formatMoneyBr(item.valor_total_ativo) }}
+                        {{ formatMoneyBr(item.valor_ativo) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
                         {{ numberFormatterBr(item.percentual_atual) }}%
@@ -118,7 +118,7 @@
           <!-- Card Posição Ideal Por Ativo-->
           <div class="block rounded-lg shadow-lg bg-white text-center border border-gray-300 basis-1/3">
             <div class="py-2 px-3 border-b rounded-t-lg border-gray-300 bg-gray-200">
-              <h5 class="text-gray-700 text-base font-semibold">Posição Ideal</h5>
+              <h5 class="text-gray-700 text-base font-semibold">Carteira Ideal</h5>
             </div>            
             <div class="p-2 min-w-full">
               <div class="overflow-x-auto">
@@ -140,18 +140,18 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr v-for="item in minhaCarteira.ativos" :key="item.id" class="bg-white border-b">
+                    <tr v-for="item in carteiraIdeal" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ item.ativo.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ numberFormatterBr(item.peso_ideal.quantidade_ativo, 4) }}
+                        {{ numberFormatterBr(item.quantidade_ativo, 4) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ formatMoneyBr(item.peso_ideal.valor) }}
+                        {{ formatMoneyBr(item.valor_ativo) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
-                        {{ numberFormatterBr(item.peso_ideal.percentual) }}%
+                        {{ numberFormatterBr(item.percentual) }}%
                       </td>
                     </tr>
                   </tbody>
@@ -163,7 +163,7 @@
           <!-- Card Ajuste de Posição-->
           <div class="ml-2 block rounded-lg shadow-lg bg-white text-center border border-gray-300 basis-1/3">
             <div class="py-2 px-3 border-b rounded-t-lg border-gray-300 bg-gray-200">
-              <h5 class="text-gray-700 text-base font-semibold">Ajuste de Posição</h5>
+              <h5 class="text-gray-700 text-base font-semibold">Ajuste na Carteira</h5>
             </div>            
             <div class="p-2 min-w-full">
               <div class="overflow-x-auto">
@@ -188,23 +188,23 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr v-for="item in minhaCarteira.ativos" :key="item.id" class="bg-white border-b">
+                    <tr v-for="item in carteiraAjuste" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ item.ativo.codigo }}
                       </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.peso_ajuste.quantidade_ativo > 0 ? 'text-green-600' : 'text-red-600'">
-                        {{ numberFormatterBr(item.peso_ajuste.quantidade_ativo, 4) }}
+                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.quantidade_ativo > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ numberFormatterBr(item.quantidade_ativo, 4) }}
                       </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.peso_ajuste.valor > 0 ? 'text-green-600' : 'text-red-600'">
-                        {{ formatMoneyBr(item.peso_ajuste.valor) }}
+                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.valor_ativo > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ formatMoneyBr(item.valor_ativo) }}
                       </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold" :class="item.peso_ajuste.percentual > 0 ? 'text-green-600' : 'text-red-600'">
-                        {{ numberFormatterBr(item.peso_ajuste.percentual) }}%
+                      <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold" :class="item.percentual > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ numberFormatterBr(item.percentual) }}%
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         <span class="text-xs inline-block py-1 px-2 leading-none text-center font-bold text-white rounded"
-                          :class="item.peso_ajuste.valor > 0 ? 'bg-green-400' : 'bg-red-400'">
-                          {{ item.peso_ajuste.valor > 0 ? 'comprar' : 'vender' }}
+                          :class="item.valor_ativo > 0 ? 'bg-green-400' : 'bg-red-400'">
+                          {{ item.valor_ativo > 0 ? 'comprar' : 'vender' }}
                         </span>
                       </td>
                     </tr>
@@ -283,7 +283,8 @@ export default {
   },
   props: {
     minhaCarteira: Object,
-    posicaoIdealAtivo: Object,
+    carteiraIdeal: Object,
+    carteiraAjuste: Object,
   },
   methods: {
     formatMoneyBr,
