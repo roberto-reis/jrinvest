@@ -71,7 +71,7 @@
           <!-- Card Minha Carteira-->
           <div class="mr-2 block rounded-lg shadow-lg bg-white text-center border border-gray-300 basis-1/3">
             <div class="py-2 px-3 border-b rounded-t-lg border-gray-300 bg-gray-200">
-              <h5 class="text-gray-700 text-base font-semibold">Minha Carteira</h5>
+              <h5 class="text-gray-700 text-base font-semibold">Minha Carteira ({{ formatMoneyBr(minhaCarteira.valor_total_carteira) }})</h5>
             </div>            
             <div class="p-2">
               <div class="overflow-x-auto">
@@ -92,19 +92,19 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody v-for="ativo in minhaCarteira" :key="ativo.ativo_id" class="text-sm font-medium text-gray-700 text-left">
+                  <tbody v-for="item in minhaCarteira.ativos" :key="item.id" class="text-sm font-medium text-gray-700 text-left">
                     <tr class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ ativo.codigo_ativo }}
+                        {{ item.ativo.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ ativo.quantidade_saldo }}
+                        {{ numberFormatterBr(item.quantidade_saldo, 4) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ ativo.valor_total }}
+                        {{ formatMoneyBr(item.valor_ativo) }}
                       </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        15,00
+                      <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
+                        {{ numberFormatterBr(item.percentual_atual) }}%
                       </td>
                     </tr>
                   </tbody>
@@ -115,10 +115,10 @@
 
           </div>
 
-          <!-- Card Posição Ideal-->
+          <!-- Card Posição Ideal Por Ativo-->
           <div class="block rounded-lg shadow-lg bg-white text-center border border-gray-300 basis-1/3">
             <div class="py-2 px-3 border-b rounded-t-lg border-gray-300 bg-gray-200">
-              <h5 class="text-gray-700 text-base font-semibold">Posição Ideal</h5>
+              <h5 class="text-gray-700 text-base font-semibold">Carteira Ideal</h5>
             </div>            
             <div class="p-2 min-w-full">
               <div class="overflow-x-auto">
@@ -139,19 +139,19 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody class="text-sm font-medium text-gray-900">
-                    <tr class="bg-white border-b">
+                  <tbody class="text-sm font-medium text-gray-900 text-left">
+                    <tr v-for="item in carteiraIdeal" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        BTC
+                        {{ item.ativo.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        0,02445566
+                        {{ numberFormatterBr(item.quantidade_ativo, 4) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        R$ 5.000,00
+                        {{ formatMoneyBr(item.valor_ativo) }}
                       </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        15,00
+                      <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
+                        {{ numberFormatterBr(item.percentual) }}%
                       </td>
                     </tr>
                   </tbody>
@@ -163,7 +163,7 @@
           <!-- Card Ajuste de Posição-->
           <div class="ml-2 block rounded-lg shadow-lg bg-white text-center border border-gray-300 basis-1/3">
             <div class="py-2 px-3 border-b rounded-t-lg border-gray-300 bg-gray-200">
-              <h5 class="text-gray-700 text-base font-semibold">Ajuste de Posição</h5>
+              <h5 class="text-gray-700 text-base font-semibold">Ajuste na Carteira</h5>
             </div>            
             <div class="p-2 min-w-full">
               <div class="overflow-x-auto">
@@ -188,41 +188,23 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr class="bg-white border-b">
+                    <tr v-for="item in carteiraAjuste" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        BTC
+                        {{ item.ativo.codigo }}
+                      </td>
+                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.quantidade_ativo > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ numberFormatterBr(item.quantidade_ativo, 4) }}
+                      </td>
+                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.valor_ativo > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ formatMoneyBr(item.valor_ativo) }}
+                      </td>
+                      <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold" :class="item.percentual > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ numberFormatterBr(item.percentual) }}%
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        0,02445566
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        R$ 5.000,00
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        15,00
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        <span class="text-xs inline-block py-1 px-2 leading-none text-center font-bold bg-green-500 text-white rounded">
-                          comprar
-                        </span>
-                      </td>
-                    </tr>
-                    <tr class="bg-white border-b">
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        GGRC11
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        45,00000000
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        R$ 5.000,00
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        15,00
-                      </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        <span class="text-xs inline-block py-1 px-2 leading-none text-center font-bold bg-red-500 text-white rounded">
-                          vender
+                        <span class="text-xs inline-block py-1 px-2 leading-none text-center font-bold text-white rounded"
+                          :class="item.valor_ativo > 0 ? 'bg-green-400' : 'bg-red-400'">
+                          {{ item.valor_ativo > 0 ? 'comprar' : 'vender' }}
                         </span>
                       </td>
                     </tr>
@@ -291,6 +273,7 @@
 <script>
 import Authenticated from "@/Layouts/Authenticated.vue";
 import { Head } from "@inertiajs/inertia-vue3";
+import { formatMoneyBr, numberFormatterBr } from '@/Helpers/index.js';
 
 export default {
   name: 'Dashboard',
@@ -300,6 +283,12 @@ export default {
   },
   props: {
     minhaCarteira: Object,
+    carteiraIdeal: Object,
+    carteiraAjuste: Object,
+  },
+  methods: {
+    formatMoneyBr,
+    numberFormatterBr,
   },
 };
 </script>

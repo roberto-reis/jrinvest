@@ -2,13 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Ativo;
-use App\Models\Operacao;
-use App\Models\ClasseAtivo;
-use App\Models\RebalanceamentoAtivo;
-use App\Models\RebalanceamentoClasse;
 use Illuminate\Database\Seeder;
+use App\Domain\User\Models\User;
+use App\Domain\Ativo\Models\Ativo;
+use App\Domain\Cotacao\Models\Cotacao;
+use App\Domain\Operacao\Models\Operacao;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoClasse;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,6 +31,10 @@ class DatabaseSeeder extends Seeder
 
             $ativo = Ativo::factory()->create([
                 'classe_ativo_id' => $classeAtivo->id
+            ]);
+
+            Cotacao::factory()->create([
+                'ativo_id' => $ativo->id,
             ]);
             
             RebalanceamentoClasse::factory()->create([

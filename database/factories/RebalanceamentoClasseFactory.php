@@ -2,12 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\ClasseAtivo;
-use App\Models\User;
+use App\Domain\User\Models\User;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoClasse;
 
 class RebalanceamentoClasseFactory extends Factory
 {
+    protected $model = RebalanceamentoClasse::class;
+
     /**
      * Define the model's default state.
      *
@@ -16,9 +19,9 @@ class RebalanceamentoClasseFactory extends Factory
     public function definition()
     {
         return [
-            // 'user_id' => User::factory()->create()->id,
+            'user_id' => User::factory()->create()->id,
             // 'classe_ativo_id' => ClasseAtivo::factory()->create()->id,
-            'porcentagem' => $this->faker->randomFloat(2, 0, 50),
+            'percentual' => $this->faker->randomFloat(2, 0, 50),
         ];
     }
 }

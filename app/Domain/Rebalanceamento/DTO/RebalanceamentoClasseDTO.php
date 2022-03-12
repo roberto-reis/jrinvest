@@ -7,19 +7,19 @@ use App\Domain\Rebalanceamento\Requests\RebalanceamentoClasseRequest;
 class RebalanceamentoClasseDTO
 {
     public string $classe_ativo_id;
-    public float $porcentagem;
+    public float $percentual;
 
-    public function __construct(string $classe_ativo_id, float $porcentagem)
+    public function __construct(string $classe_ativo_id, float $percentual)
     {
         $this->classe_ativo_id = $classe_ativo_id;
-        $this->porcentagem = $porcentagem;
+        $this->percentual = $percentual;
     }
 
     public static function fromRequest(RebalanceamentoClasseRequest $request): RebalanceamentoClasseDTO
     {
         return new self(
             $request->classe_ativo_id,
-            $request->porcentagem
+            $request->percentual
         );
     }
 

@@ -3,7 +3,7 @@
 namespace App\Domain\Rebalanceamento\Actions;
 
 use App\Domain\Rebalanceamento\DTO\RebalanceamentoAtivoDTO;
-use App\Models\RebalanceamentoAtivo;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 
 class CreateRebalanceamentoAtivoAction
 {
@@ -12,7 +12,7 @@ class CreateRebalanceamentoAtivoAction
         $rebalanceamentoAtivo = new RebalanceamentoAtivo();
         $rebalanceamentoAtivo->user_id = auth()->user()->id;
         $rebalanceamentoAtivo->ativo_id = $rebalanceamentoAtivoDTO->ativo_id;
-        $rebalanceamentoAtivo->porcentagem = $rebalanceamentoAtivoDTO->porcentagem;
+        $rebalanceamentoAtivo->percentual = $rebalanceamentoAtivoDTO->percentual;
         $rebalanceamentoAtivo->save();
 
         return $rebalanceamentoAtivo;

@@ -3,12 +3,12 @@
 namespace App\Domain\Operacao\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Ativo;
-use App\Models\Operacao;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Domain\Operacao\DTO\OperacaoDTO;
+use App\Domain\Operacao\Models\Operacao;
 use Illuminate\Support\Facades\Redirect;
 use App\Domain\Operacao\Requests\OperacaoRequest;
 use App\Domain\Operacao\Actions\CreateOperacaoAction;
@@ -21,17 +21,10 @@ class OperacaoController extends Controller
 
     public function index()
     {
-        request()->validate([
-            'direction' => ['nullable', 'in:asc,desc'],
-            'field' => ['nullable', 'in:codigo_ativo,tipo_operacao,classe_ativo,cotacao_preco,quantidade,corretora,created_at'],
-            'search' => ['nullable', 'string'],
-            'perPage' => ['nullable', 'integer'],
-        ]);
-
         $search = request()->get('search');
-        $this->perPage = request()->get('perPage') ?? $this->perPage;
-        $field = request()->get('field') ?? 'created_at';
-        $direction = request()->get('direction') ?? 'desc';
+        $this->perPage = request()->get('perPage', $this->perPage);
+        $field = request()->get('field', 'created_at');
+        $direction = request()->get('direction', 'desc');
 
         $operacoes = Operacao::select('operacoes.*', 'ativos.codigo as codigo_ativo', 'classes_ativos.nome as classe_ativo')
                     ->join('ativos', 'operacoes.ativo_id', '=', 'ativos.id')

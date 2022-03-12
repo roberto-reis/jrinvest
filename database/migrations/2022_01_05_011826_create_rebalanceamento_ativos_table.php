@@ -17,7 +17,7 @@ class CreateRebalanceamentoAtivosTable extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->index();
             $table->foreignUuid('ativo_id')->index();
-            $table->decimal('porcentagem', 10, 2);
+            $table->decimal('percentual', 10, 2);
             $table->timestamps();
             $table->unique(['user_id', 'ativo_id']);
 

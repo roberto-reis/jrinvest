@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Carteira\Models;
 
+use App\Domain\User\Models\User;
 use App\Models\Traits\UuidTrait;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -24,12 +26,12 @@ class Carteira extends Model
     ];
 
     protected $appends = [
-        'valor_total',
+        'custo_total_ativo',
     ];
 
-    public function getValorTotalAttribute()
+    public function getCustoTotalAtivoAttribute()
     {
-        return $this->cotacao_preco * $this->attributes['quantidade_saldo'];
+        return $this->quantidade_saldo * $this->preco_medio;
     }
 
     public function user()

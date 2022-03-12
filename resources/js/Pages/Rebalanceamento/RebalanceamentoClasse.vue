@@ -2,7 +2,7 @@
     <div class="tab-pane fade show active" :id="id" role="tabpanel" aria-labelledby="tabs-classe-ativo">
         <div class="mb-1">
             <h2 class="text-gray-700 text-lg font-semibold">
-                Selecione uma classe de um ativo e porcentagem(%) Meta/Objetivo
+                Selecione uma classe de um ativo e percentual(%) Meta/Objetivo
             </h2>
         </div>
 
@@ -23,7 +23,7 @@
                     </div>
                     <div class="w-full mr-3 mb-3">
                         <label for="meta_objetivo" class="block mb-1 text-sm font-medium text-gray-900">% Meta/Objetivo:</label>
-                        <input type="text" v-model="classeRebalanceamentoForm.porcentagem" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
+                        <input type="text" v-model="classeRebalanceamentoForm.percentual" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
                     </div>
                     <div class="flex items-end mb-3">
                         <button type="submit" class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded text-sm sm:w-auto px-5 py-2.5 text-center">
@@ -57,7 +57,7 @@
                                 <tr v-for="classeRebalanceamento in classeRebalanceamentos" :key="classeRebalanceamento.id" class="hover:bg-gray-100">
                                     <td class="py-2 px-4 whitespace-nowrap">{{ classeRebalanceamento.classe_ativo.nome }}</td>
                                     <td class="py-2 px-4 whitespace-nowrap">{{ classeRebalanceamento.classe_ativo.descricao }}</td>
-                                    <td class="py-2 px-4 whitespace-nowrap">{{ classeRebalanceamento.porcentagem }} %</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">{{ classeRebalanceamento.percentual }} %</td>
                                     <td class="py-2 px-4 text-sm font-medium whitespace-nowrap">
                                         <button @click="editRebalaceamentoClasse(classeRebalanceamento)" class="mr-1 inline-block py-2 px-2.5 text-white bg-yellow-400 hover:bg-yellow-500 font-medium text-xs leading-tight rounded shadow-md focus:ring-0">
                                             <i class="fas fa-edit"></i>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="w-full mr-3 mb-3">
                     <label for="meta_objetivo" class="block mb-1 text-sm font-medium text-gray-900">% Meta/Objetivo:</label>
-                    <input type="text" v-model="classeRebalanceamentoFormUpdate.porcentagem" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
+                    <input type="text" v-model="classeRebalanceamentoFormUpdate.percentual" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
                 </div>
             </form>
         </template>	
@@ -124,18 +124,18 @@ export default {
             modalVisible: false,
             classeRebalanceamentoForm: this.$inertia.form({
                 classe_ativo_id: '',
-                porcentagem: '',
+                percentual: '',
             }),
             classeRebalanceamentoFormUpdate: this.$inertia.form({
                 id: '',
                 classe_ativo_id: '',
-                porcentagem: '',
+                percentual: '',
             }),
         };
     },
     methods: {
         classeRebalanceamentoStore() {
-            this.classeRebalanceamentoForm.post(route('rebalanceamento.porcentagemClasseStore'), {
+            this.classeRebalanceamentoForm.post(route('rebalanceamento.percentualClasseStore'), {
                 onSuccess: () => {
 					this.classeRebalanceamentoForm.reset();
 				},
@@ -144,11 +144,11 @@ export default {
         editRebalaceamentoClasse(data) {
             this.classeRebalanceamentoFormUpdate.id = data.id;
             this.classeRebalanceamentoFormUpdate.classe_ativo_id = data.classe_ativo_id;
-            this.classeRebalanceamentoFormUpdate.porcentagem = data.porcentagem;
+            this.classeRebalanceamentoFormUpdate.percentual = data.percentual;
             this.modalVisible = true;            
         },
         classeRebalanceamentoUpdate() {
-            this.classeRebalanceamentoFormUpdate.put(route('rebalanceamento.porcentagemClasseUpdate'), {
+            this.classeRebalanceamentoFormUpdate.put(route('rebalanceamento.percentualClasseUpdate'), {
                 onSuccess: () => {
                     this.classeRebalanceamentoFormUpdate.reset();
                     this.modalVisible = false;
@@ -156,7 +156,7 @@ export default {
             });
         },
         deleteRebalaceamentoClasse(id) {
-            this.$inertia.delete(this.route('rebalanceamento.porcentagemClasseDestroy', {id: id}), {
+            this.$inertia.delete(this.route('rebalanceamento.percentualClasseDestroy', {id: id}), {
 				preserveState: true,
 				onBefore: () => confirm('Tem certeza que deseja excluir este rebalanceamento?'),
 			});

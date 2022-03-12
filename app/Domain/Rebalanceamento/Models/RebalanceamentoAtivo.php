@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Rebalanceamento\Models;
 
+use App\Domain\User\Models\User;
 use App\Models\Traits\UuidTrait;
+use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\RebalanceamentoAtivoFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RebalanceamentoAtivo extends Model
@@ -19,7 +22,7 @@ class RebalanceamentoAtivo extends Model
     protected $fillable = [
         'user_id',
         'ativo_id',
-        'porcentagem',
+        'percentual',
     ];
 
     public function user()
@@ -30,6 +33,11 @@ class RebalanceamentoAtivo extends Model
     public function ativo()
     {
         return $this->belongsTo(Ativo::class, 'ativo_id', 'id');
+    }
+
+    protected static function newFactory()
+    {
+        return new RebalanceamentoAtivoFactory();
     }
     
 }

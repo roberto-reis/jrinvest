@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Operacao;
-use App\Domain\Operacao\Observers\OperacaoObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Domain\Operacao\Models\Operacao;
+use App\Domain\Operacao\Observers\OperacaoObserver;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 

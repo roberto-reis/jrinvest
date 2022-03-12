@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\User\Models;
 
 use App\Models\Traits\UuidTrait;
 use Laravel\Sanctum\HasApiTokens;
+use Database\Factories\UserFactory;
+use App\Domain\Operacao\Models\Operacao;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoClasse;
 
 class User extends Authenticatable
 {
@@ -66,5 +70,15 @@ class User extends Authenticatable
     public function rebalanceamentoAtivos()
     {
         return $this->hasMany(RebalanceamentoAtivo::class, 'user_id', 'id');
+    }
+
+    public function carteiras()
+    {
+        return $this->hasMany(Carteira::class, 'carteira_id', 'id');
+    }
+
+    protected static function newFactory()
+    {
+        return new UserFactory();
     }
 }
