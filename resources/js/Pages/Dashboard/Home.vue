@@ -8,6 +8,7 @@
     </h2>
   </template>
 
+  <!-- Section Rentabilidades -->
   <section class="mt-6 overflow-hidden">
     <div class="flex justify-between items-center">
     
@@ -140,7 +141,7 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr v-for="item in carteiraIdeal" :key="item.id" class="bg-white border-b">
+                    <tr v-for="item in carteiraIdeal.ativos" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ item.ativo.codigo }}
                       </td>
@@ -188,7 +189,7 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr v-for="item in carteiraAjuste" :key="item.id" class="bg-white border-b">
+                    <tr v-for="item in carteiraAjuste.ativos" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ item.ativo.codigo }}
                       </td>
@@ -237,7 +238,7 @@
             <!-- Card Body-->         
             <div class="p-2">
               <div>
-                Gráfico
+                <pie-chart :data="minhaCarteiraChart"></pie-chart>
               </div>
             </div>
             <!-- Card Header-->
@@ -251,12 +252,12 @@
             <!-- Card Body-->         
             <div class="p-2">
               <div>
-                Gráfico
+                <pie-chart :data="carteiraIdealChart"></pie-chart>
               </div>
             </div>
             <!-- Card Header-->
             <div class="py-2 px-3 border-t rounded-b-lg border-gray-300 bg-gray-200">
-              <h5 class="text-gray-700 text-base font-semibold">Posição Ideal</h5>
+              <h5 class="text-gray-700 text-base font-semibold">Carteira Ideal</h5>
             </div>
           </div>
 
@@ -285,10 +286,27 @@ export default {
     minhaCarteira: Object,
     carteiraIdeal: Object,
     carteiraAjuste: Object,
+    minhaCarteiraPorClasses: Object,
+    carteiraIdealPorClasse: Object,
+  },
+  data() {
+    return {
+      minhaCarteiraChart: {},
+      carteiraIdealChart: {},
+    };
   },
   methods: {
     formatMoneyBr,
     numberFormatterBr,
   },
+  created() {
+    this.minhaCarteiraChart = Object.values(this.minhaCarteiraPorClasses).map((item) => {
+      return [ item.classe_ativo, item.percentual ];
+    });
+    this.carteiraIdealChart = Object.values(this.carteiraIdealPorClasse).map((item) => {
+      return [ item.classe_ativo, item.percentual ];
+    });
+
+  }
 };
 </script>

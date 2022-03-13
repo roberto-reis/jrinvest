@@ -20,14 +20,17 @@ class DashboardController extends Controller
         $carteiraAjuste = $this->getCarteiraComPercentualAjuste();
 
         // Rebalanceamento por Categoria
-        $minhaCarteiraPorCartegoria = $carteiraIdeal->groupBy('ativo.nome_classe_ativo');
-        $carteiraIdealPorCategoria = $minhaCarteira['ativos']->groupBy('ativo.nome_classe_ativo');
+        $minhaCarteiraPorClasses = $this->getCarteiraComPercentualAtualPorClasse();
+        $carteiraIdealPorClasse = $this->getCarteiraComPercentualIdealPorClasse();
+        
         
 
         return Inertia::render('Dashboard/Home', [
             'minhaCarteira' => $minhaCarteira,
             'carteiraIdeal' => $carteiraIdeal,
             'carteiraAjuste' => $carteiraAjuste,
+            'minhaCarteiraPorClasses' => $minhaCarteiraPorClasses,
+            'carteiraIdealPorClasse' => $carteiraIdealPorClasse,
         ]);
     }
 
@@ -82,7 +85,12 @@ class DashboardController extends Controller
             return $ativo;
         });
 
-        return $carteiraIdeal;
+        $carteiraIdealComTotal = collect([
+            "ativos" => $carteiraIdeal,
+            "valor_total_carteira" => $minhaCarteira['valor_total_carteira'],
+        ]);
+
+        return $carteiraIdealComTotal;
     }
 
     private function getCarteiraComPercentualAjuste()
@@ -91,7 +99,7 @@ class DashboardController extends Controller
         $carteiraIdeal = $this->getCarteiraComPercentualIdeal();
 
         // Calcula o percentual de ajuste de cada ativo
-        $carteiraComPercentualAjuste = $carteiraIdeal->map(function ($ativo) use ($minhaCarteira) {
+        $carteiraAjuste = $carteiraIdeal['ativos']->map(function ($ativo) use ($minhaCarteira) {
             $ativoMinhaCarteira = $minhaCarteira['ativos']->where('ativo_id', $ativo->ativo_id)->first(); // Pega o ativo da minha carteira
 
             if (!is_null($ativoMinhaCarteira)) { // Se o ativo estiver na minha carteira
@@ -103,7 +111,48 @@ class DashboardController extends Controller
             return $ativo;
         });
 
+        $carteiraComPercentualAjuste = collect([
+            "ativos" => $carteiraAjuste,
+            "valor_total_carteira" => $carteiraIdeal['valor_total_carteira'],
+        ]);
+
         return $carteiraComPercentualAjuste;
+    }
+
+    public function getCarteiraComPercentualAtualPorClasse()
+    {
+        $minhaCarteira = $this->getCarteiraComPercentualAtual();
+        $minhaCarteiraGrouped = $minhaCarteira['ativos']->groupBy('ativo.nome_classe_ativo');
+
+        $minhaCarteiraPorClasses = $minhaCarteiraGrouped->map(function ($ativos, $index) use ($minhaCarteira) {
+            $totalCarteira = $minhaCarteira['valor_total_carteira'];
+            $percentual =  ($ativos->sum('valor_ativo') / $totalCarteira) * 100;
+            return [
+                'classe_ativo' => $index,
+                'valor_total_classe' => $ativos->sum('valor_ativo'),
+                'percentual' => number_format($percentual, 2, '.', ''),
+            ];
+        });
+
+        return $minhaCarteiraPorClasses;
+    }
+
+    public function getCarteiraComPercentualIdealPorClasse()
+    {
+        $carteiraIdeal = $this->getCarteiraComPercentualIdeal();
+        $carteiraIdealGrouped = $carteiraIdeal['ativos']->groupBy('ativo.nome_classe_ativo');
+        
+        $minhaCarteiraPorClasses = $carteiraIdealGrouped->map(function ($ativos, $index) use ($carteiraIdeal) {
+            $totalCarteira = $carteiraIdeal['valor_total_carteira'];
+            $percentual = ($ativos->sum('valor_ativo') / $totalCarteira) * 100;
+            return [
+                'classe_ativo' => $index,
+                'valor_total_classe' => $ativos->sum('valor_ativo'),
+                'percentual' => number_format($percentual, 2, '.', ''),
+            ];
+        });
+
+        return $minhaCarteiraPorClasses;
     }
 
 }
