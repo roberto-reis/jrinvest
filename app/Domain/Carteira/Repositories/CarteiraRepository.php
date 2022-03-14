@@ -2,26 +2,32 @@
 namespace App\Domain\Carteira\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use App\Domain\Cotacao\Models\Cotacao;
 use App\Domain\Carteira\Models\Carteira;
+use App\Domain\Operacao\Models\Operacao;
 use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 
 class CarteiraRepository
 {
-    public function getCarteiraComPercentualAtual(string $dataCotacao = null)
+    
+    /**
+     * Calcula o percentual, quantidade e valor de cada ativo da carteira para o rebalanceamento
+     * @param ?string $dataPeriodoRentabilidade
+     * @return Collection
+     */
+    public function getCarteiraComPercentualAtual(string $dataPeriodoRentabilidade = null): Collection
     {
-        $dataSub30Days = Carbon::now()->subDays(30)->format('Y-m-d');
         $minhaCarteira = Carteira::with('ativo')->where('user_id', auth()->user()->id)->get();
         $cotacoesModelo = Cotacao::query();
 
-        if (is_null($dataCotacao)) { //  Se não for passado nenhum dia, pega o dia de hoje até um mês atrás
+        if (is_null($dataPeriodoRentabilidade)) { //  Se não for passado nenhum dia, pega a cotação mais recente
             $cotacoesModelo->where('preco', '>', 0)
-                        ->whereDate('created_at', '>', $dataSub30Days)
                         ->orderBy('created_at', 'desc');
                         
-        } else { // Se for passado a data, pega da data passada até agora
+        } else { // Se for passado a data, pega a cotação mais recente antes da data passada
             $cotacoesModelo->where('preco', '>', 0)
-                        ->whereDate('created_at', '>=', $dataCotacao)
+                        ->whereDate('created_at', '>=', $dataPeriodoRentabilidade)
                         ->orderBy('created_at', 'asc');
         }
 
@@ -58,7 +64,11 @@ class CarteiraRepository
         return $minhaCarteiraAtualizada;
     }
 
-    public function getCarteiraComPercentualIdeal()
+    /**
+     * Calcula o percentual, quantidade e valor ideal de cada ativo para ter na carteira
+     * @return Collection
+     */
+    public function getCarteiraComPercentualIdeal(): Collection
     {
         $minhaCarteira = $this->getCarteiraComPercentualAtual();
         $rebalanceamentoAtivo = RebalanceamentoAtivo::with('ativo')->where('user_id', auth()->user()->id)->get();
@@ -87,7 +97,11 @@ class CarteiraRepository
         return $carteiraIdealComTotal;
     }
 
-    public function getCarteiraComPercentualAjuste()
+    /**
+     * Calcula o percentual, quantidade e valor de cada ativo da carteira para o rebalanceamento
+     * @return Collection
+     */
+    public function getCarteiraComPercentualAjuste(): Collection
     {
         $minhaCarteira = $this->getCarteiraComPercentualAtual();
         $carteiraIdeal = $this->getCarteiraComPercentualIdeal();
@@ -113,7 +127,11 @@ class CarteiraRepository
         return $carteiraComPercentualAjuste;
     }
 
-    public function getCarteiraComPercentualAtualPorClasse()
+    /**
+     * Calcula o percentual atual de cada classe de ativo
+     * @return Collection
+     */
+    public function getCarteiraComPercentualAtualPorClasse(): Collection
     {
         $minhaCarteira = $this->getCarteiraComPercentualAtual();
         $minhaCarteiraGrouped = $minhaCarteira['ativos']->groupBy('ativo.nome_classe_ativo');
@@ -131,7 +149,11 @@ class CarteiraRepository
         return $minhaCarteiraPorClasses;
     }
 
-    public function getCarteiraComPercentualIdealPorClasse()
+    /**
+     * Calcula e retorna o percentual ideal de cada classe de ativo
+     * @return Collection
+     */
+    public function getCarteiraComPercentualIdealPorClasse(): Collection
     {
         $carteiraIdeal = $this->getCarteiraComPercentualIdeal();
         $carteiraIdealGrouped = $carteiraIdeal['ativos']->groupBy('ativo.nome_classe_ativo');
@@ -147,5 +169,34 @@ class CarteiraRepository
         });
 
         return $minhaCarteiraPorClasses;
+    }
+
+    /**
+     * calcula e retorna a rentabilidade total da carteira conforme periodo informado
+     * @param ?string $dataperiodoRentabilidade
+     * @return array
+     */
+    public function rentabidadeCarteira(string $dataPeriodoRentabilidade = null): array
+    {
+        $dataOperacoesMaisAntiga = Operacao::orderBy('created_at', 'asc')->first()->created_at;
+        $dataOperacoesMaisAntiga = Carbon::parse($dataOperacoesMaisAntiga)->format('Y-m-d');
+
+        if (!is_null($dataPeriodoRentabilidade) && $dataPeriodoRentabilidade > $dataOperacoesMaisAntiga) {
+            $dataPeriodoRentabilidade = $dataOperacoesMaisAntiga;
+        }
+
+        $minhaCarteira = $this->getCarteiraComPercentualAtual($dataPeriodoRentabilidade);
+        $valorTotalCarteira = $minhaCarteira['valor_total_carteira'];
+        $custoTotalCarteira = $minhaCarteira['custo_total_carteira'];
+
+        $rentabilidadeValor = ($valorTotalCarteira - $custoTotalCarteira);
+        $rentabilidadePercentual = ($rentabilidadeValor / $custoTotalCarteira) * 100;
+
+        return [
+            'valor_total_carteira' => $valorTotalCarteira,
+            'custo_total_carteira' => $custoTotalCarteira,
+            'rentabilidade_valor' => $rentabilidadeValor,
+            'rentabilidade_percentual' => $rentabilidadePercentual,
+        ];     
     }
 }

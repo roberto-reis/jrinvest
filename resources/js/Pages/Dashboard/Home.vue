@@ -13,8 +13,7 @@
     <div class="flex justify-between items-center">
     
       <div class="mr-2 basis-1/4">
-        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2"
-          :class="rentabidadeCarteiraHoje.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
+        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteiraHoje.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
           <p class="font-bold text-lg mb-4" :class="rentabidadeCarteiraHoje.rentabilidade_valor > 0 ? 'text-green-700' : 'text-red-700' ">
             <span>{{ formatMoneyBr(rentabidadeCarteiraHoje.rentabilidade_valor) }} | ({{ numberFormatterBr(rentabidadeCarteiraHoje.rentabilidade_percentual) }}%)</span>
             <span>
@@ -26,30 +25,36 @@
       </div>
 
       <div class="mr-2 basis-1/4">
-        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2 border-green-600">
-          <p class="text-green-700 font-bold text-lg mb-4">
-            <span>-R$ 100.500,00  (-15%)</span>
-            <i class="fas fa-arrow-up ml-2"></i>
+        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteira30Dias.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
+          <p class="font-bold text-lg mb-4" :class="rentabidadeCarteira30Dias.rentabilidade_valor > 0 ? 'text-green-700' : 'text-red-700' ">
+            <span>{{ formatMoneyBr(rentabidadeCarteira30Dias.rentabilidade_valor) }} | ({{ numberFormatterBr(rentabidadeCarteira30Dias.rentabilidade_percentual) }}%)</span>
+            <span>
+              <i class="fas ml-2" :class="rentabidadeCarteira30Dias.rentabilidade_valor > 0 ? 'fa-arrow-up' : 'fa-arrow-down' "></i>
+            </span>
           </p>
           <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (últimos 30 dia)</h5>
         </div>
       </div>
 
       <div class="basis-1/4">
-        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2 border-red-500">
-          <p class="text-red-700 font-bold text-lg mb-4">
-            <span>-R$ 100.500,00  (-15%)</span>
-            <i class="fas fa-arrow-down ml-2"></i>
+        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteira180Dias.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
+          <p class="font-bold text-lg mb-4" :class="rentabidadeCarteira180Dias.rentabilidade_valor > 0 ? 'text-green-700' : 'text-red-700' ">
+            <span>{{ formatMoneyBr(rentabidadeCarteira180Dias.rentabilidade_valor) }} | ({{ numberFormatterBr(rentabidadeCarteira180Dias.rentabilidade_percentual) }}%)</span>
+            <span>
+              <i class="fas ml-2" :class="rentabidadeCarteira180Dias.rentabilidade_valor > 0 ? 'fa-arrow-up' : 'fa-arrow-down' "></i>
+            </span>
           </p>
           <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (últimos 6 meses)</h5>
         </div> 
       </div>
 
       <div class="ml-2 basis-1/4">
-        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2 border-green-600">
-          <p class="text-green-700 font-bold text-lg mb-4">
-            <span>-R$ 100.500,00  (-15%)</span>
-            <i class="fas fa-arrow-up ml-2"></i>
+        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteira365Dias.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
+          <p class="font-bold text-lg mb-4" :class="rentabidadeCarteira365Dias.rentabilidade_valor > 0 ? 'text-green-700' : 'text-red-700' ">
+            <span>{{ formatMoneyBr(rentabidadeCarteira365Dias.rentabilidade_valor) }} | ({{ numberFormatterBr(rentabidadeCarteira365Dias.rentabilidade_percentual) }}%)</span>
+            <span>
+              <i class="fas ml-2" :class="rentabidadeCarteira365Dias.rentabilidade_valor > 0 ? 'fa-arrow-up' : 'fa-arrow-down' "></i>
+            </span>
           </p>
           <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (últimos 12 meses)</h5>
         </div>
@@ -228,7 +233,7 @@
       <div class="p-4 border-b border-gray-200 flex flex-col">
         
         <div class="text-2xl font-bold text-gray-500 mb-2">
-          <h3>Rebalanceamento por Categoria</h3>
+          <h3>Rebalanceamento por Classe de Ativo</h3>
         </div>
         
         <!-- ROW Rebalanceamento por Ativo-->
@@ -290,6 +295,9 @@ export default {
     minhaCarteiraPorClasses: Object,
     carteiraIdealPorClasse: Object,
     rentabidadeCarteiraHoje: Object,
+    rentabidadeCarteira30Dias: Object,
+    rentabidadeCarteira180Dias: Object,
+    rentabidadeCarteira365Dias: Object,
   },
   data() {
     return {
