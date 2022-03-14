@@ -8,48 +8,55 @@
     </h2>
   </template>
 
+  <!-- Section Rentabilidades -->
   <section class="mt-6 overflow-hidden">
     <div class="flex justify-between items-center">
     
       <div class="mr-2 basis-1/4">
-        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2 border-red-500">
-          <p class="text-red-700 font-bold text-lg mb-4">
-            <span>-R$ 100.500,00  (-15%)</span>
+        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteiraHoje.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
+          <p class="font-bold text-lg mb-4" :class="rentabidadeCarteiraHoje.rentabilidade_valor > 0 ? 'text-green-700' : 'text-red-700' ">
+            <span>{{ formatMoneyBr(rentabidadeCarteiraHoje.rentabilidade_valor) }} | ({{ numberFormatterBr(rentabidadeCarteiraHoje.rentabilidade_percentual) }}%)</span>
             <span>
-              <i class="fas fa-arrow-down ml-2"></i>
+              <i class="fas ml-2" :class="rentabidadeCarteiraHoje.rentabilidade_valor > 0 ? 'fa-arrow-up' : 'fa-arrow-down' "></i>
             </span>
           </p>
-          <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (Dia)</h5>
+          <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (Hoje)</h5>
         </div>
       </div>
 
       <div class="mr-2 basis-1/4">
-        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2 border-green-600">
-          <p class="text-green-700 font-bold text-lg mb-4">
-            <span>-R$ 100.500,00  (-15%)</span>
-            <i class="fas fa-arrow-up ml-2"></i>
+        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteira30Dias.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
+          <p class="font-bold text-lg mb-4" :class="rentabidadeCarteira30Dias.rentabilidade_valor > 0 ? 'text-green-700' : 'text-red-700' ">
+            <span>{{ formatMoneyBr(rentabidadeCarteira30Dias.rentabilidade_valor) }} | ({{ numberFormatterBr(rentabidadeCarteira30Dias.rentabilidade_percentual) }}%)</span>
+            <span>
+              <i class="fas ml-2" :class="rentabidadeCarteira30Dias.rentabilidade_valor > 0 ? 'fa-arrow-up' : 'fa-arrow-down' "></i>
+            </span>
           </p>
-          <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (ultimos 30 dia)</h5>
+          <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (últimos 30 dia)</h5>
         </div>
       </div>
 
       <div class="basis-1/4">
-        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2 border-red-500">
-          <p class="text-red-700 font-bold text-lg mb-4">
-            <span>-R$ 100.500,00  (-15%)</span>
-            <i class="fas fa-arrow-down ml-2"></i>
+        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteira180Dias.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
+          <p class="font-bold text-lg mb-4" :class="rentabidadeCarteira180Dias.rentabilidade_valor > 0 ? 'text-green-700' : 'text-red-700' ">
+            <span>{{ formatMoneyBr(rentabidadeCarteira180Dias.rentabilidade_valor) }} | ({{ numberFormatterBr(rentabidadeCarteira180Dias.rentabilidade_percentual) }}%)</span>
+            <span>
+              <i class="fas ml-2" :class="rentabidadeCarteira180Dias.rentabilidade_valor > 0 ? 'fa-arrow-up' : 'fa-arrow-down' "></i>
+            </span>
           </p>
-          <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (ultimos 12 meses)</h5>
+          <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (últimos 6 meses)</h5>
         </div> 
       </div>
 
       <div class="ml-2 basis-1/4">
-        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2 border-green-600">
-          <p class="text-green-700 font-bold text-lg mb-4">
-            <span>-R$ 100.500,00  (-15%)</span>
-            <i class="fas fa-arrow-up ml-2"></i>
+        <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteira365Dias.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">
+          <p class="font-bold text-lg mb-4" :class="rentabidadeCarteira365Dias.rentabilidade_valor > 0 ? 'text-green-700' : 'text-red-700' ">
+            <span>{{ formatMoneyBr(rentabidadeCarteira365Dias.rentabilidade_valor) }} | ({{ numberFormatterBr(rentabidadeCarteira365Dias.rentabilidade_percentual) }}%)</span>
+            <span>
+              <i class="fas ml-2" :class="rentabidadeCarteira365Dias.rentabilidade_valor > 0 ? 'fa-arrow-up' : 'fa-arrow-down' "></i>
+            </span>
           </p>
-          <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (Dia)</h5>
+          <h5 class="text-gray-700 text-lg leading-tight font-medium">Rentabilidade (últimos 12 meses)</h5>
         </div>
       </div>
 
@@ -104,7 +111,7 @@
                         {{ formatMoneyBr(item.valor_ativo) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
-                        {{ numberFormatterBr(item.percentual_atual) }}%
+                        {{ numberFormatterBr(item.percentual) }}%
                       </td>
                     </tr>
                   </tbody>
@@ -140,7 +147,7 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr v-for="item in carteiraIdeal" :key="item.id" class="bg-white border-b">
+                    <tr v-for="item in carteiraIdeal.ativos" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ item.ativo.codigo }}
                       </td>
@@ -188,7 +195,7 @@
                     </tr>
                   </thead>
                   <tbody class="text-sm font-medium text-gray-900 text-left">
-                    <tr v-for="item in carteiraAjuste" :key="item.id" class="bg-white border-b">
+                    <tr v-for="item in carteiraAjuste.ativos" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ item.ativo.codigo }}
                       </td>
@@ -226,7 +233,7 @@
       <div class="p-4 border-b border-gray-200 flex flex-col">
         
         <div class="text-2xl font-bold text-gray-500 mb-2">
-          <h3>Rebalanceamento por Categoria</h3>
+          <h3>Rebalanceamento por Classe de Ativo</h3>
         </div>
         
         <!-- ROW Rebalanceamento por Ativo-->
@@ -237,7 +244,7 @@
             <!-- Card Body-->         
             <div class="p-2">
               <div>
-                Gráfico
+                <pie-chart :data="minhaCarteiraChart"></pie-chart>
               </div>
             </div>
             <!-- Card Header-->
@@ -251,12 +258,12 @@
             <!-- Card Body-->         
             <div class="p-2">
               <div>
-                Gráfico
+                <pie-chart :data="carteiraIdealChart"></pie-chart>
               </div>
             </div>
             <!-- Card Header-->
             <div class="py-2 px-3 border-t rounded-b-lg border-gray-300 bg-gray-200">
-              <h5 class="text-gray-700 text-base font-semibold">Posição Ideal</h5>
+              <h5 class="text-gray-700 text-base font-semibold">Carteira Ideal</h5>
             </div>
           </div>
 
@@ -285,10 +292,31 @@ export default {
     minhaCarteira: Object,
     carteiraIdeal: Object,
     carteiraAjuste: Object,
+    minhaCarteiraPorClasses: Object,
+    carteiraIdealPorClasse: Object,
+    rentabidadeCarteiraHoje: Object,
+    rentabidadeCarteira30Dias: Object,
+    rentabidadeCarteira180Dias: Object,
+    rentabidadeCarteira365Dias: Object,
+  },
+  data() {
+    return {
+      minhaCarteiraChart: {},
+      carteiraIdealChart: {},
+    };
   },
   methods: {
     formatMoneyBr,
     numberFormatterBr,
   },
+  created() {
+    this.minhaCarteiraChart = Object.values(this.minhaCarteiraPorClasses).map((item) => {
+      return [ item.classe_ativo, item.percentual ];
+    });
+    this.carteiraIdealChart = Object.values(this.carteiraIdealPorClasse).map((item) => {
+      return [ item.classe_ativo, item.percentual ];
+    });
+
+  }
 };
 </script>
