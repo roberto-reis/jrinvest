@@ -26,24 +26,24 @@ class OperacaoController extends Controller
         $field = request()->get('field', 'created_at');
         $direction = request()->get('direction', 'desc');
 
-        $operacoes = Operacao::select('operacoes.*', 'ativos.codigo as codigo_ativo', 'classes_ativos.nome as classe_ativo')
+        $operacoes = Operacao::query()->select('operacoes.*', 'ativos.codigo as codigo_ativo', 'classes_ativos.nome as classe_ativo')
                     ->join('ativos', 'operacoes.ativo_id', '=', 'ativos.id')
                     ->join('classes_ativos', 'ativos.classe_ativo_id', '=', 'classes_ativos.id')
                     ->where('user_id', auth()->user()->id);
 
         if ($search) {
             $operacoes->where('tipo_operacao', 'like', "%{$search}%")
-            ->orWhere('corretora', 'like', "%{$search}%")
-            ->orWhere('ativos.codigo', 'like', "%{$search}%")
-            ->orWhere('classes_ativos.nome', 'like', "%{$search}%")
-            ->orWhere('operacoes.created_at', 'like', "%{$search}%");
+                ->orWhere('corretora', 'like', "%{$search}%")
+                ->orWhere('ativos.codigo', 'like', "%{$search}%")
+                ->orWhere('classes_ativos.nome', 'like', "%{$search}%")
+                ->orWhere('operacoes.created_at', 'like', "%{$search}%");
         }
 
         if ($field && $direction) {
             $operacoes->orderBy($field, $direction);
         }
 
-        $ativos = Ativo::orderBy('codigo', 'asc')->get();
+        $ativos = Ativo::query()->orderBy('codigo', 'asc')->get();
 
         return Inertia::render('Operacoes/Home', [
             'operacoes' => $operacoes->paginate($this->perPage),

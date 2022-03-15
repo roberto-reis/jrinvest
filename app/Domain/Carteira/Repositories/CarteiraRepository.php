@@ -7,6 +7,7 @@ use App\Domain\Cotacao\Models\Cotacao;
 use App\Domain\Carteira\Models\Carteira;
 use App\Domain\Operacao\Models\Operacao;
 use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
+use App\Domain\Rebalanceamento\Models\RebalanceamentoClasse;
 
 class CarteiraRepository
 {
@@ -18,9 +19,7 @@ class CarteiraRepository
      */
     public function getCarteiraComPercentualAtual(string $dataPeriodoRentabilidade = null): Collection
     {
-        // $minhaCarteira = Carteira::with('ativo')->where('user_id', auth()->user()->id)->get();
-
-        $minhaCarteira = Carteira::select('carteiras.*', 'ativos.codigo', 'classes_ativos.nome as classe_nome')
+        $minhaCarteira = Carteira::query()->select('carteiras.*', 'ativos.codigo', 'classes_ativos.nome as classe_nome')
             ->join('ativos', 'ativos.id', '=', 'carteiras.ativo_id')
             ->join('classes_ativos', 'classes_ativos.id', '=', 'ativos.classe_ativo_id')
             ->where('user_id', auth()->user()->id)
@@ -79,8 +78,6 @@ class CarteiraRepository
     public function getCarteiraComPercentualIdeal(): Collection
     {
         $minhaCarteira = $this->getCarteiraComPercentualAtual();
-        // $rebalanceamentoAtivo = RebalanceamentoAtivo::with('ativo')->where('user_id', auth()->user()->id)->get();
-
         $rebalanceamentoAtivo = RebalanceamentoAtivo::select('rebalanceamento_ativos.*', 'ativos.codigo', 'classes_ativos.nome as classe_nome')
             ->join('ativos', 'ativos.id', '=', 'rebalanceamento_ativos.ativo_id')
             ->join('classes_ativos', 'classes_ativos.id', '=', 'ativos.classe_ativo_id')
@@ -171,16 +168,20 @@ class CarteiraRepository
      */
     public function getCarteiraComPercentualIdealPorClasse(): Collection
     {
-        $carteiraIdeal = $this->getCarteiraComPercentualIdeal();
-        $carteiraIdealGrouped = $carteiraIdeal['ativos']->groupBy('classe_nome');
+        $minhaCarteira = $this->getCarteiraComPercentualAtual();
+        $carteiraIdealPorClasses = RebalanceamentoClasse::query()->select('rebalanceamento_classes.*', 'classes_ativos.nome as classe_ativo')
+            ->join('classes_ativos', 'classes_ativos.id', '=', 'rebalanceamento_classes.classe_ativo_id')
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('classe_ativo')
+            ->get();
         
-        $minhaCarteiraPorClasses = $carteiraIdealGrouped->map(function ($ativos, $index) use ($carteiraIdeal) {
-            $totalCarteira = $carteiraIdeal['valor_total_carteira'];
-            $percentual = ($ativos->sum('valor_ativo') / $totalCarteira) * 100;
+        $minhaCarteiraPorClasses = $carteiraIdealPorClasses->map(function ($classe) use ($minhaCarteira) {
+            $totalCarteira = $minhaCarteira['valor_total_carteira'];
+            $valorTotalClasse = ($totalCarteira * $classe->percentual) / 100;
             return [
-                'classe_ativo' => $index,
-                'valor_total_classe' => $ativos->sum('valor_ativo'),
-                'percentual' => number_format($percentual, 2, '.', ''),
+                'classe_ativo' => $classe->classe_ativo,
+                'valor_total_classe' => $valorTotalClasse,
+                'percentual' => $classe->percentual,
             ];
         });
 
