@@ -5,10 +5,7 @@ namespace App\Domain\Dashboard\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Domain\Cotacao\Models\Cotacao;
-use App\Domain\Carteira\Models\Carteira;
 use App\Domain\Carteira\Repositories\CarteiraRepository;
-use App\Domain\Operacao\Models\Operacao;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -25,8 +22,7 @@ class DashboardController extends Controller
 
         $dataUltimos30Dias = Carbon::now()->subDays(30)->format('Y-m-d');
         $dataUltimos180Dias = Carbon::now()->subDays(180)->format('Y-m-d');
-        $dataUltimos365Dias = Carbon::now()->subDays(365)->format('Y-m-d');       
-
+        $dataUltimos365Dias = Carbon::now()->subDays(365)->format('Y-m-d');
 
         // Rebalanceamento por Ativo
         $minhaCarteira = $this->carteiraRepository->getCarteiraComPercentualAtual();
