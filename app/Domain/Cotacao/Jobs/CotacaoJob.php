@@ -55,7 +55,7 @@ class CotacaoJob implements ShouldQueue
 
             if (!empty($cotacaoAcoesFii)) {
                 foreach ($cotacaoAcoesFii['results'] as $cotacao) {
-                    Cotacao::create([
+                    Cotacao::query()->create([
                         'ativo_id' => $ativoAcoesFii->where('codigo', $cotacao['symbol'])->first()->id,
                         'moeda_ref' => $cotacao['currency'],
                         'preco' => $cotacao['regularMarketPrice'] ?? '0.0',

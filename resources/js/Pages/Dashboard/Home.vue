@@ -102,7 +102,7 @@
                   <tbody v-for="item in minhaCarteira.ativos" :key="item.id" class="text-sm font-medium text-gray-700 text-left">
                     <tr class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ item.ativo.codigo }}
+                        {{ item.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ numberFormatterBr(item.quantidade_saldo, 4) }}
@@ -149,7 +149,7 @@
                   <tbody class="text-sm font-medium text-gray-900 text-left">
                     <tr v-for="item in carteiraIdeal.ativos" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ item.ativo.codigo }}
+                        {{ item.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         {{ numberFormatterBr(item.quantidade_ativo, 4) }}
@@ -197,7 +197,7 @@
                   <tbody class="text-sm font-medium text-gray-900 text-left">
                     <tr v-for="item in carteiraAjuste.ativos" :key="item.id" class="bg-white border-b">
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ item.ativo.codigo }}
+                        {{ item.codigo }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.quantidade_ativo > 0 ? 'text-green-600' : 'text-red-600'">
                         {{ numberFormatterBr(item.quantidade_ativo, 4) }}
