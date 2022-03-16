@@ -23,8 +23,13 @@
                     </div>
                     <div class="w-full mr-3 mb-3">
                         <label for="meta_objetivo" class="block mb-1 text-sm font-medium text-gray-900">% Meta/Objetivo:</label>
-                        <input type="text" v-model="classeRebalanceamentoForm.percentual" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15,00" required>
+                        <input type="text" v-model="classeRebalanceamentoForm.percentual" id="meta_objetivo" class="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2" placeholder="Ex: 15.00"
+                            :class="classeRebalanceamentoForm.errors.classe_ativo_id ? 'border-red-600' : 'border-gray-300'" required>
+                        <span v-if="classeRebalanceamentoForm.errors.percentual" class="text-red-600">
+                            {{ classeRebalanceamentoForm.errors.percentual }}
+                        </span>
                     </div>
+                    
                     <div class="flex items-end mb-3">
                         <button type="submit" class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded text-sm sm:w-auto px-5 py-2.5 text-center">
                             Incluir
@@ -104,10 +109,13 @@
         </template>	
     </Modal>
 
+    <ToastError />
+
 </template>
 
 <script>
 import Modal from "@/Components/Modal.vue";
+import ToastError from "@/Components/ToastError.vue";
 
 export default {
     name: 'RebalanceamentoClasse',
@@ -118,6 +126,7 @@ export default {
     },
     components: {
         Modal,
+        ToastError,
     },
     data() {
         return {
