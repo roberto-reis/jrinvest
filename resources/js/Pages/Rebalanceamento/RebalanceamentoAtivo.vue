@@ -106,13 +106,10 @@
         </template>	
     </Modal>
 
-    <ToastError />
-
 </template>
 
 <script>
 import Modal from "@/Components/Modal.vue";
-import ToastError from "@/Components/ToastError.vue";
 
 export default {
     name: 'RebalanceamentoAtivo',
@@ -126,7 +123,6 @@ export default {
     },
     components: {
         Modal,
-        ToastError,
     },
     data() {
         return {

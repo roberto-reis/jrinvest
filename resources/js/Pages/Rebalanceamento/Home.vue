@@ -43,6 +43,7 @@
 
     <!-- Notificações -->
 	<ToastSuccess :menssagem="flash.success" />
+    <ToastError :menssagem="flash.error" />
 
   </Authenticated>
 
@@ -52,6 +53,7 @@
 import Authenticated from "@/Layouts/Authenticated.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import ToastSuccess from "@/Components/ToastSuccess.vue";
+import ToastError from "@/Components/ToastError.vue";
 import RebalanceamentoClasse from "./RebalanceamentoClasse.vue";
 import RebalanceamentoAtivo from "./RebalanceamentoAtivo.vue";
 
@@ -68,6 +70,7 @@ export default {
         Authenticated,
         Head,
         ToastSuccess,
+        ToastError,
         RebalanceamentoClasse,
         RebalanceamentoAtivo,
     },
