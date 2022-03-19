@@ -41,7 +41,7 @@ class CotacaoJob implements ShouldQueue
 
             $ativos = Ativo::with('classeAtivo')->get();
 
-            if (is_null($ativos)) {
+            if ($ativos->isEmpty()) {
                 throw new \Exception('Não há ativos cadastrados');
             }
 
