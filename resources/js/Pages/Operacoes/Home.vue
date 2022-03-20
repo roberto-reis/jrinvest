@@ -15,9 +15,9 @@
 					<VButton @click="openModal()" class="bg-green-600 hover:bg-green-700 focus:bg-green-700">
 						Novo Aporte
 					</VButton>
-					<VButton class="ml-2 bg-gray-500 hover:bg-gray-700 focus:bg-gray-600">
+					<a :href="route('operacoes.export')" class="ml-2 inline-block leading-normal px-3 py-2 rounded font-semibold text-sm text-white uppercase bg-gray-500 hover:bg-gray-700 focus:bg-gray-600">
 						Export
-					</VButton>
+					</a>
 				</div>
 				<form>
 					<div class="flex w-96">
@@ -83,7 +83,7 @@
 											<i class="fas fa-sort ml-3"></i>
 										</span>
 									</th>
-									<th scope="col" @click="sort('created_at')" class="cursor-pointer p-3 tracking-wider">
+									<th scope="col" @click="sort('data_operacao')" class="cursor-pointer p-3 tracking-wider">
 										<span class="flex flex-row justify-between">
 											Data
 											<i class="fas fa-sort ml-3"></i>
@@ -120,7 +120,7 @@
 										{{ operacao.corretora }}
 									</td>
 									<td class="py-2 px-4 whitespace-nowrap">
-										{{ formatDateBr(operacao.created_at) }}
+										{{ formatDateBr(operacao.data_operacao) }}
 									</td>
 									<td class="py-1.5 px-4 whitespace-nowrap">
 										<div class="btn-group" role="group">
@@ -276,7 +276,7 @@ export default {
 			this.form.ativo = operacao.ativo_id;
 			this.form.tipo_operacao = operacao.tipo_operacao;
 			this.form.corretora = operacao.corretora;
-			this.form.data_operacao = operacao.created_at.split('T')[0];
+			this.form.data_operacao = operacao.data_operacao.split('T')[0];
 			this.form.cotacao = this.numberFormatterBr(operacao.cotacao_preco, 4);
 			this.form.quantidade = this.numberFormatterBr(operacao.quantidade, 8);
 			// Abre o modal

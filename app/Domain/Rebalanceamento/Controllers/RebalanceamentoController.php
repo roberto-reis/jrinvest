@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Exceptions\RebalanceamentoException;
 use App\Domain\ClasseAtivo\Models\ClasseAtivo;
 use App\Domain\Rebalanceamento\DTO\RebalanceamentoAtivoDTO;
 use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
@@ -51,6 +52,8 @@ class RebalanceamentoController extends Controller
         try {
             $createRebalanceamentoClasse($rebalanceamentoClasseDTO);            
             Session::flash('success', 'Rebalanceamento cadastrada com sucesso!');            
+        } catch (RebalanceamentoException $e) {
+            Session::flash('error', $e->getMessage());
         } catch (\Exception $e) {            
             Log::error('Error ao cadatrar rebalanceamento por classe de ativo: ', [$e->getMessage()]);
         }
@@ -64,6 +67,8 @@ class RebalanceamentoController extends Controller
         try {
             $createRebalanceamentoAtivo($rebalanceamentoAtivoDTO);            
             Session::flash('success', 'Rebalanceamento cadastrada com sucesso!');            
+        } catch (RebalanceamentoException $e) {
+            Session::flash('error', $e->getMessage());
         } catch (\Exception $e) {            
             Log::error('Error ao cadatrar rebalanceamento por ativo: ', [$e->getMessage()]);
         }
@@ -78,6 +83,8 @@ class RebalanceamentoController extends Controller
         try {
             $updateRebalanceamentoClasse($rebalanceamentoClasseDTO, $request->id);            
             Session::flash('success', 'Rebalanceamento atualizados com sucesso!');            
+        } catch (RebalanceamentoException $e) {
+            Session::flash('error', $e->getMessage());
         } catch (\Exception $e) {            
             Log::error('Error ao atualizar rebalanceamento por classe de ativo: ', [$e->getMessage()]);
         }
@@ -92,6 +99,8 @@ class RebalanceamentoController extends Controller
         try {
             $updateRebalanceamentoAtivo($rebalanceamentoAtivoDTO, $request->id);            
             Session::flash('success', 'Rebalanceamento atualizados com sucesso!');            
+        } catch (RebalanceamentoException $e) {
+            Session::flash('error', $e->getMessage());
         } catch (\Exception $e) {            
             Log::error('Error ao atualizar rebalanceamento por ativo: ', [$e->getMessage()]);
         }
