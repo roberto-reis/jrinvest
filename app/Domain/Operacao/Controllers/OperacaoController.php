@@ -6,10 +6,12 @@ use Inertia\Inertia;
 use App\Domain\Ativo\Models\Ativo;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use App\Domain\Operacao\DTO\OperacaoDTO;
 use App\Domain\Operacao\Models\Operacao;
 use Illuminate\Support\Facades\Redirect;
+use App\Domain\Operacao\Export\OperacaoExport;
 use App\Domain\Operacao\Requests\OperacaoRequest;
 use App\Domain\Operacao\Actions\CreateOperacaoAction;
 use App\Domain\Operacao\Actions\DeleteOperacaoAction;
@@ -23,7 +25,7 @@ class OperacaoController extends Controller
     {
         $search = request()->get('search');
         $this->perPage = request()->get('perPage', $this->perPage);
-        $field = request()->get('field', 'created_at');
+        $field = request()->get('field', 'data_operacao');
         $direction = request()->get('direction', 'desc');
 
         $operacoes = Operacao::query()->select('operacoes.*', 'ativos.codigo as codigo_ativo', 'classes_ativos.nome as classe_ativo')
@@ -36,7 +38,7 @@ class OperacaoController extends Controller
                 ->orWhere('corretora', 'like', "%{$search}%")
                 ->orWhere('ativos.codigo', 'like', "%{$search}%")
                 ->orWhere('classes_ativos.nome', 'like', "%{$search}%")
-                ->orWhere('operacoes.created_at', 'like', "%{$search}%");
+                ->orWhere('operacoes.data_operacao', 'like', "%{$search}%");
         }
 
         if ($field && $direction) {
@@ -71,8 +73,7 @@ class OperacaoController extends Controller
     }
 
     public function update(OperacaoRequest $requestOperacao, UpdateOperacaoAction $actionUpdateOperacao)
-    {
-        
+    {        
         $operacaoDTO = OperacaoDTO::fromRequest($requestOperacao);
 
         try {
@@ -95,6 +96,11 @@ class OperacaoController extends Controller
         } catch (\Exception $e) {
             Log::error('error ao excluir operação: ', [$e->getMessage()]);
         }
+    }
+
+    public function export()
+    {
+        return Excel::download(new OperacaoExport(), 'operacoes.xlsx');
     }
 
 }

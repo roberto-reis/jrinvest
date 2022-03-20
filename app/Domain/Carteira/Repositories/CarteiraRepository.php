@@ -210,7 +210,7 @@ class CarteiraRepository
      */
     public function rentabidadeCarteira(string $dataPeriodoRentabilidade = null): array
     {
-        $dataOperacoesMaisAntiga = Operacao::orderBy('created_at', 'asc')->first();
+        $dataOperacoesMaisAntiga = Operacao::orderBy('data_operacao', 'asc')->first();
         $minhaCarteira = $this->getCarteiraComPercentualAtual($dataPeriodoRentabilidade);
         
         if (is_null($dataOperacoesMaisAntiga) || $minhaCarteira->isEmpty()) {

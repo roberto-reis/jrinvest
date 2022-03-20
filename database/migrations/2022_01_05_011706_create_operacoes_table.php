@@ -19,8 +19,9 @@ class CreateOperacoesTable extends Migration
             $table->foreignUuid('ativo_id')->index();
             $table->string('tipo_operacao', 20)->index();
             $table->string('quantidade', 50);
-            $table->string('cotacao_preco', 50)->index();
+            $table->string('cotacao_preco', 50);
             $table->string('corretora', 50)->index();
+            $table->timestamp('data_operacao');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
