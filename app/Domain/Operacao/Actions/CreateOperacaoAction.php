@@ -14,7 +14,7 @@ class CreateOperacaoAction
         $operacao->user_id = Auth::user()->id;
         $operacao->ativo_id = $operacaoDTO->ativo;
         $operacao->tipo_operacao = $operacaoDTO->tipo_operacao;
-        $operacao->created_at = $operacaoDTO->data_operacao;
+        $operacao->data_operacao = $operacaoDTO->data_operacao;
         $operacao->cotacao_preco = $operacaoDTO->cotacao;
         $operacao->quantidade = $operacaoDTO->quantidade;
         $operacao->corretora = $operacaoDTO->corretora;
