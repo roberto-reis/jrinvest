@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Operacao\Export;
+namespace App\Domain\Operacao\Exports;
 
 use App\Domain\Operacao\Models\Operacao;
 use Carbon\Carbon;

@@ -11,7 +11,7 @@
 
     <form @submit.prevent="submit">
         <div class="mt-4 flex items-center justify-between">
-            <VButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <VButton class="bg-gray-700" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Reenviar email de verificação
             </VButton>
 
