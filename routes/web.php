@@ -5,6 +5,7 @@ use App\Domain\ClasseAtivo\Controllers\ClasseAtivoController;
 use Illuminate\Support\Facades\Route;
 use App\Domain\Operacao\Controllers\OperacaoController;
 use App\Domain\Dashboard\Controllers\DashboardController;
+use App\Domain\Operacao\Controllers\OperacaoImportController;
 use App\Domain\Rebalanceamento\Controllers\RebalanceamentoController;
 
 /*
@@ -26,6 +27,8 @@ Route::middleware(['auth', 'verified'])->prefix('operacoes')->group(function(){
     Route::put('/update', [OperacaoController::class, 'update'])->name('operacoes.update');
     Route::delete('{id}/destroy', [OperacaoController::class, 'destroy'])->name('operacoes.destroy');
     Route::get('export', [OperacaoController::class, 'export'])->name('operacoes.export');
+    Route::get('import', [OperacaoImportController::class, 'index'])->name('operacoes.import');
+    Route::post('import/store', [OperacaoImportController::class, 'store'])->name('operacoes.import.store');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('ativos')->group(function(){

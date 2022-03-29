@@ -18,8 +18,8 @@ class UpdateOperacaoAction
         $operacao->ativo_id = $operacaoDTO->ativo;
         $operacao->tipo_operacao = $operacaoDTO->tipo_operacao;
         $operacao->data_operacao = $operacaoDTO->data_operacao;
-        $operacao->cotacao_preco = $operacaoDTO->cotacao;
-        $operacao->quantidade = $operacaoDTO->quantidade;
+        $operacao->cotacao_preco = numberFormatterToSave($operacaoDTO->cotacao);
+        $operacao->quantidade = numberFormatterToSave($operacaoDTO->quantidade);
         $operacao->corretora = $operacaoDTO->corretora;
         $operacao->save();
         

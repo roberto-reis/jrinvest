@@ -20,7 +20,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <VButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <VButton class="bg-gray-700" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Redefinir senha
             </VButton>
         </div>
