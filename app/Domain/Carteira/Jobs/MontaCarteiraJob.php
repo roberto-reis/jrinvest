@@ -53,7 +53,7 @@ class MontaCarteiraJob implements ShouldQueue
                 $somaValorTotal = $operacoes->where('tipo_operacao', 'compra')->sum('valor_total');
 
                 // Salva ou atualiza a composição da carteira
-                Carteira::updateOrCreate([
+                $carteira = Carteira::updateOrCreate([
                     'user_id' => $newOperacao->user_id,
                     'ativo_id' => $newOperacao->ativo_id,
                 ],

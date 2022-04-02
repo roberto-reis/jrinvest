@@ -21,12 +21,12 @@ class CarteiraConsolidada extends Model
         'ativo_id',
         'quantidade_saldo',
         'preco_medio',
+        'custo_total_ativo',
         'cotacao',
-        'valor_ativo',
+        'valor_total_ativo',
         'percentual',
         'rentabilidade_valor',
         'rentabilidade_percentual',
-        'custo_total_ativo',
     ];
 
     public function user()

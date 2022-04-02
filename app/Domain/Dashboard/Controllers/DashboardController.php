@@ -27,7 +27,7 @@ class DashboardController extends Controller
         // Rebalanceamento por Ativo
         $minhaCarteira = $this->carteiraRepository->getCarteiraComPercentualAtual();
 
-        dd($minhaCarteira['ativos']->toArray());
+        // dd($minhaCarteira['ativos']->toArray());
 
         $carteiraIdeal = $this->carteiraRepository->getCarteiraComPercentualIdeal();
 
