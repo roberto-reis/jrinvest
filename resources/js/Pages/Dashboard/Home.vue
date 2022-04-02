@@ -108,7 +108,7 @@
                         {{ numberFormatterBr(item.quantidade_saldo, 4) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ formatMoneyBr(item.valor_ativo) }}
+                        {{ formatMoneyBr(item.valor_total_ativo) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
                         {{ numberFormatterBr(item.percentual) }}%
@@ -155,7 +155,7 @@
                         {{ numberFormatterBr(item.quantidade_ativo, 4) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
-                        {{ formatMoneyBr(item.valor_ativo) }}
+                        {{ formatMoneyBr(item.valor_total_ativo) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold">
                         {{ numberFormatterBr(item.percentual) }}%
@@ -202,16 +202,16 @@
                       <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.quantidade_ativo > 0 ? 'text-green-600' : 'text-red-600'">
                         {{ numberFormatterBr(item.quantidade_ativo, 4) }}
                       </td>
-                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.valor_ativo > 0 ? 'text-green-600' : 'text-red-600'">
-                        {{ formatMoneyBr(item.valor_ativo) }}
+                      <td class="py-1.5 px-2.5 whitespace-nowrap" :class="item.valor_total_ativo > 0 ? 'text-green-600' : 'text-red-600'">
+                        {{ formatMoneyBr(item.valor_total_ativo) }}
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap font-semibold" :class="item.percentual > 0 ? 'text-green-600' : 'text-red-600'">
                         {{ numberFormatterBr(item.percentual) }}%
                       </td>
                       <td class="py-1.5 px-2.5 whitespace-nowrap">
                         <span class="text-xs inline-block py-1 px-2 leading-none text-center font-bold text-white rounded"
-                          :class="item.valor_ativo > 0 ? 'bg-green-400' : 'bg-red-400'">
-                          {{ item.valor_ativo > 0 ? 'comprar' : 'vender' }}
+                          :class="item.valor_total_ativo > 0 ? 'bg-green-400' : 'bg-red-400'">
+                          {{ item.valor_total_ativo > 0 ? 'comprar' : 'vender' }}
                         </span>
                       </td>
                     </tr>
