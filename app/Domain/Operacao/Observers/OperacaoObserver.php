@@ -2,7 +2,7 @@
 
 namespace App\Domain\Operacao\Observers;
 
-use App\Domain\Carteira\Jobs\MontaCarteiraJob;
+use App\Domain\Carteira\Jobs\ConsolidaCarteiraUserJob;
 use App\Models\Operacao;
 
 class OperacaoObserver
@@ -15,7 +15,7 @@ class OperacaoObserver
      */
     public function created()
     {
-        MontaCarteiraJob::dispatch();
+        ConsolidaCarteiraUserJob::dispatch();
     }
 
     /**
@@ -26,7 +26,7 @@ class OperacaoObserver
      */
     public function updated()
     {
-        MontaCarteiraJob::dispatch();
+        ConsolidaCarteiraUserJob::dispatch();
     }
 
     /**
@@ -37,7 +37,7 @@ class OperacaoObserver
      */
     public function deleted()
     {
-        MontaCarteiraJob::dispatch();
+        ConsolidaCarteiraUserJob::dispatch();
     }
 
 }

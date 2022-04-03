@@ -163,4 +163,35 @@ class CarteiraConsolidadaRepository
         return $minhaCarteiraPorClasses;
     }
 
+    /**
+     * calcula e retorna a rentabilidade total da carteira conforme periodo informado
+     * @param ?string $dataperiodoRentabilidade
+     * @return array
+     */
+    public function calculaRentabidadeCarteira(string $dataPeriodoRentabilidade = null): array
+    {
+        $carteiraConsolidada = CarteiraConsolidada::query()->select('corteiras_consolidadas.*', 'ativos.codigo', 'classes_ativos.nome as classe_nome')
+                            ->join('ativos', 'ativos.id', '=', 'corteiras_consolidadas.ativo_id')
+                            ->join('classes_ativos', 'classes_ativos.id', '=', 'ativos.classe_ativo_id')
+                            ->where('user_id', auth()->user()->id)
+                            ->orderBy('ativos.codigo', 'asc')->get();
+
+        if ($carteiraConsolidada->isEmpty()) {
+            // TODO: retornar mensagem de erro throw new Exception('Carteira não encontrada');
+            return [];
+        }
+
+        $custoTotalCarteira = $carteiraConsolidada->sum('custo_total_ativo');
+        $valorTotalCarteira = $carteiraConsolidada->sum('valor_total_ativo');
+
+        $rentabilidadeValor = ($valorTotalCarteira - $custoTotalCarteira);
+        $rentabilidadePercentual = ($rentabilidadeValor / $custoTotalCarteira) * 100;
+
+        return [
+            'custo_total_carteira' => $custoTotalCarteira,
+            'valor_total_carteira' => $valorTotalCarteira,
+            'rentabilidade_valor' => $rentabilidadeValor,
+            'rentabilidade_percentual' => $rentabilidadePercentual,
+        ];  
+    }
 }

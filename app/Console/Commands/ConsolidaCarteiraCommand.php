@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Domain\Carteira\Jobs\ConsolidaCarteiraJob;
+use App\Domain\Carteira\Jobs\ConsolidaTodasCarteirasJob;
 
 class ConsolidaCarteiraCommand extends Command
 {
@@ -38,6 +38,6 @@ class ConsolidaCarteiraCommand extends Command
      */
     public function handle()
     {
-        ConsolidaCarteiraJob::dispatch();
+        ConsolidaTodasCarteirasJob::dispatch();
     }
 }
