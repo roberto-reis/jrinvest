@@ -84,7 +84,10 @@ class CotacaoJob implements ShouldQueue
             Log::info('Total cotações de criptomoedas:', [$cotacaoCripto ? count($cotacaoCripto['coins']) : 0]);
             
         } catch (\Exception $e) {
-            Log::error('Erro ao consultar cotação: ', [$e->getMessage()]);
+            Log::error('Erro ao consultar cotação: ', [
+                'Mensagem' => $e->getMessage(),
+                'Linha' => $e->getLine()
+            ]);
         }
 
     }

@@ -26,12 +26,17 @@ class CotacaoBrapiService
         try {
             $response = Http::get($this->BASE_URL . 'quote/'. $codigoAtivos);
 
-            if ($response->successful()) {
-                return $response->json();
+            if (!$response->successful() || $response->status() !== 200) {
+                throw new \Exception('Erro na comunicação com o Brapi', $response->status());
             }
-            return [];
+
+            return $response->json();
         } catch (\Exception $e) {
-            Log::error('Erro ao consultar cotação de ações ou FII: ', [$e->getMessage()]);
+            Log::error('Erro ao consultar cotação de ações ou FII: ', [
+                'Mensagem' => $e->getMessage(),
+                'Linha' => $e->getLine(),
+                'Codigo' => $e->getCode()
+            ]);
         }
 
     }
@@ -48,12 +53,17 @@ class CotacaoBrapiService
         try {
             $response = Http::get($this->BASE_URL . 'v2/crypto?coin=' . $codigoAtivos . '&currency=' . $moedaRef);
 
-            if ($response->successful()) {
-                return $response->json();
+            if (!$response->successful() || $response->status() !== 200) {
+                throw new \Exception('Erro na comunicação com o Brapi', $response->status());
             }
-            return [];
+
+            return $response->json();
         } catch (\Exception $e) {
-            Log::error('Erro ao consultar cotação de criptomoedas: ', [$e->getMessage()]);
+            Log::error('Erro ao consultar cotação de criptomoedas: ', [
+                'Mensagem' => $e->getMessage(),
+                'Linha' => $e->getLine(),
+                'Codigo' => $e->getCode()
+            ]);
         }
 
     }
