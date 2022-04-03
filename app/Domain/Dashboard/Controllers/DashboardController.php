@@ -7,12 +7,6 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Domain\Cotacao\Models\Cotacao;
-use App\Domain\Carteira\Models\Carteira;
-use App\Domain\Operacao\Models\Operacao;
-use App\Domain\Carteira\Models\CarteiraConsolidada;
-use App\Domain\Carteira\Jobs\ConsolidaCarteiraUserJob;
 use App\Domain\Carteira\Repositories\CarteiraConsolidadaRepository;
 
 class DashboardController extends Controller
@@ -33,18 +27,18 @@ class DashboardController extends Controller
 
         // Rebalanceamento por Ativo
         $minhaCarteira = $this->carteiraConsolidadaRepository->getCarteiraComPercentualAtual();
-        $carteiraIdeal = $this->carteiraConsolidadaRepository->getCarteiraComPercentualIdeal();                
-        $carteiraAjuste = $this->carteiraConsolidadaRepository->getCarteiraComPercentualAjuste();      
+        $carteiraIdeal = $this->carteiraConsolidadaRepository->getCarteiraComPercentualIdeal();
+        $carteiraAjuste = $this->carteiraConsolidadaRepository->getCarteiraComPercentualAjuste();
 
         // Rebalanceamento por Categoria
-        $minhaCarteiraPorClasses = $this->carteiraConsolidadaRepository->getCarteiraComPercentualAtualPorClasse();
-        $carteiraIdealPorClasse = $this->carteiraConsolidadaRepository->getCarteiraComPercentualIdealPorClasse();   
+        $minhaCarteiraPorClasses = $this->carteiraConsolidadaRepository->getCarteiraComPercentualAtualPorClasse($minhaCarteira);
+        $carteiraIdealPorClasse = $this->carteiraConsolidadaRepository->getCarteiraComPercentualIdealPorClasse($minhaCarteira);   
         
         // Rentabilidade Percentual da Carteira
-        $rentabidadeCarteiraHoje = $this->carteiraConsolidadaRepository->calculaRentabidadeCarteira();
-        // $rentabidadeCarteira30Dias = $this->carteiraRepository->rentabidadeCarteira($dataUltimos30Dias);
-        // $rentabidadeCarteira180Dias = $this->carteiraRepository->rentabidadeCarteira($dataUltimos180Dias);
-        // $rentabidadeCarteira365Dias = $this->carteiraRepository->rentabidadeCarteira($dataUltimos365Dias);
+        $rentabidadeCarteiraHoje = $this->carteiraConsolidadaRepository->rentabidadeCarteira();
+        $rentabidadeCarteira30Dias = $this->carteiraConsolidadaRepository->rentabidadeCarteira($dataUltimos30Dias);
+        $rentabidadeCarteira180Dias = $this->carteiraConsolidadaRepository->rentabidadeCarteira($dataUltimos180Dias);
+        $rentabidadeCarteira365Dias = $this->carteiraConsolidadaRepository->rentabidadeCarteira($dataUltimos365Dias);
 
 
         return Inertia::render('Dashboard/Home', [
@@ -54,9 +48,9 @@ class DashboardController extends Controller
             'minhaCarteiraPorClasses' => $minhaCarteiraPorClasses,
             'carteiraIdealPorClasse' => $carteiraIdealPorClasse,
             'rentabidadeCarteiraHoje' => $rentabidadeCarteiraHoje,
-            'rentabidadeCarteira30Dias' => collect([]), // $rentabidadeCarteira30Dias
-            'rentabidadeCarteira180Dias' => collect([]), // $rentabidadeCarteira180Dias
-            'rentabidadeCarteira365Dias' => collect([]), // $rentabidadeCarteira365Dias
+            'rentabidadeCarteira30Dias' => $rentabidadeCarteira30Dias,
+            'rentabidadeCarteira180Dias' => $rentabidadeCarteira180Dias,
+            'rentabidadeCarteira365Dias' => $rentabidadeCarteira365Dias,
         ]);
     }
 

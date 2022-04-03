@@ -5,6 +5,7 @@ namespace App\Domain\Carteira\Jobs;
 use Illuminate\Bus\Queueable;
 use App\Domain\User\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Domain\Cotacao\Models\Cotacao;
 use Illuminate\Queue\SerializesModels;
@@ -14,6 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\Domain\Carteira\Models\CarteiraConsolidada;
+use App\Domain\Carteira\Models\RentabilidadeCarteira;
 
 class ConsolidaTodasCarteirasJob implements ShouldQueue
 {
@@ -38,7 +40,7 @@ class ConsolidaTodasCarteirasJob implements ShouldQueue
     {
         
         try {
-            
+            DB::beginTransaction();
             $usuarios = User::all();
             foreach ($usuarios as $usuario) {
 
@@ -65,9 +67,14 @@ class ConsolidaTodasCarteirasJob implements ShouldQueue
                     ]);
                 });
 
+                // Salva a rentabilidade da carteira
+                CalculaRentabilidadeCarteiraJob::dispatch($carteiraConsolidada, $usuario->id);
+
             }          
 
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Erro ao consolidar todas carteiras: ', [
                 $e->getMessage(),
                 $e->getLine()

@@ -4,6 +4,7 @@ namespace App\Domain\Carteira\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Cotacao\Models\Cotacao;
@@ -14,6 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\Domain\Carteira\Models\CarteiraConsolidada;
+use App\Domain\Carteira\Models\RentabilidadeCarteira;
 
 class ConsolidaCarteiraUserJob implements ShouldQueue
 {
@@ -39,7 +41,7 @@ class ConsolidaCarteiraUserJob implements ShouldQueue
     public function handle()
     {
         try {
-
+            DB::beginTransaction();
             // Pega todas as operações do usuário e monta a carteira 
             $carteiraMontada = $this->montaCarteiraUsuario();
             
@@ -61,12 +63,17 @@ class ConsolidaCarteiraUserJob implements ShouldQueue
                     'rentabilidade_valor' => $ativo['rentabilidade_valor'],
                     'rentabilidade_percentual' => $ativo['rentabilidade_percentual'],
                 ]);
-            });         
+            });
+            
+            // Salva a rentabilidade da carteira
+            CalculaRentabilidadeCarteiraJob::dispatch($carteiraConsolidada, $this->usuarioLogado->id);
 
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Erro ao consolidar carteira do Usuário: ', [
-                $e->getMessage(),
-                $e->getLine(),
+                'Menssagem' => $e->getMessage(),
+                'Linha' => $e->getLine(),
             ]);
             return false;
         }
@@ -122,7 +129,7 @@ class ConsolidaCarteiraUserJob implements ShouldQueue
     {
         $minhaCarteira = $carteiraMontada;
         
-        $dataHojeMenos2Dias = date('Y-m-d', strtotime('-2 day'));
+        $dataHojeMenos2Dias = date('Y-m-d', strtotime('-5 day'));
         $cotacoes = Cotacao::query()->where('preco', '>', 0)
                                     ->whereDate('created_at', '>=', $dataHojeMenos2Dias)
                                     ->orderBy('created_at', 'desc')->get();
@@ -161,4 +168,29 @@ class ConsolidaCarteiraUserJob implements ShouldQueue
 
         return $minhaCarteiraAtualizada;
     }
+
+    /** 
+     * Salva a rentabilidade da carteira do usuário
+     * 
+     * @param Collection $minhaCarteiraAtualizada
+     * @return void
+     */
+    private function salvaRentabilidadeCarteiraUsuario(Collection $minhaCarteiraAtualizada)
+    {
+        $valorTotalCarteira = $minhaCarteiraAtualizada['valor_total_carteira'];
+        $custoTotalCarteira = $minhaCarteiraAtualizada['custo_total_carteira'];
+        $rentabilidadeValor = ($valorTotalCarteira - $custoTotalCarteira);
+        $rentabilidadePercentual = ($rentabilidadeValor / $custoTotalCarteira) * 100;
+
+        $rentabilidadeCarteira = new RentabilidadeCarteira();
+        $rentabilidadeCarteira->user_id = $this->usuarioLogado->id;
+        $rentabilidadeCarteira->custo_total_carteira = $custoTotalCarteira;
+        $rentabilidadeCarteira->valor_total_carteira = $valorTotalCarteira;
+        $rentabilidadeCarteira->rentabilidade_valor = $rentabilidadeValor;
+        $rentabilidadeCarteira->rentabilidade_percentual = $rentabilidadePercentual;
+        $rentabilidadeCarteira->payload_ativos = json_encode($minhaCarteiraAtualizada['ativos']);
+
+        $rentabilidadeCarteira->save();
+    }
+
 }

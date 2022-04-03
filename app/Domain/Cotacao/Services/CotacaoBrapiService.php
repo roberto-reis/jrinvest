@@ -2,6 +2,7 @@
 
 namespace App\Domain\Cotacao\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -18,10 +19,10 @@ class CotacaoBrapiService
     /**
      * Pegar Cotação de ações e FII 
      * ex ativo separado por virgula: 'BTLG11,B3SA3'
+     * URL: https://brapi.ga/api/quote/COGN3,MGLU3
      * @param string $codigoAtivos
-     * @return array
      */
-    public function getCotacoes(string $codigoAtivos): array
+    public function getCotacoes(string $codigoAtivos)
     {
         try {
             $response = Http::get($this->BASE_URL . 'quote/'. $codigoAtivos);
@@ -44,9 +45,9 @@ class CotacaoBrapiService
     /**
      * Pegar cotacao para criptomoedas
      * ex codigo do ativo separado por virgula: 'BTC,ETH,ADA'
+     * URL: https://brapi.ga/api/v2/crypto?coin=BTC&currency=BRL
      * @param string $ativo
      * @param string $moedaRef
-     * @return array
      */
     public function getCotacoesCripto(string $codigoAtivos, string $moedaRef = 'BRL')
     {

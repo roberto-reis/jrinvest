@@ -20,6 +20,7 @@ class CreateRentabilidadesCarteirasTable extends Migration
             $table->string('valor_total_carteira')->index();
             $table->string('rentabilidade_valor');
             $table->string('rentabilidade_percentual');
+            $table->json('payload_ativos');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();

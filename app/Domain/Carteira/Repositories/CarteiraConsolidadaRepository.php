@@ -3,7 +3,9 @@
 namespace App\Domain\Carteira\Repositories;
 
 use Illuminate\Support\Collection;
+use App\Domain\Cotacao\Models\Cotacao;
 use App\Domain\Carteira\Models\CarteiraConsolidada;
+use App\Domain\Carteira\Models\RentabilidadeCarteira;
 use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 use App\Domain\Rebalanceamento\Models\RebalanceamentoClasse;
 
@@ -38,7 +40,9 @@ class CarteiraConsolidadaRepository
      */
     public function getCarteiraComPercentualIdeal(): Collection
     {
+        // Recebe a carteira com percentual atual calculado
         $minhaCarteiraConsolidada = $this->getCarteiraComPercentualAtual();
+
         $rebalanceamentoAtivo = RebalanceamentoAtivo::select('rebalanceamento_ativos.*', 'ativos.codigo', 'classes_ativos.nome as classe_nome')
             ->join('ativos', 'ativos.id', '=', 'rebalanceamento_ativos.ativo_id')
             ->join('classes_ativos', 'classes_ativos.id', '=', 'ativos.classe_ativo_id')
@@ -46,13 +50,18 @@ class CarteiraConsolidadaRepository
             ->orderBy('ativos.codigo', 'asc')
             ->get();
 
-        if ($minhaCarteiraConsolidada->isEmpty() || $rebalanceamentoAtivo->isEmpty()) {
+        $dataHojeMenos5Dias = date('Y-m-d', strtotime('-5 day'));
+        $cotacoes = Cotacao::query()->where('preco', '>', 0)
+                                    ->whereDate('created_at', '>=', $dataHojeMenos5Dias)
+                                    ->orderBy('created_at', 'desc')->get();
+
+        if ($minhaCarteiraConsolidada->isEmpty() || is_null($minhaCarteiraConsolidada)) {
             return collect();
         }
 
         // Calcula percentual/peso ideal de cada ativo
-        $carteiraIdealConsolidada = $rebalanceamentoAtivo->map(function ($carteiraIdeal) use ($minhaCarteiraConsolidada) {
-            $cotacao = $minhaCarteiraConsolidada['ativos']->where('ativo_id', $carteiraIdeal->ativo_id)->first()->cotacao;
+        $carteiraIdealConsolidada = $rebalanceamentoAtivo->map(function ($carteiraIdeal) use ($minhaCarteiraConsolidada, $cotacoes) {
+            $cotacao = $cotacoes->where('ativo_id', $carteiraIdeal->ativo_id)->first()->preco;
             $valorTotalCarteira = $minhaCarteiraConsolidada['valor_total_carteira'];
             
             $valor_total_ativo = ($valorTotalCarteira * $carteiraIdeal->percentual) / 100; // Calcula o valor do ativo com base no percentual ideal
@@ -79,7 +88,9 @@ class CarteiraConsolidadaRepository
      */
     public function getCarteiraComPercentualAjuste(): Collection
     {
+        // Recebe a carteira com percentual atual calculado
         $minhaCarteiraConsolidada = $this->getCarteiraComPercentualAtual();
+        // Recebe a carteira com percentual ideal calculado
         $carteiraIdealConsolidada = $this->getCarteiraComPercentualIdeal();
         
         if ($minhaCarteiraConsolidada->isEmpty() || $carteiraIdealConsolidada->isEmpty()) {
@@ -111,9 +122,10 @@ class CarteiraConsolidadaRepository
      * Calcula o percentual atual de cada classe de ativo
      * @return Collection
      */
-    public function getCarteiraComPercentualAtualPorClasse(): Collection
+    public function getCarteiraComPercentualAtualPorClasse($carteiraComPercentualAtual): Collection
     {
-        $minhaCarteiraConsolidada = $this->getCarteiraComPercentualAtual();
+        // Recebe a carteira com percentual atual calculado
+        $minhaCarteiraConsolidada = $carteiraComPercentualAtual;
 
         if ($minhaCarteiraConsolidada->isEmpty()) {
             return collect();
@@ -137,9 +149,11 @@ class CarteiraConsolidadaRepository
      * Calcula e retorna o percentual ideal de cada classe de ativo
      * @return Collection
      */
-    public function getCarteiraComPercentualIdealPorClasse(): Collection
+    public function getCarteiraComPercentualIdealPorClasse($carteiraComPercentualAtual): Collection
     {
-        $minhaCarteiraConsolidada = $this->getCarteiraComPercentualAtual();
+        // Recebe a carteira com percentual atual calculado
+        $minhaCarteiraConsolidada = $carteiraComPercentualAtual;
+
         $carteiraIdealPorClasses = RebalanceamentoClasse::query()->select('rebalanceamento_classes.*', 'classes_ativos.nome as classe_ativo')
             ->join('classes_ativos', 'classes_ativos.id', '=', 'rebalanceamento_classes.classe_ativo_id')
             ->where('user_id', auth()->user()->id)
@@ -168,30 +182,25 @@ class CarteiraConsolidadaRepository
      * @param ?string $dataperiodoRentabilidade
      * @return array
      */
-    public function calculaRentabidadeCarteira(string $dataPeriodoRentabilidade = null): array
+    public function rentabidadeCarteira(string $dataPeriodoRentabilidade = null)
     {
-        $carteiraConsolidada = CarteiraConsolidada::query()->select('corteiras_consolidadas.*', 'ativos.codigo', 'classes_ativos.nome as classe_nome')
-                            ->join('ativos', 'ativos.id', '=', 'corteiras_consolidadas.ativo_id')
-                            ->join('classes_ativos', 'classes_ativos.id', '=', 'ativos.classe_ativo_id')
-                            ->where('user_id', auth()->user()->id)
-                            ->orderBy('ativos.codigo', 'asc')->get();
+        $rentabidadeCarteiraModelo = RentabilidadeCarteira::query()
+                                    ->select('custo_total_carteira', 'rentabilidade_valor', 'rentabilidade_percentual')
+                                        ->where('user_id', auth()->user()->id);
 
-        if ($carteiraConsolidada->isEmpty()) {
-            // TODO: retornar mensagem de erro throw new Exception('Carteira não encontrada');
-            return [];
+        if (is_null($dataPeriodoRentabilidade)) { //  Se não for passado nenhum dia, pega a cotação mais recente
+            $rentabidadeCarteira = $rentabidadeCarteiraModelo->orderBy('created_at', 'desc')->first();
+
+        } else { // Se for passado a data, pega a cotação mais recente antes da data passada
+            $rentabidadeCarteira = $rentabidadeCarteiraModelo->whereDate('created_at', '>=', $dataPeriodoRentabilidade)
+                            ->orderBy('created_at', 'asc')
+                            ->first();
         }
 
-        $custoTotalCarteira = $carteiraConsolidada->sum('custo_total_ativo');
-        $valorTotalCarteira = $carteiraConsolidada->sum('valor_total_ativo');
+        if (is_null($rentabidadeCarteira)) {
+            throw new \Exception('Não existe rentabilidade para o período informado');
+        }
 
-        $rentabilidadeValor = ($valorTotalCarteira - $custoTotalCarteira);
-        $rentabilidadePercentual = ($rentabilidadeValor / $custoTotalCarteira) * 100;
-
-        return [
-            'custo_total_carteira' => $custoTotalCarteira,
-            'valor_total_carteira' => $valorTotalCarteira,
-            'rentabilidade_valor' => $rentabilidadeValor,
-            'rentabilidade_percentual' => $rentabilidadePercentual,
-        ];  
+        return $rentabidadeCarteira; 
     }
 }

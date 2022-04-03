@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Carteira\Models;
 
 use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +22,7 @@ class RentabilidadeCarteira extends Model
         'valor_total_carteira',
         'rentabilidade_valor',
         'rentabilidade_percentual',
+        'payload_ativos',
     ];
     
 }
