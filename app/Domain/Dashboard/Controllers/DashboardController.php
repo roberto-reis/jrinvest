@@ -5,7 +5,6 @@ namespace App\Domain\Dashboard\Controllers;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Domain\Carteira\Repositories\CarteiraConsolidadaRepository;
 

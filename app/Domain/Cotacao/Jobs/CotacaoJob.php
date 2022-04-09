@@ -68,18 +68,19 @@ class CotacaoJob implements ShouldQueue
             $ativoCripto = $ativos->filter(function ($ativo) {
                 return $ativo->nome_classe_ativo == 'Cripto' || $ativo->nome_classe_ativo == 'Stablecoin';
             });
-
             $ativoCriptoImploded = $ativoCripto->implode('codigo',',');
-            $cotacaoCripto = $this->serviceCotacao->getCotacoesCripto($ativoCriptoImploded);
+
+            $cotacaoCripto = $this->serviceCotacao->getCotacoesCripto($ativoCriptoImploded, 'USD');
+            $moedaUsdBlr = $this->serviceCotacao->getCotacaoMoedas('USD-BRL');
+            $cotacaoCriptoConvertida = $this->conversorCotacoesUsdToBrl($cotacaoCripto['coins'], data_get($moedaUsdBlr, 'currency.0.bidPrice'));
             
-            if (!empty($cotacaoCripto)) {
-                foreach ($cotacaoCripto['coins'] as $cotacao) {
-                    Cotacao::create([
-                        'ativo_id' => $ativoCripto->where('codigo', $cotacao['coin'])->first()->id,
-                        'moeda_ref' => $cotacao['currency'],
-                        'preco' => $cotacao['regularMarketPrice'] ?? '0.0',
-                    ]);
-                }
+            
+            foreach ($cotacaoCriptoConvertida as $cotacao) {
+                Cotacao::create([
+                    'ativo_id' => $ativoCripto->where('codigo', $cotacao['coin'])->first()->id,
+                    'moeda_ref' => 'BRL',
+                    'preco' => $cotacao['regularMarketPrice'] ?? '0.0',
+                ]);
             }
             Log::info('Total cotações de criptomoedas:', [$cotacaoCripto ? count($cotacaoCripto['coins']) : 0]);
             
@@ -92,7 +93,20 @@ class CotacaoJob implements ShouldQueue
 
     }
 
+    // Conversor de moeda USA para BRL
+    private function conversorCotacoesUsdToBrl(array $cotacoes, string $moedaTo)
+    {
+        if (empty($cotacoes) || empty($moedaTo)) {
+            throw new \Exception('erro ao converter cotação');
+        }
 
+        $result = collect($cotacoes)->map(function ($cotacao) use ($moedaTo) {
+            $cotacao['regularMarketPrice'] = $cotacao['regularMarketPrice'] * $moedaTo;
+            return $cotacao;
+        });
+
+        return $result;
+    }
 
     
 }

@@ -69,6 +69,33 @@ class CotacaoBrapiService
 
     }
 
+    /**
+     * Pegar cotacao de moeda para coversao
+     * ex codigo do ativo separado por virgula: 'USD-BRL,EUR-BRL'
+     * URL: https://brapi.ga/api/v2/currency?currency=USD-BRL,EUR-BRL
+     * @param string $ativo
+     * @param string $moedaRef
+     */
+    public function getCotacaoMoedas(string $parMoeda = 'USD-BRL')
+    {
+        try {
+            $response = Http::get($this->BASE_URL . 'v2/currency?currency='. $parMoeda);
+
+            if (!$response->successful() || $response->status() !== 200) {
+                throw new \Exception('Erro na comunicação com o Brapi', $response->status());
+            }
+
+            return $response->json();
+        } catch (\Exception $e) {
+            Log::error('Erro ao consultar cotação de moedas: ', [
+                'Mensagem' => $e->getMessage(),
+                'Linha' => $e->getLine(),
+                'Codigo' => $e->getCode()
+            ]);
+        }
+
+    }
+
 
     
 }
