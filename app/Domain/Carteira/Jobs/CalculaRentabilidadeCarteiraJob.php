@@ -24,7 +24,7 @@ class CalculaRentabilidadeCarteiraJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Collection $carteiraConsolidada, string $usuario_id)
+    public function __construct($carteiraConsolidada, string $usuario_id)
     {
         $this->carteiraConsolidada = $carteiraConsolidada;
         $this->usuarioId = $usuario_id;
@@ -50,13 +50,14 @@ class CalculaRentabilidadeCarteiraJob implements ShouldQueue
             $rentabilidadeCarteira->valor_total_carteira = $valorTotalCarteira;
             $rentabilidadeCarteira->rentabilidade_valor = $rentabilidadeValor;
             $rentabilidadeCarteira->rentabilidade_percentual = $rentabilidadePercentual;
-            $rentabilidadeCarteira->payload_ativos = json_encode($this->carteiraConsolidada['ativos']);
+            // $rentabilidadeCarteira->payload_ativos = json_encode($this->carteiraConsolidada['ativos']);
 
             $rentabilidadeCarteira->save();
 
         } catch (\Exception $e) {
             Log::error('Erro ao salvar rentabilidade',[
                 'Menssagem' => $e->getMessage(),
+                'JOB' => __CLASS__,
                 'Linha' => $e->getLine(),
             ]);
         }

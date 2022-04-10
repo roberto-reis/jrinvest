@@ -9,13 +9,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Domain\Cotacao\Models\Cotacao;
 use Illuminate\Queue\SerializesModels;
-use App\Domain\Operacao\Models\Operacao;
+use App\Domain\Carteira\Models\Carteira;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\Domain\Carteira\Models\CarteiraConsolidada;
-use App\Domain\Carteira\Models\RentabilidadeCarteira;
 
 class ConsolidaTodasCarteirasJob implements ShouldQueue
 {
@@ -40,15 +39,15 @@ class ConsolidaTodasCarteirasJob implements ShouldQueue
     {
         
         try {
-            DB::beginTransaction();
-            $usuarios = User::all();
-            foreach ($usuarios as $usuario) {
 
-                // Pega todas as operações do usuário e monta a carteira 
-                $carteiraMontada = $this->montaCarteiraUsuario($usuario->id);
+            DB::beginTransaction();
+
+            $usuarios = User::all();
+            
+            foreach ($usuarios as $usuario) {
                 
                 // Calcula o percentual e rentabilidade de cada ativo com a cotação atual
-                $carteiraConsolidada = $this->getCarteiraCalculaPercentualAtual($carteiraMontada);
+                $carteiraConsolidada = $this->getCarteiraCalculaPercentualAtual($usuario->id);
 
                 // Salva ou atualiza a consolidação da carteira
                 $carteiraConsolidada['ativos']->map(function ($ativo) {
@@ -76,67 +75,27 @@ class ConsolidaTodasCarteirasJob implements ShouldQueue
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao consolidar todas carteiras: ', [
-                $e->getMessage(),
-                $e->getLine()
+                'Menssagem' => $e->getMessage(),
+                'JOB' => __CLASS__,
+                'Linha' => $e->getLine(),
             ]);
             return false;
         }
     }
 
     /**
-     * Pega todas as operações do usuário e monta a carteira
-     *
-     * @return Collection
-     */
-    private function montaCarteiraUsuario(string $usuario_id): Collection
-    {
-        $operacoes = Operacao::select('operacoes.*', 'ativos.codigo as codigo_ativo')
-                ->join('ativos', 'operacoes.ativo_id', '=', 'ativos.id')
-                ->where('user_id', $usuario_id)
-                ->get();
-
-        if ($operacoes->isEmpty()) {
-            throw new \Exception('Nenhuma operação encontrada para o usuário');
-        }
-
-        $operacoesAtivos = $operacoes->groupBy('codigo_ativo');
-
-        $carteiraMontada = $operacoesAtivos->map(function ($operacoes) {
-            $newOperacao = $operacoes->first();
-            $somaOperacoesCompras = $operacoes->where('tipo_operacao', 'compra')->sum('quantidade');
-            $somaOperacoesVendas = $operacoes->where('tipo_operacao', 'venda')->sum('quantidade');
-            $somaValorTotal = $operacoes->where('tipo_operacao', 'compra')->sum('valor_total');
-
-            $quantidadeSaldo = ($somaOperacoesCompras - $somaOperacoesVendas);
-            $precoMedio = ($somaValorTotal / $somaOperacoesCompras);
-            $custoTotalAtivo = ($quantidadeSaldo * $precoMedio);
-
-            return [
-                'user_id' => $newOperacao->user_id,
-                'ativo_id' => $newOperacao->ativo_id,
-                'quantidade_saldo' => $quantidadeSaldo,
-                'preco_medio' => $precoMedio,
-                'custo_total_ativo' => $custoTotalAtivo,
-            ];            
-        });
-
-        return $carteiraMontada;
-    }
-
-    /**
      * Calcula o percentual e rentabilidade de cada ativo com a cotação atual
      *
-     * @param Collection $carteiraMontada
      * @return Collection
      */
-    private function getCarteiraCalculaPercentualAtual(Collection $carteiraMontada): Collection
-    {
-        $minhaCarteira = $carteiraMontada;
-        
-        $dataHojeMenos2Dias = date('Y-m-d', strtotime('-2 day'));
+    private function getCarteiraCalculaPercentualAtual($usuario_id): Collection
+    {        
+        $dataHojeMenos2Dias = date('Y-m-d', strtotime('-5 day'));
         $cotacoes = Cotacao::query()->where('preco', '>', 0)
                                     ->whereDate('created_at', '>=', $dataHojeMenos2Dias)
                                     ->orderBy('created_at', 'desc')->get();
+                                
+        $minhaCarteira = Carteira::query()->where('user_id', $usuario_id)->get();
 
         if ($cotacoes->isEmpty() || $minhaCarteira->isEmpty()) {
             throw new \Exception('Não foi possível calcular o percentual, não há cotações disponíveis ou não há ativos na carteira');
@@ -144,10 +103,10 @@ class ConsolidaTodasCarteirasJob implements ShouldQueue
 
         // Atualiza o custo total do ativo com a cotação atual
         $myCarteiraUpdated = $minhaCarteira->map(function ($ativo) use ($cotacoes) {
-            $cotacao = $cotacoes->where('ativo_id', $ativo['ativo_id'])->first();
-            $ativo['cotacao'] = $cotacao->preco;
-            $ativo['valor_total_ativo'] = $ativo['quantidade_saldo'] * $cotacao->preco; // calcula o valor do ativo com a cotação atual
-
+            $cotacao = $cotacoes->where('ativo_id', $ativo->ativo_id)->first();
+            $ativo->cotacao = $cotacao->preco;
+            $ativo->valor_total_ativo = $ativo->quantidade_saldo * $cotacao->preco; // calcula o valor do ativo com a cotação atual
+            
             return $ativo;
         });
 
@@ -157,9 +116,9 @@ class ConsolidaTodasCarteirasJob implements ShouldQueue
         
         // Calcula percentual e rentabilidade de cada ativo
         $carteiraComPercentualAtual = $myCarteiraUpdated->map(function ($ativo) use ($valorTotalCarteira) {
-            $ativo['percentual'] = ($ativo['valor_total_ativo'] / $valorTotalCarteira) * 100; // Porcentagem do ativo na carteira
-            $ativo['rentabilidade_valor'] = ($ativo['valor_total_ativo'] - $ativo['custo_total_ativo']); // calcula a rentabilidade do ativo em valor
-            $ativo['rentabilidade_percentual'] = ($ativo['rentabilidade_valor'] / $ativo['custo_total_ativo']) * 100; // calcula a rentabilidade em %
+            $ativo->percentual = ($ativo->valor_total_ativo / $valorTotalCarteira) * 100; // Porcentagem do ativo na carteira
+            $ativo->rentabilidade_valor = ($ativo->valor_total_ativo - $ativo->custo_total_ativo); // calcula a rentabilidade do ativo em valor
+            $ativo->rentabilidade_percentual = ($ativo->rentabilidade_valor / $ativo->custo_total_ativo) * 100; // calcula a rentabilidade em %
 
             return $ativo;
         });

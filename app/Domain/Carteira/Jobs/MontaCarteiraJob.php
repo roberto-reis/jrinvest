@@ -13,7 +13,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use App\Domain\Carteira\Jobs\ConsolidaCarteiraUserJob;
 
 class MontaCarteiraJob implements ShouldQueue
 {
@@ -41,32 +40,34 @@ class MontaCarteiraJob implements ShouldQueue
 
         try {            
 
-            $operacoes = Operacao::select('operacoes.*', 'ativos.codigo as codigo_ativo')
-                ->join('ativos', 'operacoes.ativo_id', '=', 'ativos.id')
-                ->where('user_id', $this->usuarioLogado->id)
+            $operacoes = Operacao::where('user_id', $this->usuarioLogado->id)
                 ->get();
 
-            $this->montaCarteiraUsuario($operacoes);           
+            $this->montaCarteiraUsuario($operacoes);
 
-
+            ConsolidaCarteiraUserJob::dispatch($this->usuarioLogado);
+            
         } catch (\Exception $e) {
-            Log::error('Error ao montar carteira: ', [$e->getMessage()]);
+            Log::error('Error ao montar carteira: ', [
+                'Menssagem' => $e->getMessage(),
+                'JOB' => __CLASS__,
+                'Linha' => $e->getLine(),
+            ]);
         }
     }
 
     /**
      * Monta a carteira do usuário
      *
-     * @param Collection $operacoes
      * @return void
      */
-    private function montaCarteiraUsuario(Collection $operacoes)
+    private function montaCarteiraUsuario($operacoes)
     {
         if ($operacoes->isEmpty()) {
             throw new \Exception('Nenhuma operação encontrada para o usuário');
         }
 
-        $operacoesAtivos = $operacoes->groupBy('codigo_ativo');
+        $operacoesAtivos = $operacoes->groupBy('ativo_id');
 
         foreach ($operacoesAtivos as $operacoes) {
 

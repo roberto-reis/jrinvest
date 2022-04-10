@@ -2,10 +2,15 @@
 
 namespace App\Domain\Dashboard\Controllers;
 
+use Throwable;
 use Carbon\Carbon;
 use Inertia\Inertia;
+use Illuminate\Bus\Batch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use App\Http\Controllers\Controller;
+use App\Domain\Carteira\Jobs\MontaCarteiraJob;
+use App\Domain\Carteira\Jobs\ConsolidaCarteiraUserJob;
 use App\Domain\Carteira\Repositories\CarteiraConsolidadaRepository;
 
 class DashboardController extends Controller
@@ -19,7 +24,6 @@ class DashboardController extends Controller
     
     public function index()
     {
-
         $dataUltimos30Dias = Carbon::now()->subDays(30)->format('Y-m-d');
         $dataUltimos180Dias = Carbon::now()->subDays(180)->format('Y-m-d');
         $dataUltimos365Dias = Carbon::now()->subDays(365)->format('Y-m-d');

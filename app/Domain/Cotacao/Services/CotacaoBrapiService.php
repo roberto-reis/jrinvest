@@ -25,6 +25,11 @@ class CotacaoBrapiService
     public function getCotacoes(string $codigoAtivos)
     {
         try {
+
+            if (empty($codigoAtivos)) {
+                return [];
+            }
+
             $response = Http::get($this->BASE_URL . 'quote/'. $codigoAtivos);
 
             if (!$response->successful() || $response->status() !== 200) {
@@ -35,6 +40,7 @@ class CotacaoBrapiService
         } catch (\Exception $e) {
             Log::error('Erro ao consultar cotação de ações ou FII: ', [
                 'Mensagem' => $e->getMessage(),
+                'Service' => __CLASS__,
                 'Linha' => $e->getLine(),
                 'Codigo' => $e->getCode()
             ]);
@@ -52,6 +58,11 @@ class CotacaoBrapiService
     public function getCotacoesCripto(string $codigoAtivos, string $moedaRef = 'BRL')
     {
         try {
+
+            if (empty($codigoAtivos)) {
+                return [];
+            }
+
             $response = Http::get($this->BASE_URL . 'v2/crypto?coin=' . $codigoAtivos . '&currency=' . $moedaRef);
 
             if (!$response->successful() || $response->status() !== 200) {
@@ -62,6 +73,7 @@ class CotacaoBrapiService
         } catch (\Exception $e) {
             Log::error('Erro ao consultar cotação de criptomoedas: ', [
                 'Mensagem' => $e->getMessage(),
+                'Service' => __CLASS__,
                 'Linha' => $e->getLine(),
                 'Codigo' => $e->getCode()
             ]);
@@ -79,6 +91,11 @@ class CotacaoBrapiService
     public function getCotacaoMoedas(string $parMoeda = 'USD-BRL')
     {
         try {
+            
+            if (empty($codigoAtivos)) {
+                return [];
+            }
+
             $response = Http::get($this->BASE_URL . 'v2/currency?currency='. $parMoeda);
 
             if (!$response->successful() || $response->status() !== 200) {
@@ -89,6 +106,7 @@ class CotacaoBrapiService
         } catch (\Exception $e) {
             Log::error('Erro ao consultar cotação de moedas: ', [
                 'Mensagem' => $e->getMessage(),
+                'Service' => __CLASS__,
                 'Linha' => $e->getLine(),
                 'Codigo' => $e->getCode()
             ]);

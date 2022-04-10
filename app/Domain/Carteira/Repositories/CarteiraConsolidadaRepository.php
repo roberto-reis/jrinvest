@@ -198,7 +198,7 @@ class CarteiraConsolidadaRepository
         }
 
         if (is_null($rentabidadeCarteira)) {
-            throw new \Exception('Não existe rentabilidade para o período informado');
+            return collect();
         }
 
         return $rentabidadeCarteira; 

@@ -51,6 +51,7 @@ class CotacaoJob implements ShouldQueue
             });
 
             $ativoAcoesFiiImploded = $ativoAcoesFii->implode('codigo',',');
+                        
             $cotacaoAcoesFii = $this->serviceCotacao->getCotacoes($ativoAcoesFiiImploded);
 
             if (!empty($cotacaoAcoesFii)) {
