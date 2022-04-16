@@ -85,14 +85,13 @@ class CotacaoBrapiService
      * Pegar cotacao de moeda para coversao
      * ex codigo do ativo separado por virgula: 'USD-BRL,EUR-BRL'
      * URL: https://brapi.ga/api/v2/currency?currency=USD-BRL,EUR-BRL
-     * @param string $ativo
      * @param string $moedaRef
      */
     public function getCotacaoMoedas(string $parMoeda = 'USD-BRL')
     {
         try {
             
-            if (empty($codigoAtivos)) {
+            if (empty($parMoeda)) {
                 return [];
             }
 
