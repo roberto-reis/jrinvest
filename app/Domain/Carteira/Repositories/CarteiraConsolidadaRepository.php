@@ -14,7 +14,6 @@ class CarteiraConsolidadaRepository
 
     /**
      * Calcula o percentual, quantidade e valor de cada ativo da carteira para o rebalanceamento
-     * @param ?string $dataPeriodoRentabilidade
      * @return Collection
      */
     public function getCarteiraComPercentualAtual(): Collection
