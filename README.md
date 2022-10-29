@@ -21,42 +21,42 @@
 #### Getting started
 
 ```bash
-$ git clone https://github.com/roberto-reis/jrinvest.git
+git clone https://github.com/roberto-reis/jrinvest.git
 ```
 
 ```bash
-$ cd jrinvest
+cd jrinvest
 ```
 
 ```bash
-$ composer install
+composer install
 ```
 
 Instalando o Laravel Mix
 ```bash
-$ npm install
+npm install
 ```
 
 Execute todas as tarefas do Mix
 ```bash
-$ npm run dev
+npm run dev
 ```
 
 Copiar o env.example e renomear para .env
 
 Executar as mingrations
 ```bash
-$ php artisan migrate
+php artisan migrate
 ```
 
 Gerar a key
 ```bash
-$ php artisan key:generate
+php artisan key:generate
 ```
 
 Up projeto
 ```bash
-$ php artisan serve
+php artisan serve
 ```
 
 <br />
