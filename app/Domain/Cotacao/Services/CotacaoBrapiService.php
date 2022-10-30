@@ -16,7 +16,7 @@ class CotacaoBrapiService
 
 
     /**
-     * Pegar Cotação de ações e FII 
+     * Pegar Cotação de ações e FII
      * ex ativo separado por virgula: 'BTLG11,B3SA3'
      * @param string $codigoAtivos
      * @return array
@@ -59,5 +59,5 @@ class CotacaoBrapiService
     }
 
 
-    
+
 }
