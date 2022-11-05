@@ -3,7 +3,7 @@
 namespace App\Domain\Ativo\Observers;
 
 use App\Domain\Ativo\Models\Ativo;
-use App\Domain\Cotacao\Jobs\CotacaoJob;
+use Illuminate\Support\Facades\Artisan;
 
 class AtivoObserver
 {
@@ -15,7 +15,7 @@ class AtivoObserver
      */
     public function created(Ativo $ativo)
     {
-        CotacaoJob::dispatch();
+        Artisan::call('sync:cotacao');
     }
 
     /**
@@ -26,7 +26,7 @@ class AtivoObserver
      */
     public function updated(Ativo $ativo)
     {
-        CotacaoJob::dispatch();
+        Artisan::call('sync:cotacao');
     }
 
 
