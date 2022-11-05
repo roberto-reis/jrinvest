@@ -10,7 +10,7 @@
 
   <!-- Section Rentabilidades -->
   <section class="mt-6 overflow-hidden">
-    <div class="flex justify-between items-center" v-if="rentabidadeCarteiraHoje.length > 0">
+    <div class="flex justify-between items-center">
     
       <div class="mr-2 basis-1/4">
         <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm text-center border-2" :class="rentabidadeCarteiraHoje.rentabilidade_valor > 0 ? 'border-green-500' : 'border-red-500' ">

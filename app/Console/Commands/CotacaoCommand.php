@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Domain\Cotacao\Jobs\CotacaoJob;
+use App\Domain\ClasseAtivo\Models\ClasseAtivo;
+use App\Domain\Cotacao\Jobs\AcoesEFIICotacaoJob;
+use App\Domain\Cotacao\Jobs\CriptoativosCotacaoJob;
 
 class CotacaoCommand extends Command
 {
@@ -38,6 +40,29 @@ class CotacaoCommand extends Command
      */
     public function handle()
     {
-        CotacaoJob::dispatch();
+        try {
+
+            $classesAtivos = ClasseAtivo::all()->toArray();
+
+            if (empty($classesAtivos)) {
+                throw new \Exception('Não há Classe de Ativos cadastradas');
+            }
+
+            foreach ($classesAtivos as $classeAtivo) {
+                switch ($classeAtivo['nome']) {
+                    case 'Ações':
+                    case 'FII':
+                        AcoesEFIICotacaoJob::dispatch($classeAtivo);
+                        break;
+                    case 'Cripto':
+                    case 'Stablecoin':
+                        CriptoativosCotacaoJob::dispatch($classeAtivo);
+                        break;
+                }
+            }
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }

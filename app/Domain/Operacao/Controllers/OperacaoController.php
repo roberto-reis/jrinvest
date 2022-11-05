@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 use App\Domain\Operacao\DTO\OperacaoDTO;
 use App\Domain\Operacao\Models\Operacao;
 use Illuminate\Support\Facades\Redirect;
-use App\Domain\Operacao\Export\OperacaoExport;
+use App\Domain\Operacao\Exports\OperacaoExport;
 use App\Domain\Operacao\Requests\OperacaoRequest;
 use App\Domain\Operacao\Actions\CreateOperacaoAction;
 use App\Domain\Operacao\Actions\DeleteOperacaoAction;

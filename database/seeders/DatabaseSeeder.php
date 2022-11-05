@@ -22,8 +22,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        $users = User::factory(5)->create();        
-        
+        $users = User::factory(5)->create();
 
         $users->each(function($user) {
 
@@ -36,7 +35,7 @@ class DatabaseSeeder extends Seeder
             Cotacao::factory()->create([
                 'ativo_id' => $ativo->id,
             ]);
-            
+
             RebalanceamentoClasse::factory()->create([
                 'user_id' => $user->id,
                 'classe_ativo_id' => $classeAtivo->id

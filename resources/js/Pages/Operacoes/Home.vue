@@ -276,7 +276,7 @@ export default {
 			this.form.ativo = operacao.ativo_id;
 			this.form.tipo_operacao = operacao.tipo_operacao;
 			this.form.corretora = operacao.corretora;
-			this.form.data_operacao = operacao.data_operacao.split('T')[0];
+			this.form.data_operacao = operacao.data_operacao.split(' ')[0];
 			this.form.cotacao = this.numberFormatterBr(operacao.cotacao_preco, 4);
 			this.form.quantidade = this.numberFormatterBr(operacao.quantidade, 8);
 			// Abre o modal

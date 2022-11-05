@@ -26,6 +26,7 @@ class Operacao extends Model
         'cotacao_preco',
         'quantidade',
         'corretora',
+        'data_operacao',
     ];
 
     protected $appends = [
@@ -47,15 +48,15 @@ class Operacao extends Model
         return $this->cotacao_preco * $this->attributes['quantidade'];
     }
 
-    public function setCotacaoPrecoAttribute($value)
-    {
-        $this->attributes['cotacao_preco'] =  numberFormatterToSave($value);
-    }
+    // public function setCotacaoPrecoAttribute($value)
+    // {
+    //     $this->attributes['cotacao_preco'] =  numberFormatterToSave($value);
+    // }
 
-    public function setQuantidadeAttribute($value)
-    {     
-        $this->attributes['quantidade'] =  numberFormatterToSave($value);
-    }
+    // public function setQuantidadeAttribute($value)
+    // {     
+    //     $this->attributes['quantidade'] =  numberFormatterToSave($value);
+    // }
 
     protected static function newFactory()
     {
