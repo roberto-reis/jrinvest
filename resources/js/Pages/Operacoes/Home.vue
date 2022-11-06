@@ -16,12 +16,15 @@
 						Novo Aporte
 					</VButton>
 					<a :href="route('operacoes.export')" class="ml-2 inline-block leading-normal px-3 py-2 rounded font-semibold text-sm text-white uppercase bg-gray-500 hover:bg-gray-700 focus:bg-gray-600">
-						Export
+						Exportar
+					</a>
+                    <a :href="route('operacoes.import')" class="ml-2 inline-block leading-normal px-3 py-2 rounded font-semibold text-sm text-white uppercase bg-gray-500 hover:bg-gray-700 focus:bg-gray-600">
+						Importar
 					</a>
 				</div>
 				<form>
 					<div class="flex w-96">
-						<input type="text" v-model="params.search" placeholder="O que deseja buscar?" 
+						<input type="text" v-model="params.search" placeholder="O que deseja buscar?"
 							class="rounded-none rounded-l border-2 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2">
 						<span class="inline-flex items-center px-3 text-sm bg-blue-600 text-white rounded-r border border-l-0 border-blue-600">
 							<i class="fas fa-search"></i>
@@ -149,7 +152,7 @@
 				<form>
 					<div class="mb-4">
 						<VLabel for="ativo" value="Ativo:" />
-            			<select id="ativo" v-model="form.ativo" required 
+            			<select id="ativo" v-model="form.ativo" required
 							class="mt-1 block w-full justify-items-center border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded shadow-sm">
 							<option value="">Selecione um ativo</option>
 							<option :value="ativo.id" v-for="ativo in ativos" :key="ativo.id">{{ ativo.codigo }}</option>
@@ -158,7 +161,7 @@
 					</div>
 					<div class="mb-4">
 						<VLabel for="tipo_operacao" value="Tipo Operação:" />
-            			<select id="tipo_operacao" v-model="form.tipo_operacao" required 
+            			<select id="tipo_operacao" v-model="form.tipo_operacao" required
 						 class="mt-1 block w-full justify-items-center border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded shadow-sm">
 							<option value="">Selecione tipo de operação...</option>
 							<option value="compra">COMPRA</option>
@@ -176,7 +179,7 @@
             			<VInput id="data_operacao" v-model="form.data_operacao" type="date" class="mt-1 block w-full" required placeholder="Ex.: 00/00/0000" />
 						<span v-if="form.errors.data_operacao" class="text-red-600">{{ form.errors.data_operacao }}</span>
 					</div>
-					
+
 					<div class="mb-4">
 
 						<VLabel for="cotacao" value="Cotação:" />
@@ -184,22 +187,22 @@
 							<span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-l-md border border-r-0 border-gray-300">
 								R$
 							</span>
-							<input type="text" v-model="form.cotacao" id="cotacao" class="block w-full rounded-r-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+							<input type="text" v-model="form.cotacao" id="cotacao" class="block w-full rounded-r-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
 								required placeholder="Ex: 1,00, 1000,00 ou 1.000,00">
 						</div>
-						<span v-if="form.errors.cotacao" class="text-red-600">{{ form.errors.cotacao }}</span>						
+						<span v-if="form.errors.cotacao" class="text-red-600">{{ form.errors.cotacao }}</span>
 					</div>
 					<div class="mb-4">
 						<VLabel for="quantidade" value="Quantidade:" />
             			<VInput id="quantidade" v-model="form.quantidade" type="text" class="mt-1 block w-full" required placeholder="Ex: 0,00560060 ou 1,50 ou 1000,00" />
 						<span v-if="form.errors.quantidade" class="text-red-600">{{ form.errors.quantidade }}</span>
-					</div>			
+					</div>
 				</form>
-			</template>	
+			</template>
 			<template #footer>
 				<button type="button" v-if="btnModal == 'salvar'" @click="submitFormStore()" class="py-1.5 px-3 rounded bg-green-700 text-white ml-2">Salvar</button>
 				<button type="button" v-if="btnModal == 'update'" @click="submitFormUpdate()" class="py-1.5 px-3 rounded bg-green-700 text-white ml-2">Atualizar</button>
-			</template>	
+			</template>
 		</Modal>
 
 		<ToastSuccess />
@@ -249,7 +252,7 @@ export default {
 				search: this.filters.search,
 			},
 			form: this.$inertia.form({
-				id: '',	
+				id: '',
 				ativo: '',
 				tipo_operacao: '',
 				corretora: '',
@@ -293,7 +296,7 @@ export default {
 			});
 		},
 		submitFormUpdate() {
-			this.form.put(this.route('operacoes.update'), { 
+			this.form.put(this.route('operacoes.update'), {
 				preserveState:true,
 				onSuccess: () => {
 					this.form.reset();

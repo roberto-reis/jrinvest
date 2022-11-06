@@ -21,7 +21,7 @@ class OperacaoImport implements ToModel, WithHeadingRow
     {
         $this->ativos = Ativo::get();
     }
-    
+
     /**
     * @param array $row
     *
@@ -36,7 +36,7 @@ class OperacaoImport implements ToModel, WithHeadingRow
             'data_operacao' => Date::excelToDateTimeObject($row['data'])->format('Y/m/d'),
             'quantidade' => $row['quantidade'],
             'cotacao_preco' => $row['preco'] ?? '0.0',
-            'corretora' => 'Sistema',
+            'corretora' => $row['corretora'] ?? 'Sistema',
         ]);
     }
 }

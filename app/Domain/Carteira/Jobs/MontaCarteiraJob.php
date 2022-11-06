@@ -37,13 +37,16 @@ class MontaCarteiraJob implements ShouldQueue
     public function handle()
     {
 
-        try {            
+        try {
+
+            // Limpar Carteira
+            // Caso delete todos as operações de um ativo
+            Carteira::where('user_id', $this->usuarioLogado->id)->delete();
 
             $operacoesAtivos = Operacao::select('operacoes.*', 'ativos.codigo as codigo_ativo')
                 ->join('ativos', 'operacoes.ativo_id', '=', 'ativos.id')
                 ->where('user_id', $this->usuarioLogado->id)
                 ->get();
-
 
             foreach ($operacoesAtivos->groupBy('codigo_ativo') as $operacoes) {
 
@@ -52,18 +55,13 @@ class MontaCarteiraJob implements ShouldQueue
                 $somaOperacoesVendas = $operacoes->where('tipo_operacao', 'venda')->sum('quantidade');
                 $somaValorTotal = $operacoes->where('tipo_operacao', 'compra')->sum('valor_total');
 
-                // Salva ou atualiza a composição da carteira
-                Carteira::updateOrCreate([
+                Carteira::create([
                     'user_id' => $newOperacao->user_id,
                     'ativo_id' => $newOperacao->ativo_id,
-                ],
-                [
                     'quantidade_saldo' => ($somaOperacoesCompras - $somaOperacoesVendas),
                     'preco_medio' => ($somaValorTotal / $somaOperacoesCompras),
                 ]);
-                
             }
-
 
         } catch (\Exception $e) {
             Log::error('Error ao montar carteira: ', [$e->getMessage()]);

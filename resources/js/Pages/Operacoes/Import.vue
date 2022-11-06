@@ -16,22 +16,28 @@
                       <Alert :menssagem="flash.success" class="bg-green-100 text-green-700" />
                     </div>
 
-                    <div class="mb-3">
-                        <label for="formFileLg" class="form-label inline-block mb-2 text-gray-700">Selecione Um arquivo, ex: .xlsx ou .xls</label>
+                    <div class="mb-4">
+                        <label for="formFileLg" class="form-label inline-block mb-2 text-gray-700">
+                            Selecione Um arquivo, ex: .xlsx ou .xls
+                        </label>
+                        <a :href="route('operacoes.import-modelo')" class="text-blue-700 pl-2">(veja modelo)</a>
                         <input type="file" @input="form.arquivo = $event.target.files[0]" id="formFileLg" class="form-control block w-full px-2 py-1.5 text-xl font-normal  text-gray-700
                             bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0
-                            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
+                            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" accept=".xlsx, .xls">
                         <span v-if="errors.arquivo" class="text-red-600">{{ errors.arquivo }}</span>
                     </div>
-                    
+
                     <div class="flex justify-start">
-                        <VButton type="submit" :disabled="form.processing" class="bg-green-600 px-10">
+                        <a :href="route('operacoes.index')" :disabled="form.processing" class="inline-block leading-normal px-3 py-2 rounded font-semibold text-sm uppercase bg-red-600 text-white hover:bg-red-700">
+						    Voltar
+					    </a>
+                        <VButton type="submit" :disabled="form.processing" class="ml-2 bg-green-600 hover:bg-green-700 px-10">
                           {{ form.progress ? 'Enviando '+form.progress.percentage+'%' : 'Enviar' }}
                         </VButton>
                     </div>
                 </div>
-                
-            
+
+
             </form>
         </div>
       </div>
@@ -52,14 +58,14 @@ export default {
       Authenticated,
       Head,
       VButton,
-      Alert,      
+      Alert,
   },
   props: {
 		errors: Object,
     flash: Object,
 	},
   methods: {
-      
+
   },
   setup () {
     const form = useForm({

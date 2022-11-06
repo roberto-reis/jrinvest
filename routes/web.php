@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
         Route::get('export', [OperacaoController::class, 'export'])->name('operacoes.export');
         Route::get('import', [OperacaoImportController::class, 'index'])->name('operacoes.import');
         Route::post('import/store', [OperacaoImportController::class, 'store'])->name('operacoes.import.store');
+        Route::get('import-modelo', [OperacaoImportController::class, 'getImportModelo'])->name('operacoes.import-modelo');
     });
 
     Route::prefix('ativos')->group(function(){
