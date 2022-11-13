@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domain\Carteira\Services\CarteiraService;
+use App\Domain\Main\Interfaces\ICarteiraService;
 use Inertia\Inertia;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
@@ -16,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Inertia::share([            
+        Inertia::share([
             'flash' => function () {
                 return [
                     'success' => Session::get('success'),
@@ -24,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
                 ];
             },
         ]);
+
+        $this->app->bind(ICarteiraService::class, CarteiraService::class);
     }
 
     /**
@@ -33,14 +37,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /**
-         * Paginate a standard Laravel Collection.
-         * @param int $perPage
-         * @param int $total
-         * @param int $page
-         * @param string $pageName
-         * @return array
-         */
+        $this->paginarCollection();
+    }
+
+    /**
+     * Paginate a standard Laravel Collection.
+     * @param int $perPage
+     * @param int $total
+     * @param int $page
+     * @param string $pageName
+     * @return array
+     */
+    private function paginarCollection()
+    {
         Collection::macro('paginate', function($perPage, $total = null, $page = null, $pageName = 'page') {
             $page = $page ?: LengthAwarePaginator::resolveCurrentPage($pageName);
 

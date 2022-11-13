@@ -4,38 +4,32 @@ namespace App\Domain\Dashboard\Controllers;
 
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use App\Domain\Carteira\Repositories\CarteiraRepository;
+use App\Domain\Main\Interfaces\ICarteiraService;
 
 class DashboardController extends Controller
 {
-    private $carteiraRepository;
+    private ICarteiraService $carteira;
 
-    public function __construct(CarteiraRepository $carteiraRepository)
+    public function __construct(ICarteiraService $carteira)
     {
-        $this->carteiraRepository = $carteiraRepository;
+        $this->carteira = $carteira;
     }
 
     public function index()
     {
-
-        $dataUltimos30Dias = now()->subDays(30)->format('Y-m-d');
-        $dataUltimos180Dias = now()->subDays(180)->format('Y-m-d');
-        $dataUltimos365Dias = now()->subDays(365)->format('Y-m-d');
-
         // Rebalanceamento por Ativo
-        $minhaCarteira = $this->carteiraRepository->getCarteiraComPercentualAtual();
-        $carteiraIdeal = $this->carteiraRepository->getCarteiraComPercentualIdeal();
-        $carteiraAjuste = $this->carteiraRepository->getCarteiraComPercentualAjuste();
-
+        $minhaCarteira = $this->carteira->getCarteiraComPercentualAtual();
+        $carteiraIdeal = $this->carteira->getCarteiraComPercentualIdeal($minhaCarteira);
+        $carteiraAjuste = $this->carteira->getCarteiraComPercentualAjuste($minhaCarteira, $carteiraIdeal);
         // Rebalanceamento por Categoria
-        $minhaCarteiraPorClasses = $this->carteiraRepository->getCarteiraComPercentualAtualPorClasse();
-        $carteiraIdealPorClasse = $this->carteiraRepository->getCarteiraComPercentualIdealPorClasse();
+        $minhaCarteiraPorClasses = $this->carteira->getCarteiraComPercentualAtualPorClasse($minhaCarteira);
+        $carteiraIdealPorClasse = $this->carteira->getCarteiraComPercentualIdealPorClasse($minhaCarteira);
 
         // Rentabilidade Percentual da Carteira
-        $rentabidadeCarteiraHoje = $this->carteiraRepository->rentabidadeCarteira();
-        $rentabidadeCarteira30Dias = $this->carteiraRepository->rentabidadeCarteira($dataUltimos30Dias);
-        $rentabidadeCarteira180Dias = $this->carteiraRepository->rentabidadeCarteira($dataUltimos180Dias);
-        $rentabidadeCarteira365Dias = $this->carteiraRepository->rentabidadeCarteira($dataUltimos365Dias);
+        $rentabidadeCarteiraHoje = $this->carteira->getRentabidadeCarteira();
+        $rentabidadeCarteira30Dias = $this->carteira->getRentabidadeCarteira(now()->subDays(30)->format('Y-m-d'));
+        $rentabidadeCarteira180Dias = $this->carteira->getRentabidadeCarteira(now()->subDays(180)->format('Y-m-d'));
+        $rentabidadeCarteira365Dias = $this->carteira->getRentabidadeCarteira(now()->subDays(365)->format('Y-m-d'));
 
 
         return Inertia::render('Dashboard/Home', [
