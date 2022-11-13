@@ -1,16 +1,16 @@
 <?php
-namespace App\Domain\Carteira\Services;
+namespace App\Domain\Carteira\Repositories;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use App\Domain\Cotacao\Models\Cotacao;
 use App\Domain\Carteira\Models\Carteira;
-use App\Domain\Main\Interfaces\ICarteiraService;
+use App\Domain\Main\Interfaces\ICarteiraRepository;
 use App\Domain\Operacao\Models\Operacao;
 use App\Domain\Rebalanceamento\Models\RebalanceamentoAtivo;
 use App\Domain\Rebalanceamento\Models\RebalanceamentoClasse;
 
-class CarteiraService implements ICarteiraService
+class CarteiraRepository implements ICarteiraRepository
 {
     /**
      * Calcula o percentual, quantidade e valor de cada ativo da carteira para o rebalanceamento

@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Domain\Carteira\Services\CarteiraService;
-use App\Domain\Main\Interfaces\ICarteiraService;
 use Inertia\Inertia;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Domain\Main\Interfaces\ICarteiraRepository;
+use App\Domain\Carteira\Repositories\CarteiraRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
             },
         ]);
 
-        $this->app->bind(ICarteiraService::class, CarteiraService::class);
+        $this->app->bind(ICarteiraRepository::class, CarteiraRepository::class);
     }
 
     /**

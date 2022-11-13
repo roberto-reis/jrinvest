@@ -4,7 +4,7 @@ namespace App\Domain\Main\Interfaces;
 
 use Illuminate\Support\Collection;
 
-interface ICarteiraService
+interface ICarteiraRepository
 {
     public function getCarteiraComPercentualAtual(string $dataPeriodoRentabilidade = null): Collection;
     public function getCarteiraComPercentualIdeal(Collection $carteiraAtual = null): Collection;
