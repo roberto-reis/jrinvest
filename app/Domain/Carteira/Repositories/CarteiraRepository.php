@@ -2,7 +2,6 @@
 namespace App\Domain\Carteira\Repositories;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use App\Domain\Cotacao\Models\Cotacao;
 use App\Domain\Carteira\Models\Carteira;
 use App\Domain\Main\Interfaces\ICarteiraRepository;
@@ -15,9 +14,9 @@ class CarteiraRepository implements ICarteiraRepository
     /**
      * Calcula o percentual, quantidade e valor de cada ativo da carteira para o rebalanceamento
      * @param ?string $dataPeriodoRentabilidade
-     * @return Collection
+     * @return array
      */
-    public function getCarteiraComPercentualAtual(string $dataPeriodoRentabilidade = null): Collection
+    public function getCarteiraComPercentualAtual(string $dataPeriodoRentabilidade = null): array
     {
         $cotacoesModelo = Cotacao::query();
         $minhaCarteira = Carteira::select('carteiras.*', 'ativos.codigo', 'classes_ativos.nome as classe_nome')
@@ -38,12 +37,12 @@ class CarteiraRepository implements ICarteiraRepository
         $cotacoes = $cotacoesModelo->get();
 
         if ($cotacoes->isEmpty() || $minhaCarteira->isEmpty()) {
-            return collect();
+            return [];
         }
 
         // Calcula o valor do ativo com a cotação atual
         $myCarteiraUpdated = $minhaCarteira->map(function ($ativo) use ($cotacoes) {
-            $cotacao = $cotacoes->where('ativo_id', $ativo->ativo_id)->first();
+            $cotacao = $cotacoes->firstWhere('ativo_id', $ativo->ativo_id);
             $ativo->cotacao = $cotacao->preco;
             $ativo->valor_ativo = $ativo->quantidade_saldo * $cotacao->preco;
 
@@ -63,19 +62,19 @@ class CarteiraRepository implements ICarteiraRepository
             return $ativo;
         });
 
-        return collect([
+        return [
             "ativos" => $carteiraComPercentualAtual,
             "valor_total_carteira" => $valorTotalCarteira,
             "custo_total_carteira" => $custoTotalCarteira,
-        ]);
+        ];
     }
 
     /**
      * Calcula o percentual, quantidade e valor ideal de cada ativo para ter na carteira
-     * @param ?Collection $carteiraAtual
-     * @return Collection
+     * @param ?array $carteiraAtual
+     * @return array
      */
-    public function getCarteiraComPercentualIdeal(Collection $carteiraAtual = null): Collection
+    public function getCarteiraComPercentualIdeal(array $carteiraAtual = null): array
     {
         $minhaCarteira = $carteiraAtual ?? $this->getCarteiraComPercentualAtual();
 
@@ -87,13 +86,13 @@ class CarteiraRepository implements ICarteiraRepository
             ->orderBy('ativos.codigo', 'asc')
             ->get();
 
-        if ($cotacoes->isEmpty() || $minhaCarteira->isEmpty() || $rebalanceamentoAtivo->isEmpty()) {
-            return collect();
+        if (empty($minhaCarteira) || $cotacoes->isEmpty() || $rebalanceamentoAtivo->isEmpty()) {
+            return [];
         }
 
         // Calcula percentual/peso ideal de cada ativo
         $carteiraIdeal = $rebalanceamentoAtivo->map(function ($ativo) use ($minhaCarteira, $cotacoes) {
-            $cotacao = $cotacoes->where('ativo_id', $ativo->ativo_id)->first();
+            $cotacao = $cotacoes->firstWhere('ativo_id', $ativo->ativo_id);
             $valorTotalCarteira = (float) $minhaCarteira['valor_total_carteira'];
 
             $valor_ativo = ($valorTotalCarteira * $ativo->percentual) / 100; // Calcula o valor do ativo com base no percentual ideal
@@ -106,79 +105,80 @@ class CarteiraRepository implements ICarteiraRepository
             return $ativo;
         });
 
-        return collect([
+        return [
             "ativos" => $carteiraIdeal,
             "valor_total_carteira" => $minhaCarteira['valor_total_carteira'],
-        ]);
+        ];
     }
 
     /**
      * Calcula o percentual, quantidade e valor de cada ativo da carteira para o rebalanceamento
-     * @param ?Collection $carteiraAtual
-     * @param ?Collection $carteiraIdeal
-     * @return Collection
+     * @param ?array $carteiraAtual
+     * @param ?array $carteiraIdeal
+     * @return array
      */
-    public function getCarteiraComPercentualAjuste(Collection $carteiraAtual = null, Collection $carteiraIdeal = null): Collection
+    public function getCarteiraComPercentualAjuste(array $carteiraAtual = null, array $carteiraIdeal = null): array
     {
         $minhaCarteira = $carteiraAtual ?? $this->getCarteiraComPercentualAtual();
         $carteiraIdeal = $carteiraIdeal ?? $this->getCarteiraComPercentualIdeal();
 
-        if ($minhaCarteira->isEmpty() || $carteiraIdeal->isEmpty()) {
-            return collect();
+        if (empty($minhaCarteira) || empty($carteiraIdeal)) {
+            return [];
         }
 
         // Calcula o percentual de ajuste de cada ativo
         $carteiraAjuste = $carteiraIdeal['ativos']->map(function ($ativo) use ($minhaCarteira) {
-            $ativoMinhaCarteira = $minhaCarteira['ativos']->where('ativo_id', $ativo->ativo_id)->first(); // Pega o ativo da minha carteira
+            $ativoMinhaCarteira = $minhaCarteira['ativos']->firstWhere('ativo_id', $ativo->ativo_id); // Pega o ativo da minha carteira
+            $ativoAjuste = clone $ativo;
 
             if (!is_null($ativoMinhaCarteira)) {
-                $ativo->quantidade_ativo = $ativo->quantidade_ativo - $ativoMinhaCarteira->quantidade_saldo; // Calcula a quantidade de ativos a ser ajustada
-                $ativo->percentual = $ativo->percentual - $ativoMinhaCarteira->percentual; // Calcula o percentual de ajuste
-                $ativo->valor_ativo = $ativo->valor_ativo - $ativoMinhaCarteira->valor_ativo; // Calcula o valor de ajuste
+                $ativoAjuste->quantidade_ativo = $ativoAjuste->quantidade_ativo - $ativoMinhaCarteira->quantidade_saldo; // Calcula a quantidade de ativos a ser ajustada
+                $ativoAjuste->percentual = $ativoAjuste->percentual - $ativoMinhaCarteira->percentual; // Calcula o percentual de ajuste
+                $ativoAjuste->valor_ativo = $ativoAjuste->valor_ativo - $ativoMinhaCarteira->valor_ativo; // Calcula o valor de ajuste
             }
 
-            return $ativo;
+            return $ativoAjuste;
         });
 
-        return collect([
+        return [
             "ativos" => $carteiraAjuste,
             "valor_total_carteira" => $carteiraIdeal['valor_total_carteira'],
-        ]);
+        ];
     }
 
     /**
      * Calcula o percentual atual de cada classe de ativo
-     * @param ?Collection $carteiraAtual
-     * @return Collection
+     * @param ?array $carteiraAtual
+     * @return array
      */
-    public function getCarteiraComPercentualAtualPorClasse(Collection $carteiraAtual = null): Collection
+    public function getCarteiraComPercentualAtualPorClasse(array $carteiraAtual = null): array
     {
         $minhaCarteira = $carteiraAtual ?? $this->getCarteiraComPercentualAtual();
 
-        if ($minhaCarteira->isEmpty()) {
-            return collect();
+        if (empty($minhaCarteira)) {
+            return [];
         }
 
         $minhaCarteiraGrouped = $minhaCarteira['ativos']->groupBy('classe_nome');
-        $minhaCarteiraPorClasses = $minhaCarteiraGrouped->map(function ($ativos, $index) use ($minhaCarteira) {
+        $minhaCarteiraPorClasses = $minhaCarteiraGrouped->map(function ($ativos, $key) use ($minhaCarteira) {
             $totalCarteira = (float) $minhaCarteira['valor_total_carteira'];
             $percentual =  ($ativos->sum('valor_ativo') / $totalCarteira) * 100;
             return [
-                'classe_ativo' => $index,
+                'classe_ativo' => $key,
                 'valor_total_classe' => $ativos->sum('valor_ativo'),
                 'percentual' => number_format($percentual, 2, '.', ''),
             ];
         });
 
-        return $minhaCarteiraPorClasses;
+        return $minhaCarteiraPorClasses->toArray();
     }
 
     /**
      * Calcula e retorna o percentual ideal de cada classe de ativo
-     * @param ?Collection $carteiraAtual
-     * @return Collection
+     * @param ?array $carteiraAtual
+     * @return array
      */
-    public function getCarteiraComPercentualIdealPorClasse(Collection $carteiraAtual = null): Collection
+    public function getCarteiraComPercentualIdealPorClasse(array $carteiraAtual = null): array
     {
         $minhaCarteira = $carteiraAtual ?? $this->getCarteiraComPercentualAtual();
         $carteiraIdealPorClasses = RebalanceamentoClasse::select('rebalanceamento_classes.*', 'classes_ativos.nome as classe_ativo')
@@ -187,8 +187,8 @@ class CarteiraRepository implements ICarteiraRepository
             ->orderBy('classe_ativo')
             ->get();
 
-        if ($minhaCarteira->isEmpty() || $carteiraIdealPorClasses->isEmpty()) {
-            return collect();
+        if (empty($minhaCarteira) || $carteiraIdealPorClasses->isEmpty()) {
+            return [];
         }
 
         $minhaCarteiraPorClasses = $carteiraIdealPorClasses->map(function ($classe) use ($minhaCarteira) {
@@ -201,7 +201,7 @@ class CarteiraRepository implements ICarteiraRepository
             ];
         });
 
-        return $minhaCarteiraPorClasses;
+        return $minhaCarteiraPorClasses->toArray();
     }
 
     /**
@@ -214,7 +214,7 @@ class CarteiraRepository implements ICarteiraRepository
         $dataOperacoesMaisAntiga = Operacao::orderBy('data_operacao', 'asc')->first();
         $minhaCarteira = $this->getCarteiraComPercentualAtual($dataPeriodoRentabilidade);
 
-        if (is_null($dataOperacoesMaisAntiga) || $minhaCarteira->isEmpty()) {
+        if (is_null($dataOperacoesMaisAntiga) || empty($minhaCarteira)) {
             return [];
         }
 

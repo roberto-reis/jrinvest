@@ -6,10 +6,10 @@ use Illuminate\Support\Collection;
 
 interface ICarteiraRepository
 {
-    public function getCarteiraComPercentualAtual(string $dataPeriodoRentabilidade = null): Collection;
-    public function getCarteiraComPercentualIdeal(Collection $carteiraAtual = null): Collection;
-    public function getCarteiraComPercentualAjuste(Collection $carteiraAtual = null, Collection $carteiraIdeal = null): Collection;
-    public function getCarteiraComPercentualAtualPorClasse(Collection $carteiraAtual = null): Collection;
-    public function getCarteiraComPercentualIdealPorClasse(Collection $carteiraAtual = null): Collection;
+    public function getCarteiraComPercentualAtual(string $dataPeriodoRentabilidade = null): array;
+    public function getCarteiraComPercentualIdeal(array $carteiraAtual = null): array;
+    public function getCarteiraComPercentualAjuste(array $carteiraAtual = null, array $carteiraIdeal = null): array;
+    public function getCarteiraComPercentualAtualPorClasse(array $carteiraAtual = null): array;
+    public function getCarteiraComPercentualIdealPorClasse(array $carteiraAtual = null): array;
     public function getRentabidadeCarteira(string $dataPeriodoRentabilidade = null): array;
 }

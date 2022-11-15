@@ -5,6 +5,7 @@ namespace App\Domain\Dashboard\Controllers;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Domain\Dashboard\Services\DashboardService;
+use Illuminate\Support\Benchmark;
 
 class DashboardController extends Controller
 {
@@ -17,24 +18,31 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $carteiraConsolidada = $this->service->listCarteiraConsolidada();
+        try {
+            $carteiraConsolidada = $this->service->listCarteiraConsolidada();
 
-        // Rentabilidade Percentual da Carteira
-        $rentabidadeCarteiraHoje = $this->service->listRentabidadeCarteira();
-        $rentabidadeCarteira30Dias = $this->service->listRentabidadeCarteira(now()->subDays(30)->format('Y-m-d'));
-        $rentabidadeCarteira180Dias = $this->service->listRentabidadeCarteira(now()->subDays(180)->format('Y-m-d'));
-        $rentabidadeCarteira365Dias = $this->service->listRentabidadeCarteira(now()->subDays(365)->format('Y-m-d'));
+            // Rentabilidade Percentual da Carteira
+            $rentabidadeCarteiraHoje = $this->service->listRentabidadeCarteira();
+            $rentabidadeCarteira30Dias = $this->service->listRentabidadeCarteira(now()->subDays(30)->format('Y-m-d'));
+            $rentabidadeCarteira180Dias = $this->service->listRentabidadeCarteira(now()->subDays(180)->format('Y-m-d'));
+            $rentabidadeCarteira365Dias = $this->service->listRentabidadeCarteira(now()->subDays(365)->format('Y-m-d'));
 
-        return Inertia::render('Dashboard/Home', [
-            'minhaCarteira' => $carteiraConsolidada['carteiraAtual'],
-            'carteiraIdeal' => $carteiraConsolidada['carteiraIdeal'],
-            'carteiraAjuste' => $carteiraConsolidada['carteiraAjuste'],
-            'minhaCarteiraPorClasses' => $carteiraConsolidada['minhaCarteiraPorClasses'],
-            'carteiraIdealPorClasse' => $carteiraConsolidada['carteiraIdealPorClasse'],
-            'rentabidadeCarteiraHoje' => $rentabidadeCarteiraHoje,
-            'rentabidadeCarteira30Dias' => $rentabidadeCarteira30Dias,
-            'rentabidadeCarteira180Dias' => $rentabidadeCarteira180Dias,
-            'rentabidadeCarteira365Dias' => $rentabidadeCarteira365Dias,
-        ]);
+            return Inertia::render('Dashboard/Home', [
+                'minhaCarteira' => $carteiraConsolidada['carteiraAtual'],
+                'carteiraIdeal' => $carteiraConsolidada['carteiraIdeal'],
+                'carteiraAjuste' => $carteiraConsolidada['carteiraAjuste'],
+                'minhaCarteiraPorClasses' => $carteiraConsolidada['minhaCarteiraPorClasses'],
+                'carteiraIdealPorClasse' => $carteiraConsolidada['carteiraIdealPorClasse'],
+                'rentabidadeCarteiraHoje' => $rentabidadeCarteiraHoje,
+                'rentabidadeCarteira30Dias' => $rentabidadeCarteira30Dias,
+                'rentabidadeCarteira180Dias' => $rentabidadeCarteira180Dias,
+                'rentabidadeCarteira365Dias' => $rentabidadeCarteira365Dias,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error("Erro ao listar os dados: ", [
+                'mensagem' => $e->getMessage(),
+                'linha' => $e->getLine(),
+            ]);
+        }
     }
 }
