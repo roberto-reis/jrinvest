@@ -1,6 +1,7 @@
 <?php
 namespace App\Domain\Carteira\Repositories;
 
+use App\Domain\Carteira\DTO\CarteiraDTO;
 use Carbon\Carbon;
 use App\Domain\Cotacao\Models\Cotacao;
 use App\Domain\Carteira\Models\Carteira;
@@ -41,20 +42,22 @@ class CarteiraRepository implements ICarteiraRepository
         }
 
         // Calcula o valor do ativo com a cotação atual
-        $myCarteiraUpdated = $minhaCarteira->map(function ($ativo) use ($cotacoes) {
+        $myCarteiraAtualizada = $minhaCarteira->map(function ($ativo) use ($cotacoes) {
             $cotacao = $cotacoes->firstWhere('ativo_id', $ativo->ativo_id);
-            $ativo->cotacao = $cotacao->preco;
-            $ativo->valor_ativo = $ativo->quantidade_saldo * $cotacao->preco;
+            $ativoDto = CarteiraDTO::fromArray($ativo->toArray());
 
-            return $ativo;
+            $ativoDto->cotacao = $cotacao->preco;
+            $ativoDto->valor_ativo = $ativoDto->quantidade_saldo * $cotacao->preco;
+
+            return $ativoDto;
         });
 
         // Pega o custo total de todos os ativos atualizados com a cotação atual
-        $valorTotalCarteira = $myCarteiraUpdated->sum('valor_ativo');
-        $custoTotalCarteira = $myCarteiraUpdated->sum('custo_total_ativo');
+        $valorTotalCarteira = $myCarteiraAtualizada->sum('valor_ativo');
+        $custoTotalCarteira = $myCarteiraAtualizada->sum('custo_total_ativo');
 
         // Calcula percentual e rentabilidade de cada ativo
-        $carteiraComPercentualAtual = $myCarteiraUpdated->map(function ($ativo) use ($valorTotalCarteira) {
+        $carteiraComPercentualAtual = $myCarteiraAtualizada->map(function ($ativo) use ($valorTotalCarteira) {
             $ativo->percentual = ($ativo->valor_ativo / $valorTotalCarteira) * 100; // Porcentagem do ativo na carteira
             $ativo->rentabilidade_valor = ($ativo->valor_ativo - $ativo->custo_total_ativo); // calcula a rentabilidade do ativo em valor
             $ativo->rentabilidade_percentual = ($ativo->rentabilidade_valor / $ativo->custo_total_ativo) * 100; // calcula a rentabilidade em
@@ -93,16 +96,17 @@ class CarteiraRepository implements ICarteiraRepository
         // Calcula percentual/peso ideal de cada ativo
         $carteiraIdeal = $rebalanceamentoAtivo->map(function ($ativo) use ($minhaCarteira, $cotacoes) {
             $cotacao = $cotacoes->firstWhere('ativo_id', $ativo->ativo_id);
-            $valorTotalCarteira = (float) $minhaCarteira['valor_total_carteira'];
+            $ativoDto = CarteiraDTO::fromArray($ativo->toArray());
 
-            $valor_ativo = ($valorTotalCarteira * $ativo->percentual) / 100; // Calcula o valor do ativo com base no percentual ideal
+            $valorTotalCarteira = (float) $minhaCarteira['valor_total_carteira'];
+            $valor_ativo = ($valorTotalCarteira * $ativoDto->percentual) / 100; // Calcula o valor do ativo com base no percentual ideal
             $quantidade_ativo = $valor_ativo / $cotacao->preco; // Calcula a quantidade do ativo com base na cotação atual
 
-            $ativo->valor_ativo = $valor_ativo;
-            $ativo->quantidade_ativo = $quantidade_ativo;
-            $ativo->cotacao = $cotacao->preco;
+            $ativoDto->valor_ativo = $valor_ativo;
+            $ativoDto->quantidade_ativo = $quantidade_ativo;
+            $ativoDto->cotacao = $cotacao->preco;
 
-            return $ativo;
+            return $ativoDto;
         });
 
         return [

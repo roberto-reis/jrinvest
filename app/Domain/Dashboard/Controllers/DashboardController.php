@@ -5,7 +5,6 @@ namespace App\Domain\Dashboard\Controllers;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Domain\Dashboard\Services\DashboardService;
-use Illuminate\Support\Benchmark;
 
 class DashboardController extends Controller
 {
